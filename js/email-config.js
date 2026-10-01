@@ -1,12 +1,11 @@
 "use strict";
 
-// EmailJS-Konfiguration
-// Werte im EmailJS-Dashboard kopieren und hier einsetzen.
-// Die Public Key darf bei einer statischen Website öffentlich im Browser stehen.
+// EmailJS-Konfiguration für Bine's KreativWerkstatt
+// Der Public Key darf bei einer statischen Website öffentlich im Browser stehen.
 window.EMAILJS_CONFIG = {
-  publicKey: "DEINE_PUBLIC_KEY",
-  serviceId: "DEINE_SERVICE_ID",
-  contactTemplateId: "DEINE_KONTAKT_TEMPLATE_ID",
-  orderTemplateId: "DEINE_BESTELL_TEMPLATE_ID",
+  publicKey: "VnKDck0x2zxgMOGxe",
+  serviceId: "service_uhd7hkc",
+  contactTemplateId: "template_efblxwa",
+  orderTemplateId: "template_6mvb1fg",
   shopEmail: ""
 };
