@@ -1,0 +1,21 @@
+Das Projekt behält die vorhandene Shop-Struktur und Funktionen aus dem gelieferten Projekt:
+- Produktdaten / data/store.json
+- Produktseiten
+- Warenkorb, Versand, Gutscheine
+- FSK-18-Bereich
+- Gästebuch
+- Kontakt
+- Impressum
+- Admin-Bereich
+- EmailJS
+
+Geändert wurde vor allem das Frontend-Design:
+- Schwarz/Rot/Gothic-Look
+- stärkere rote Glow-Effekte
+- Cinzel/Script-Typografie
+- grafischer Hero mit Schlüsselanhänger-Werbebild
+- neue Produktkarten, Rahmen und Buttons
+- responsive Darstellung
+
+Start in PyCharm:
+Rechtsklick auf server.py -> Run 'server'.

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gästebuch – Bine's KreativWerkstatt</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="header simple">
+<a class="brand" href="index.html"><img src="assets/logo.png" class="logo" alt="Bine's KreativWerkstatt Logo"><div><h1>Bine's <span>KreativWerkstatt</span></h1><p>3D Druck • Handarbeit • Sublimation</p></div></a><div class="nav">
+<a href="index.html">Startseite</a>
+<a href="index.html#shop">Shop</a>
+<a href="index.html#shop">Bundles</a>
+<a href="gaestebuch.html">Gästebuch</a>
+<a href="kontakt.html">Kontakt</a>
+<a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="agb.html">AGB</a><a href="widerruf.html">Widerruf</a>
+</div></header>
+<main class="page">
+  <h2>Gästebuch</h2>
+  <input id="guest-name" placeholder="Dein Name">
+  <textarea id="guest-message" placeholder="Deine Nachricht"></textarea>
+  <button class="main-btn" onclick="addGuestEntry()">Eintragen</button>
+  <div id="guestbook-list"></div>
+</main>
+<script src="js/guestbook.js"></script>
+</body>
+</html>

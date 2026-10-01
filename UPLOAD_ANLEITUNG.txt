@@ -1,0 +1,28 @@
+NEKOPAWS3D – KOMPLETTE NEUE VERSION
+
+1. ZIP entpacken.
+2. Im GitHub-Repository NekoPaws3D/NekoPaws3D-Shop die alten Dateien ersetzen.
+3. Den gesamten INHALT dieses Ordners hochladen, nicht den äußeren Ordner selbst.
+4. Auf main committen.
+5. 2–5 Minuten warten.
+6. Shop öffnen:
+   https://nekopaws3d.github.io/NekoPaws3D-Shop/
+7. Admin öffnen:
+   https://nekopaws3d.github.io/NekoPaws3D-Shop/admin/?v=4
+
+ADMIN-LOGIN
+- Im Feld wird kein normales Passwort eingetragen.
+- Dort den GitHub Fine-grained Personal Access Token einfügen.
+- Der Token braucht Zugriff auf NekoPaws3D/NekoPaws3D-Shop.
+- Repository permission: Contents = Read and write.
+- Den Token niemals in Dateien eintragen oder weitergeben.
+
+EMAILJS
+Die Werte stehen in js/email-config.js:
+- publicKey
+- serviceId
+- contactTemplateId
+- orderTemplateId
+- shopEmail
+
+Für Bestellungen muss die EmailJS-Vorlage dieselben Variablen verwenden, die der Shop sendet.
