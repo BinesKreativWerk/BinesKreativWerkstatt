@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin – Bine's KreativWerkstatt</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<header class="admin-top">
+  <a class="admin-brand" href="../index.html">
+    <img src="../assets/logo.png" alt="Bine's KreativWerkstatt">
+    <span><b>Bine's KreativWerkstatt</b><small>Shop-Administration</small></span>
+  </a>
+  <div class="admin-top-actions">
+    <a class="outline-btn" href="../index.html">Shop öffnen</a>
+    <button id="logoutBtn" class="outline-btn hidden">Abmelden</button>
+  </div>
+</header>
+
+<main class="admin-wrap">
+<section id="loginView" class="admin-login">
+  <div class="login-card">
+    <img src="../assets/logo.png" class="login-logo" alt="">
+    <h1>Admin-Dashboard</h1>
+    <p class="muted">Verwalte den Shop, Bestellungen, Produkte, Kunden, Gutscheine, Versand und Inhalte zentral.</p>
+    <div class="login-grid login-grid-two">
+      <label>GitHub Benutzername<input id="repoOwner" placeholder="z. B. dein-github-name" autocomplete="username"></label>
+      <label>GitHub Token<input id="githubToken" type="password" autocomplete="current-password" placeholder="github_pat_…"></label>
+    </div>
+    <div id="repoSelectWrap" class="hidden">
+      <label>Shop-Repository<input id="repoName" readonly></label>
+      <p class="muted">Das Repository wird automatisch anhand der Shop-Datei <code>data/store.json</code> erkannt.</p>
+    </div>
+    <div class="login-actions">
+      
+      <button id="loginBtn" class="main-btn">Mit GitHub verbinden</button>
+    </div>
+    <p id="loginStatus" class="status"></p>
+    <details class="help-box"><summary>Was braucht der GitHub-Zugang?</summary>
+      <p>Du benötigst nur deinen GitHub-Benutzernamen und einen Fine-grained Personal Access Token mit „Contents: Read and write“. Das Shop-Repository wird automatisch gesucht. Der Token bleibt nur in dieser Browsersitzung.</p>
+    </details>
+  </div>
+</section>
+
+<section id="dashboardView" class="hidden">
+  <div class="admin-head">
+    <div><span class="eyebrow">Bine's KreativWerkstatt</span><h1>Shop-Administration</h1><p id="modeText" class="muted">Bitte mit GitHub anmelden.</p></div>
+    <div class="head-actions"><button id="reloadBtn" class="outline-btn">Neu laden</button><button id="saveBtn" class="main-btn">Alles veröffentlichen</button></div>
+  </div>
+
+  <div class="dashboard-cards" id="dashboardCards"></div>
+
+  <div class="admin-layout">
+    <aside class="admin-nav">
+      <button class="nav-btn active" data-view="overview">Übersicht</button>
+      <button class="nav-btn" data-view="products">Produkte</button>
+      <button class="nav-btn" data-view="categories">Kategorien</button>
+      <button class="nav-btn" data-view="orders">Bestellungen</button>
+      <button class="nav-btn" data-view="production">Produktion</button>
+      <button class="nav-btn" data-view="customers">Kunden</button>
+      <button class="nav-btn" data-view="invoices">Rechnungen</button>
+      <button class="nav-btn" data-view="statistics">Statistik</button>
+      <button class="nav-btn" data-view="coupons">Gutscheine</button>
+      <button class="nav-btn" data-view="shipping">Versand</button>
+      <button class="nav-btn" data-view="gallery">Auftragsgalerie</button>
+      <button class="nav-btn" data-view="guestbook">Gästebuch</button>
+      <button class="nav-btn" data-view="settings">Shop & E-Mail</button>
+      <button class="nav-btn" data-view="backup">Backup</button>
+    </aside>
+
+    <section class="admin-content">
+      <section class="view" id="view-overview"></section>
+      <section class="view hidden" id="view-products"></section>
+      <section class="view hidden" id="view-categories"></section>
+      <section class="view hidden" id="view-orders"></section>
+      <section class="view hidden" id="view-production"></section>
+      <section class="view hidden" id="view-customers"></section>
+      <section class="view hidden" id="view-invoices"></section>
+      <section class="view hidden" id="view-statistics"></section>
+      <section class="view hidden" id="view-coupons"></section>
+      <section class="view hidden" id="view-shipping"></section>
+      <section class="view hidden" id="view-gallery"></section>
+      <section class="view hidden" id="view-guestbook"></section>
+      <section class="view hidden" id="view-settings"></section>
+      <section class="view hidden" id="view-backup"></section>
+      <p id="saveStatus" class="status"></p>
+    </section>
+  </div>
+</section>
+</main>
+
+<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h2 id="modalTitle"></h2><button id="modalClose" class="outline-btn">Schließen</button></div><div id="modalBody"></div></div></div>
+<script src="admin.js?v=13" defer></script>
+</body>
+</html>
