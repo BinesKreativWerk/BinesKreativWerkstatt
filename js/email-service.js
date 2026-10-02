@@ -36,9 +36,10 @@
 
   async function sendContact(params) {
     const c = getConfig();
-    ensureReady(c.contactTemplateId);
-    // Kein künstliches to_email mitsenden. Der Empfänger wird im EmailJS-Template festgelegt.
-    return window.emailjs.send(c.serviceId, c.contactTemplateId, params);
+    const contactTemplateId = "template_q4j1x73";
+    ensureReady(contactTemplateId);
+    // Die Kontakt-/Preisanfrage verwendet das neu erstellte EmailJS-Template.
+    return window.emailjs.send(c.serviceId, contactTemplateId, params);
   }
 
   async function sendOrder(params) {
