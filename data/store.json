@@ -89,20 +89,20 @@
     },
     {
       "id": 5,
-      "name": "Traumfänger",
+      "name": "Markramee  Armbänder usw",
       "category": "Bundles",
-      "price": 0,
+      "price": 10,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-30-5.jpeg",
       "images": [
         "assets/products/whatsapp-image-2026-10-01-at-11-30-30-5.jpeg",
         "assets/products/product-01.jpg"
       ],
-      "description": "Traumfänger Handgefertig mit Preis auf Anfrage und richtet sich direkt nach Größe.",
+      "description": "Traumfänger Handgefertig mit Preis auf Anfrage und richtet sich direkt nach Größe.\nab 10 euro  je nach Model und Zusätzen,wie zb,Perlen usw",
       "visible": true,
       "customizable": false,
       "featured": false,
-      "stock": 0,
+      "stock": 119,
       "sku": "BKW-2932",
       "sort": 5,
       "weightGrams": 0
