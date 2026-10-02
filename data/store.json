@@ -223,6 +223,13 @@
       "label": "FSK 18",
       "sort": 5,
       "active": true
+    },
+    {
+      "id": "fadenkunst-u-basteln",
+      "name": "FadenKunst u.Basteln",
+      "label": "Neue Kategorie",
+      "sort": 6,
+      "active": true
     }
   ],
   "management": {
