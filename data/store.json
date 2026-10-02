@@ -69,7 +69,7 @@
     },
     {
       "id": 4,
-      "name": "Trinkbecher",
+      "name": "Trinkbecher & Tassen usw ",
       "category": "Sublimation",
       "price": 0,
       "priceOnRequest": true,
@@ -78,11 +78,11 @@
         "assets/products/whatsapp-image-2026-10-01-at-11-30-31-1-4.jpeg",
         "assets/products/product-01.jpg"
       ],
-      "description": "Preise direkt per Anfrage ",
+      "description": "Preise und Wünsche ,  bei Anfertigung , direkt per Anfrage  ",
       "visible": true,
       "customizable": false,
       "featured": false,
-      "stock": 10,
+      "stock": 19,
       "sku": "BKW-7989",
       "sort": 4,
       "weightGrams": 0
