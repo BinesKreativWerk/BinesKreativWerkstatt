@@ -189,7 +189,7 @@ function products(){
  const d=ensureData();
  $("#view-products").innerHTML=panel("Produkte",`<div class="toolbar"><button id="addProduct" class="main-btn">+ Neues Produkt</button><input id="productSearch" class="filter-input" placeholder="Produkt suchen …"></div>`) + `<div id="productGrid" class="product-grid"></div>`;
  const draw=()=>{$("#productGrid").innerHTML=d.products.slice().sort((a,b)=>(a.sort||999)-(b.sort||999)).map((p,i)=>`<article class="product-card" data-product="${p.id}">
- <div class="product-top"><img class="thumb" src="../${esc(p.image||"assets/logo.png")}"><div><h3>${esc(p.name)}</h3><div class="product-meta">${esc(p.category||"")} · ${money(p.price)} · ${Number(p.weightGrams||0).toLocaleString("de-DE")} g</div><div>${p.visible!==false?'<span class="badge ok">sichtbar</span>':'<span class="badge off">ausgeblendet</span>'} ${p.stock<=3?'<span class="badge warn">Bestand niedrig</span>':''}</div></div></div>
+ <div class="product-top"><img class="thumb" src="../${esc(p.image||"assets/logo.png")}"><div><h3>${esc(p.name)}</h3><div class="product-meta">${esc(p.category||"")} · ${p.priceOnRequest?"Preis auf Anfrage":money(p.price)} · ${Number(p.weightGrams||0).toLocaleString("de-DE")} g</div><div>${p.visible!==false?'<span class="badge ok">sichtbar</span>':'<span class="badge off">ausgeblendet</span>'} ${p.stock<=3?'<span class="badge warn">Bestand niedrig</span>':''}</div></div></div>
  <div class="product-actions">${btn("Bearbeiten","outline-btn",'data-edit="'+p.id+'"')} ${btn("Duplizieren","outline-btn",'data-dup="'+p.id+'"')} ${btn(p.visible!==false?"Ausblenden":"Einblenden","outline-btn",'data-toggle="'+p.id+'"')} ${btn("Löschen","outline-btn danger",'data-del="'+p.id+'"')}</div></article>`).join("")||'<div class="empty">Noch keine Produkte.</div>';
  document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>productModal(Number(b.dataset.edit)));
  document.querySelectorAll("[data-dup]").forEach(b=>b.onclick=()=>duplicateProduct(Number(b.dataset.dup)));
@@ -202,7 +202,7 @@ function products(){
 function productModal(id){
  const d=ensureData(), p=id?d.products.find(x=>x.id===id):{
    id:Math.max(0,...d.products.map(x=>Number(x.id)||0))+1,
-   name:"Neues Produkt",category:d.categories[0]?.name||"3D Druck",price:0,
+   name:"Neues Produkt",category:d.categories[0]?.name||"3D Druck",price:0,priceOnRequest:false,
    image:"assets/products/product-01.jpg",images:["assets/products/product-01.jpg"],
    description:"",visible:true,customizable:false,featured:false,stock:0,
    sku:"BKW-"+String(Date.now()).slice(-4),sort:d.products.length+1,weightGrams:0
@@ -212,7 +212,8 @@ function productModal(id){
  openModal(id?"Produkt bearbeiten":"Neues Produkt",`<form id="productForm" class="form-grid">
 <label class="wide">Name<input name="name" value="${esc(p.name)}" required></label>
 <label>Kategorie<select name="category">${cats}</select></label>
-<label>Preis (€)<input name="price" type="number" step=".01" value="${Number(p.price||0)}"></label>
+<label>Preis (€)<input name="price" type="number" step=".01" min="0" value="${Number(p.price||0)}"></label>
+<label class="check"><input name="priceOnRequest" type="checkbox" ${p.priceOnRequest?"checked":""}> Preis auf Anfrage</label>
 <label>Bestand<input name="stock" type="number" value="${Number(p.stock||0)}"></label>
 <label>Gewicht (g)<input name="weightGrams" type="number" min="0" step="1" value="${Number(p.weightGrams||0)}" required></label>
 <label>Artikelnummer<input name="sku" value="${esc(p.sku||"")}"></label>
@@ -268,7 +269,7 @@ function productModal(id){
        uploadStatus.textContent="Bilder hochgeladen.";
      }
      const n={
-       ...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),
+       ...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),priceOnRequest:f.has("priceOnRequest"),
        stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),
        sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),
        visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),
