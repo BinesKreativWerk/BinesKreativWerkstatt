@@ -117,6 +117,26 @@
       "sku": "BKW-2932",
       "sort": 5,
       "weightGrams": 0
+    },
+    {
+      "id": 6,
+      "name": "Holzarbeiten und andere schöne Dinge ",
+      "category": "Sublimation",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/20240329-165500-6-1790973611711-1.jpg",
+      "images": [
+        "assets/products/product-01.jpg",
+        "assets/products/20240329-165500-6-1790973611711-1.jpg"
+      ],
+      "description": "Holzarbeiten  zb Laubsägen , Gravieren usw \n\nje nach Auftragsdauer  kann das erstellt werden \n\n",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 0,
+      "sku": "BKW-9870",
+      "sort": 6,
+      "weightGrams": 0
     }
   ],
   "shippingMethods": [
