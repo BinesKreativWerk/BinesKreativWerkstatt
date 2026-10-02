@@ -29,7 +29,8 @@ function getProduct(id) {
 }
 
 function firstImage(product) {
-  return product.images?.[0] || product.image;
+  const imgs=Array.isArray(product.images)?product.images:(typeof product.images==="string"?product.images.split(",").map(x=>x.trim()).filter(Boolean):[]);
+  return imgs[0] || product.image;
 }
 
 function saveCart() {
@@ -40,10 +41,6 @@ function saveCart() {
 function addToCart(id, quantity = 1, note = "") {
   const product = getProduct(id);
   if (!product) return;
-  if (product.priceOnRequest) {
-    window.location.href = `kontakt.html?anfrage=${encodeURIComponent(product.name)}`;
-    return;
-  }
   if (product.category === "FSK 18" && !isFskConfirmed()) {
     requestFskAccess();
     return;
@@ -132,10 +129,7 @@ function clearCoupon() {
 }
 
 function calculateCart() {
-  const validCart = cart.filter(item => {
-    const product = getProduct(item.id);
-    return product && !product.priceOnRequest;
-  });
+  const validCart = cart.filter(item => getProduct(item.id));
   if (validCart.length !== cart.length) {
     cart = validCart;
     localStorage.setItem(CART_KEY, JSON.stringify(cart));

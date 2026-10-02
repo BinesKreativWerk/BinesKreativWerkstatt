@@ -7,7 +7,7 @@ const FSK_KEY = "bine_kreativwerkstatt_fsk18_confirmed";
 const FSK_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);}
-function productImages(){return product?.images?.length?product.images:[product?.image].filter(Boolean);}
+function productImages(){const raw=product?.images;const list=Array.isArray(raw)?raw:(typeof raw==="string"?raw.split(",").map(x=>x.trim()).filter(Boolean):[]);const all=[...list,product?.image].filter(Boolean);return [...new Set(all)];}
 function isFskConfirmed(){const timestamp=Number(localStorage.getItem(FSK_KEY));return Number.isFinite(timestamp)&&Date.now()-timestamp<FSK_MAX_AGE_MS;}
 function calculateAge(value){const birth=new Date(`${value}T00:00:00`);if(Number.isNaN(birth.getTime()))return-1;const now=new Date();let age=now.getFullYear()-birth.getFullYear();const md=now.getMonth()-birth.getMonth();if(md<0||(md===0&&now.getDate()<birth.getDate()))age--;return age;}
 function showAgeModal(){document.getElementById("age-modal")?.classList.remove("hidden");document.body.classList.add("modal-open");const box=document.getElementById("age-confirm-checkbox"),date=document.getElementById("age-birthday"),button=document.getElementById("age-confirm-btn");if(box)box.checked=false;if(date)date.value="";if(button)button.disabled=true;}

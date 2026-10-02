@@ -72,8 +72,16 @@ async function saveGitHub(){
  const content=JSON.stringify(ensureData(),null,2);
  const body={message:"Shopverwaltung aktualisiert – Bine's KreativWerkstatt",content:b64Text(content),branch:state.branch};
  if(state.sha) body.sha=state.sha;
- const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
- state.sha=r.content?.sha||state.sha;
+ try{
+   const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+   state.sha=r.content?.sha||state.sha;
+ }catch(e){
+   if(!String(e.message||"").includes("409")) throw e;
+   const fresh=await gh(`/contents/data/store.json?ref=${encodeURIComponent(state.branch)}`);
+   state.sha=fresh.sha;
+   const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({...body,sha:state.sha})});
+   state.sha=r.content?.sha||state.sha;
+ }
 }
 function enter(){
  $("#loginView").classList.add("hidden");$("#dashboardView").classList.remove("hidden");$("#logoutBtn").classList.remove("hidden");
@@ -131,6 +139,7 @@ async function uploadRepoFile(path,file,message){
 async function uploadProductImages(files,productId){
   const list=Array.from(files||[]);
   if(!list.length) return [];
+  if(list.length>10) throw Error("Bitte höchstens 10 Produktbilder gleichzeitig auswählen.");
   const allowed=["image/jpeg","image/png","image/webp"];
   const max=5*1024*1024;
   const uploaded=[];
@@ -138,9 +147,9 @@ async function uploadProductImages(files,productId){
     const file=list[i];
     if(!allowed.includes(file.type)) throw Error(`„${file.name}“ ist kein unterstütztes Bild. Erlaubt sind JPG, PNG und WebP.`);
     if(file.size>max) throw Error(`„${file.name}“ ist größer als 5 MB.`);
-    const ext=(file.name.split(".").pop()||"jpg").toLowerCase();
-    const base=safeFileName(file.name).replace(/\.[^.]+$/,"");
-    const filename=`${base}-${productId}${list.length>1?`-${i+1}`:""}.${ext}`;
+    const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+    const base=safeFileName(file.name).replace(/\.[^.]+$/i,"")||"produktbild";
+    const filename=`${base}-${productId}-${Date.now()}-${i+1}.${ext}`;
     const path=`assets/products/${filename}`;
     await uploadRepoFile(path,file,`Produktbild hochgeladen – ${filename}`);
     uploaded.push(path);
@@ -256,30 +265,27 @@ function productModal(id){
  $("#productForm").onsubmit=async e=>{
    e.preventDefault();
    const f=new FormData(e.target), saveBtn=$("#saveProductBtn");
-   saveBtn.disabled=true;
-   uploadStatus.textContent="";
+   saveBtn.disabled=true; uploadStatus.textContent="";
    try{
-     let image=f.get("image")||"";
+     let image=String(f.get("image")||"").trim();
      let images=String(f.get("images")||"").split(",").map(x=>x.trim()).filter(Boolean);
      const files=fileInput.files;
      if(files&&files.length){
-       uploadStatus.textContent="Bilder werden zu GitHub hochgeladen …";
+       uploadStatus.textContent=`${files.length} Bild${files.length===1?"":"er"} werden zu GitHub hochgeladen …`;
        const uploaded=await uploadProductImages(files,p.id);
-       if(uploaded.length){ image=uploaded[0]; images=[...uploaded,...images.filter(x=>!uploaded.includes(x))]; }
-       uploadStatus.textContent="Bilder hochgeladen.";
+       images=[...uploaded,...images.filter(x=>!uploaded.includes(x))];
+       if(uploaded.length) image=uploaded[0];
+       uploadStatus.textContent="Bilder hochgeladen. Produktdaten gespeichert – jetzt veröffentlichen.";
      }
-     const n={
-       ...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),priceOnRequest:f.has("priceOnRequest"),
-       stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),
-       sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),
-       visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),
-       image,images
-     };
+     if(image&&!images.includes(image)) images.unshift(image);
+     images=[...new Set(images)].filter(Boolean);
+     const n={...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),priceOnRequest:f.has("priceOnRequest"),stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),image,images};
      if(id) Object.assign(p,n); else d.products.push(n);
      closeModal(); renderView(); renderCards();
-     status("Produkt geändert. Jetzt oben „Änderungen veröffentlichen“ speichern.","ok");
+     status("Produkt gespeichert. Jetzt oben „Änderungen veröffentlichen“ drücken.","ok");
    }catch(err){
      uploadStatus.textContent=`Fehler: ${err.message}`;
+     status(`Produkt konnte nicht gespeichert werden: ${err.message}`,"error");
      saveBtn.disabled=false;
    }
  };
