@@ -42,17 +42,26 @@ function fileB64(file){return new Promise((res,rej)=>{const r=new FileReader();r
 function repoReady(){return state.owner&&state.repo&&state.token}
 
 async function discoverShopRepo(){
-  const r=await fetch("https://api.github.com/user/repos?per_page=100&affiliation=owner,collaborator&sort=updated",{headers:headers()});
-  if(!r.ok){let m=r.statusText;try{m=(await r.json()).message||m}catch{}throw Error(`${r.status}: ${m}`)}
-  const repos=await r.json(), candidates=[];
-  for(const repo of repos){
+  // Das Shop-Repository ist bekannt: BinesKreativWerk/BinesKreativWerkstatt.
+  // Fine-grained Tokens werden deshalb nicht über /user/repos gesucht.
+  const names = ["BinesKreativWerkstatt", "BinesKreativWerk"];
+  for(const name of names){
     try{
-      const f=await fetch(`https://api.github.com/repos/${encodeURIComponent(repo.full_name)}/contents/data/store.json?ref=${encodeURIComponent(repo.default_branch||"main")}`,{headers:headers()});
-      if(f.ok)candidates.push({repo,branch:repo.default_branch||"main"});
+      const meta = await fetch(
+        `https://api.github.com/repos/${encodeURIComponent(state.owner)}/${encodeURIComponent(name)}`,
+        {headers:headers()}
+      );
+      if(!meta.ok) continue;
+      const repo = await meta.json();
+      const branch = repo.default_branch || "main";
+      const f = await fetch(
+        `https://api.github.com/repos/${encodeURIComponent(state.owner)}/${encodeURIComponent(name)}/contents/data/store.json?ref=${encodeURIComponent(branch)}`,
+        {headers:headers()}
+      );
+      if(f.ok) return {repo,branch};
     }catch{}
   }
-  if(!candidates.length)throw Error("Kein Shop-Repository mit data/store.json gefunden.");
-  return candidates.find(x=>/bine|kreativ|werkstatt/i.test(x.repo.name))||candidates[0];
+  throw Error("Das Repository BinesKreativWerkstatt wurde gefunden, aber data/store.json konnte nicht gelesen werden. Prüfe Contents: Read and write.");
 }
 
 async function loadGitHub(){
