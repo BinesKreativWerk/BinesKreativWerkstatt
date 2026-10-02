@@ -1,49 +1,70 @@
 "use strict";
 
+function showContactStatus(message, type) {
+  const status = document.getElementById("contact-status");
+  if (!status) return;
+  status.textContent = message;
+  status.className = "form-status" + (type ? " " + type : "");
+}
+
 async function submitContactForm(event) {
   event.preventDefault();
   const form = event.currentTarget;
   const button = form.querySelector('button[type="submit"]');
-  const status = document.getElementById("contact-status");
-  const originalText = button.textContent;
+  const originalText = button?.textContent || "Nachricht senden";
+
+  if (!window.BineMail) {
+    showContactStatus("Der E-Mail-Dienst ist auf dieser Seite nicht geladen. Bitte die Seite neu laden.", "error");
+    return;
+  }
+
+  const name = document.getElementById("contact-name")?.value.trim() || "";
+  const email = document.getElementById("contact-email")?.value.trim() || "";
+  const phone = document.getElementById("contact-phone")?.value.trim() || "";
+  const subject = document.getElementById("contact-subject")?.value.trim() || "";
+  const message = document.getElementById("contact-message")?.value.trim() || "";
+
+  if (!name || !email || !subject || !message) {
+    showContactStatus("Bitte alle Pflichtfelder ausfüllen.", "error");
+    return;
+  }
 
   button.disabled = true;
   button.textContent = "Wird gesendet …";
-  status.textContent = "";
-  status.className = "form-status";
+  showContactStatus("", "");
 
   const params = {
-    to_email: window.BineMail?.getConfig().shopEmail || "",
-    from_name: document.getElementById("contact-name").value.trim(),
-    reply_to: document.getElementById("contact-email").value.trim(),
-    phone: document.getElementById("contact-phone").value.trim(),
-    subject: document.getElementById("contact-subject").value.trim(),
-    message: document.getElementById("contact-message").value.trim(),
+    from_name: name,
+    reply_to: email,
+    phone,
+    subject,
+    message,
     sent_at: new Date().toLocaleString("de-DE")
   };
 
   try {
     await window.BineMail.sendContact(params);
     form.reset();
-    status.textContent = "Nachricht wurde erfolgreich gesendet.";
-    status.classList.add("success");
+    showContactStatus("Anfrage wurde erfolgreich gesendet. Vielen Dank!", "success");
   } catch (error) {
-    console.error(error);
-    status.textContent = error?.message || "Nachricht konnte nicht gesendet werden.";
-    status.classList.add("error");
+    console.error("EmailJS Fehler bei der Preisanfrage/Kontaktanfrage:", error);
+    const reason = error?.text || error?.message || "Unbekannter EmailJS-Fehler";
+    showContactStatus("Die Anfrage konnte nicht gesendet werden. EmailJS meldet: " + reason, "error");
   } finally {
     button.disabled = false;
     button.textContent = originalText;
   }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const productName = params.get("anfrage");
+  if (!productName) return;
 
-document.addEventListener("DOMContentLoaded",()=>{
-  const params=new URLSearchParams(window.location.search);
-  const productName=params.get("anfrage");
-  if(!productName)return;
-  const subject=document.getElementById("contact-subject");
-  const message=document.getElementById("contact-message");
-  if(subject&&!subject.value)subject.value=`Preisanfrage: ${productName}`;
-  if(message&&!message.value)message.value=`Ich interessiere mich für das Produkt „${productName}“ und möchte gerne den Preis erfahren.`;
+  const subject = document.getElementById("contact-subject");
+  const message = document.getElementById("contact-message");
+  if (subject && !subject.value) subject.value = `Preisanfrage: ${productName}`;
+  if (message && !message.value) {
+    message.value = `Ich interessiere mich für das Produkt „${productName}“ und möchte gerne den Preis erfahren.`;
+  }
 });

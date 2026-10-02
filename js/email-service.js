@@ -7,34 +7,37 @@
 
   function isConfigured() {
     const c = getConfig();
-    return Boolean(
-      c.publicKey && !c.publicKey.startsWith("DEINE_") &&
-      c.serviceId && !c.serviceId.startsWith("DEINE_")
-    );
+    return Boolean(c.publicKey && c.serviceId);
   }
 
   function ensureReady(templateId) {
     if (!window.emailjs) {
-      throw new Error("EmailJS konnte nicht geladen werden. Bitte Internetverbindung prüfen.");
+      throw new Error("EmailJS konnte nicht geladen werden. Bitte die Internetverbindung prüfen oder die Seite neu laden.");
     }
     if (!isConfigured()) {
-      throw new Error("EmailJS ist noch nicht eingerichtet. Bitte js/email-config.js ausfüllen.");
+      throw new Error("EmailJS ist nicht konfiguriert. Bitte js/email-config.js prüfen.");
     }
-    if (!templateId || templateId.startsWith("DEINE_")) {
-      throw new Error("Die passende EmailJS Template-ID fehlt in js/email-config.js.");
+    if (!templateId) {
+      throw new Error("Die EmailJS-Template-ID fehlt in js/email-config.js.");
     }
   }
 
   function init() {
     const c = getConfig();
     if (!window.emailjs || !isConfigured()) return false;
-    window.emailjs.init({ publicKey: c.publicKey });
-    return true;
+    try {
+      window.emailjs.init({ publicKey: c.publicKey });
+      return true;
+    } catch (e) {
+      console.error("EmailJS Initialisierung fehlgeschlagen", e);
+      return false;
+    }
   }
 
   async function sendContact(params) {
     const c = getConfig();
     ensureReady(c.contactTemplateId);
+    // Kein künstliches to_email mitsenden. Der Empfänger wird im EmailJS-Template festgelegt.
     return window.emailjs.send(c.serviceId, c.contactTemplateId, params);
   }
 
