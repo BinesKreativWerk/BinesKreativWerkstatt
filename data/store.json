@@ -189,6 +189,13 @@
       "label": "FSK 18",
       "sort": 5,
       "active": true
+    },
+    {
+      "id": "nekopaws3d",
+      "name": "NekoPaws3D",
+      "label": "NekoPaws3D",
+      "sort": 6,
+      "active": true
     }
   ],
   "management": {
