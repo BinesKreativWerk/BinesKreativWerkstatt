@@ -59,15 +59,7 @@
 <main id="shop" class="shop-section">
   <h2 class="section-title"><img class="dragon-paw" src="assets/dragon-paw.svg" alt=""> Unsere Produkte <img class="dragon-paw" src="assets/dragon-paw.svg" alt=""></h2>
 
-  <div class="filters">
-    <button onclick="filterProducts('Alle')">Alle</button>
-    <button onclick="filterProducts('Sublimation')">Sublimation</button>
-    <button onclick="filterProducts('Epoxidharz')">Epoxidharz</button>
-    <button onclick="filterProducts('3D Druck')">3D Druck</button>
-    <button onclick="filterProducts('Bundles')">Bundles</button>
-    <button onclick="filterProducts('NekoPaws3D')">NekoPaws3D</button>
-    <button onclick="requestFskAccess()">FSK 18</button>
-  </div>
+  <div id="category-buttons" class="filters" aria-label="Produktkategorien"></div>
 
   <div id="age-warning" class="warning hidden">
     <b>🔞 Geschützter FSK-18-Bereich</b><br>
@@ -123,7 +115,7 @@
   <div id="cart-summary"></div>
 
   <button class="outline-btn full danger" onclick="clearCart()">Warenkorb leeren</button>
-  <button class="main-btn full" onclick="checkout()">Zur Kasse</button>
+  <button class="main-btn full" onclick="checkout()">Bestellung starten</button>
   <button class="outline-btn full" onclick="closeCart()">Schließen</button>
 </div>
 
@@ -138,7 +130,7 @@
     <div class="footer-column">
       <h3>Shop</h3>
       <a href="index.html#shop">Alle Produkte</a>
-      <a href="index.html#shop"Sublimation</a>
+      <a href="index.html#shop">Sticker</a>
       <a href="index.html#shop">Anhänger</a>
       <a href="index.html#shop">Epoxidharz</a>
       <a href="index.html#shop">Bundles</a>
@@ -156,7 +148,7 @@
 
     <div class="footer-column footer-contact">
       <h3>Kontakt & Versand</h3>
-      <p>📧 <span id="site-contact-email">binesw2026@gmail.com</span></p>
+      <p>📧 <span id="site-contact-email">[DEINE E-MAIL-ADRESSE]</span></p>
       <p>🚚 Versand mit Hermes & DHL</p>
       <p>🇩🇪 Versand aus Deutschland</p>
       <p>Rabatte nur über Gutscheincodes</p>

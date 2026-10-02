@@ -422,6 +422,27 @@ function scrollToShop() {
   document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" });
 }
 
+function renderCategoryButtons() {
+  const container = document.getElementById("category-buttons");
+  if (!container) return;
+
+  const categories = Array.isArray(window.BINE_CATEGORIES)
+    ? window.BINE_CATEGORIES
+        .filter(category => category && category.active !== false && category.name)
+        .sort((a, b) => Number(a.sort || 999) - Number(b.sort || 999))
+    : [];
+
+  const buttons = [{ name: "Alle", label: "Alle", sort: 0 }, ...categories];
+  container.innerHTML = buttons.map(category => {
+    const name = String(category.name);
+    const label = String(category.label || name);
+    if (name === "FSK 18") {
+      return '<button type="button" onclick="requestFskAccess()">🔞 FSK 18</button>';
+    }
+    return `<button type="button" onclick="filterProducts(${JSON.stringify(name)})">${escapeHtml(label)}</button>`;
+  }).join("");
+}
+
 function renderProducts(list) {
   const container = document.getElementById("product-list");
   if (!container) return;
@@ -466,6 +487,7 @@ function searchProducts() {
 }
 
 function initShopPage() {
+  renderCategoryButtons();
   renderProducts(products.filter(product => product.category !== "FSK 18"));
   renderCart();
 }

@@ -12,6 +12,7 @@ async function loadStoreData() {
     if (!response.ok) throw new Error(`Shopdaten konnten nicht geladen werden (${response.status}).`);
     const data = await response.json();
     siteSettings = data.site || {};
+    window.BINE_CATEGORIES = Array.isArray(data.categories) ? data.categories : [];
     products = (data.products || [])
       .filter(product => product.visible !== false)
       .map(product => ({ ...product, weightGrams: Math.max(0, Number(product.weightGrams) || 0) }))
