@@ -79,6 +79,7 @@
         "assets/products/img-20260928-wa0167-4-1790968874953-1.jpeg",
         "assets/products/img-20260928-wa0084-4-1790967605025-1.jpg",
         "assets/products/img-20260919-wa0085-4-1790967197055-1.jpg",
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-31-1-4.jpeg",
         "assets/products/product-01.jpg"
       ],
       "description": "Preise und Wünsche ,  bei Anfertigung , direkt per Anfrage  \nThermo Becher ab 20.00euro\nTassen  ab 10euro\nalles  andere wie zb. Magnete und andere Formen  usw. alles auch via Anfrage",
@@ -96,10 +97,12 @@
       "category": "Bundles",
       "price": 0,
       "priceOnRequest": true,
-      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-30-5.jpeg",
+      "image": "assets/products/20260429-190402-5-1790971088479-1.jpg",
       "images": [
         "assets/products/whatsapp-image-2026-10-01-at-11-30-30-5.jpeg",
-        "assets/products/product-01.jpg\n\nIMG-20260928-WA0188IMG-20260928-WA0188"
+        "assets/products/product-01.jpg\n\nIMG-20260928-WA0188IMG-20260928-WA0188",
+        "assets/products/20260419-125842-5-1790970991599-1.jpg",
+        "assets/products/20260429-190402-5-1790971088479-1.jpg"
       ],
       "description": "Traumfänger Handgefertig mit Preis auf Anfrage und richtet sich direkt nach Größe.\nab 10 euro  je nach Model und Zusätzen,wie zb,Perlen usw",
       "visible": true,
@@ -188,13 +191,6 @@
       "name": "FSK 18",
       "label": "FSK 18",
       "sort": 5,
-      "active": true
-    },
-    {
-      "id": "nekopaws3d",
-      "name": "NekoPaws3D",
-      "label": "NekoPaws3D",
-      "sort": 6,
       "active": true
     }
   ],
