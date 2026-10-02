@@ -86,6 +86,26 @@
       "sku": "BKW-7989",
       "sort": 4,
       "weightGrams": 0
+    },
+    {
+      "id": 5,
+      "name": "Traumfänger",
+      "category": "Bundles",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-30-5.jpeg",
+      "images": [
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-30-5.jpeg",
+        "assets/products/product-01.jpg"
+      ],
+      "description": "Traumfänger Handgefertig mit Preis auf Anfrage und richtet sich direkt nach Größe.",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 0,
+      "sku": "BKW-2932",
+      "sort": 5,
+      "weightGrams": 0
     }
   ],
   "shippingMethods": [
