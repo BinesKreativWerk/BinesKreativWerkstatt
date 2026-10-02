@@ -162,7 +162,7 @@
       "key": "dhl",
       "label": "DHL Paket",
       "price": 5.49,
-      "freeFrom": 100,
+      "freeFrom": 95,
       "weightTiers": []
     }
   ],
