@@ -120,14 +120,15 @@
     },
     {
       "id": 6,
-      "name": "Holzarbeiten und andere schöne Dinge ",
+      "name": " schöne Dinge",
       "category": "Sublimation",
       "price": 0,
       "priceOnRequest": true,
-      "image": "assets/products/20240329-165500-6-1790973611711-1.jpg",
+      "image": "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
       "images": [
         "assets/products/product-01.jpg",
-        "assets/products/20240329-165500-6-1790973611711-1.jpg"
+        "assets/products/20240329-165500-6-1790973611711-1.jpg",
+        "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png"
       ],
       "description": "Holzarbeiten  zb Laubsägen , Gravieren usw \n\nje nach Auftragsdauer  kann das erstellt werden \n\n",
       "visible": true,
