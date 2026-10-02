@@ -217,7 +217,14 @@ function productModal(id){
    sku:"BKW-"+String(Date.now()).slice(-4),sort:d.products.length+1,weightGrams:0
  };
  const cats=d.categories.map(c=>`<option ${c.name===p.category?"selected":""}>${esc(c.name)}</option>`).join("");
- const currentImage=p.image||"assets/logo.png";
+ const existingImages=[...(Array.isArray(p.images)?p.images:String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean)),p.image].filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i);
+ const mainImage=p.image||existingImages[0]||"assets/logo.png";
+ const imageCards=existingImages.map((src,i)=>`<div class="admin-image-card" data-existing-image="${esc(src)}" style="position:relative;border:2px solid ${src===mainImage?'#b71c1c':'#ccc'};border-radius:10px;padding:6px;background:#fff">
+   <img src="../${esc(src)}" alt="Produktbild ${i+1}" style="width:110px;height:110px;object-fit:cover;border-radius:7px;display:block">
+   <label style="display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:700;font-size:.9em;cursor:pointer">
+    <input type="radio" name="mainImageChoice" value="existing:${esc(src)}" ${src===mainImage?'checked':''}> Hauptbild
+   </label>
+ </div>`).join("");
  openModal(id?"Produkt bearbeiten":"Neues Produkt",`<form id="productForm" class="form-grid">
 <label class="wide">Name<input name="name" value="${esc(p.name)}" required></label>
 <label>Kategorie<select name="category">${cats}</select></label>
@@ -232,35 +239,43 @@ function productModal(id){
 <label class="check"><input name="featured" type="checkbox" ${p.featured?"checked":""}> Hervorgehoben</label>
 <label class="check"><input name="customizable" type="checkbox" ${p.customizable?"checked":""}> Personalisierbar</label>
 <div class="wide upload-box" style="border:1px solid #ddd;border-radius:12px;padding:12px">
-  <b>Produktbilder hochladen</b>
+  <b>Produktbilder</b>
+  <div style="margin:6px 0 10px;color:#666;font-size:.92em">Das markierte <strong>Hauptbild</strong> wird im Shop direkt in der Produktübersicht angezeigt. Du kannst das Hauptbild jederzeit ändern.</div>
+  <div id="existingImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">${imageCards||'<span style="color:#777">Noch kein Produktbild vorhanden.</span>'}</div>
+  <hr style="margin:14px 0;border:0;border-top:1px solid #ddd">
+  <b>Weitere Bilder hochladen</b>
   <div style="margin:6px 0 10px;color:#666;font-size:.92em">JPG, PNG oder WebP · maximal 5 MB pro Bild</div>
   <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
-  <div id="productImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-    <img src="../${esc(currentImage)}" alt="Aktuelles Produktbild" style="width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc">
-  </div>
+  <div id="productImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"></div>
   <div id="productUploadStatus" style="margin-top:8px"></div>
 </div>
-<label class="wide">Bildpfad<input name="image" value="${esc(p.image||"")}"></label>
-<label class="wide">Bilder, durch Komma getrennt<textarea name="images">${esc((p.images||[]).join(", "))}</textarea></label>
+<label class="wide">Bildpfad<input name="image" value="${esc(p.image||"")}" readonly></label>
+<label class="wide">Bilder, durch Komma getrennt<textarea name="images">${esc(existingImages.join(", "))}</textarea></label>
 <div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}<button class="main-btn" id="saveProductBtn">Speichern</button></div></form>`);
 
  $("#cancelModal").onclick=closeModal;
  const fileInput=$("#productImageFiles"), preview=$("#productImagePreview"), uploadStatus=$("#productUploadStatus");
+ let selectedMainFileIndex=-1;
  fileInput.onchange=()=>{
    const files=Array.from(fileInput.files||[]);
    preview.innerHTML="";
-   if(!files.length){
-     preview.innerHTML=`<img src="../${esc(currentImage)}" alt="Aktuelles Produktbild" style="width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc">`;
-     return;
-   }
-   files.forEach(file=>{
-     const img=document.createElement("img");
-     img.alt=file.name; img.style.cssText="width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc";
-     img.src=URL.createObjectURL(file);
-     preview.appendChild(img);
+   selectedMainFileIndex=files.length?0:-1;
+   files.forEach((file,index)=>{
+     const wrap=document.createElement("div");
+     wrap.style.cssText="border:2px solid "+(index===0?"#b71c1c":"#ccc")+";border-radius:10px;padding:6px;background:#fff";
+     const img=document.createElement("img"); img.alt=file.name; img.style.cssText="width:110px;height:110px;object-fit:cover;border-radius:7px;display:block"; img.src=URL.createObjectURL(file);
+     const label=document.createElement("label"); label.style.cssText="display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:700;font-size:.9em;cursor:pointer";
+     const radio=document.createElement("input"); radio.type="radio"; radio.name="newMainImageChoice"; radio.checked=index===0;
+     radio.onchange=()=>{selectedMainFileIndex=index;preview.querySelectorAll("div").forEach((el,i)=>el.style.borderColor=i===index?"#b71c1c":"#ccc");};
+     label.append(radio," Hauptbild"); wrap.append(img,label); preview.appendChild(wrap);
    });
-   uploadStatus.textContent=`${files.length} Bild${files.length===1?"":"er"} ausgewählt. Beim Speichern werden ${files.length===1?"wird das Bild":"die Bilder"} zu GitHub hochgeladen.`;
+   uploadStatus.textContent=files.length?`${files.length} neue${files.length===1?'s':'e'} Bild${files.length===1?'':'er'} ausgewählt. Das markierte Bild wird als Hauptbild übernommen.`:"";
  };
+ document.querySelectorAll('input[name="mainImageChoice"]').forEach(r=>r.onchange=()=>{
+   const value=r.value.replace(/^existing:/,"");
+   $("#productForm").elements.image.value=value;
+   document.querySelectorAll("[data-existing-image]").forEach(card=>card.style.borderColor=card.dataset.existingImage===value?"#b71c1c":"#ccc");
+ });
 
  $("#productForm").onsubmit=async e=>{
    e.preventDefault();
@@ -269,14 +284,15 @@ function productModal(id){
    try{
      let image=String(f.get("image")||"").trim();
      let images=String(f.get("images")||"").split(",").map(x=>x.trim()).filter(Boolean);
-     const files=fileInput.files;
-     if(files&&files.length){
-       uploadStatus.textContent=`${files.length} Bild${files.length===1?"":"er"} werden zu GitHub hochgeladen …`;
+     const files=Array.from(fileInput.files||[]);
+     if(files.length){
+       uploadStatus.textContent=`${files.length} Bild${files.length===1?'':'er'} werden zu GitHub hochgeladen …`;
        const uploaded=await uploadProductImages(files,p.id);
-       images=[...uploaded,...images.filter(x=>!uploaded.includes(x))];
-       if(uploaded.length) image=uploaded[0];
+       images=[...images,...uploaded.filter(x=>!images.includes(x))];
+       if(selectedMainFileIndex>=0&&uploaded[selectedMainFileIndex]) image=uploaded[selectedMainFileIndex];
        uploadStatus.textContent="Bilder hochgeladen. Produktdaten gespeichert – jetzt veröffentlichen.";
      }
+     if(!image&&images.length) image=images[0];
      if(image&&!images.includes(image)) images.unshift(image);
      images=[...new Set(images)].filter(Boolean);
      const n={...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),priceOnRequest:f.has("priceOnRequest"),stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),image,images};

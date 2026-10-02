@@ -29,8 +29,7 @@ function getProduct(id) {
 }
 
 function firstImage(product) {
-  const imgs=Array.isArray(product.images)?product.images:(typeof product.images==="string"?product.images.split(",").map(x=>x.trim()).filter(Boolean):[]);
-  return imgs[0] || product.image;
+  return product?.image || (Array.isArray(product?.images)?product.images[0]:(typeof product?.images==="string"?product.images.split(",").map(x=>x.trim()).filter(Boolean)[0]:"")) || "assets/logo.png";
 }
 
 function saveCart() {
