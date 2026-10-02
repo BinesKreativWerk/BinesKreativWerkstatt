@@ -66,6 +66,26 @@
       "sku": "BKW-8510",
       "sort": 3,
       "weightGrams": 0
+    },
+    {
+      "id": 4,
+      "name": "Trinkbecher",
+      "category": "Sublimation",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-1-4.jpeg",
+      "images": [
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-31-1-4.jpeg",
+        "assets/products/product-01.jpg"
+      ],
+      "description": "Preise direkt per Anfrage ",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 10,
+      "sku": "BKW-7989",
+      "sort": 4,
+      "weightGrams": 0
     }
   ],
   "shippingMethods": [
