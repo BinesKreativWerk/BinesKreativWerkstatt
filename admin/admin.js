@@ -95,6 +95,18 @@ async function login(){
  finally{$("#loginBtn").disabled=false}
 }
 async function save(){
+  if(!repoReady()){status("Bitte zuerst mit GitHub verbinden.","error");return;}
+  $("#saveBtn").disabled=true;
+  status("Änderungen werden zu GitHub veröffentlicht …");
+  try{
+    await saveGitHub();
+    status("Erfolgreich veröffentlicht.","ok");
+  }catch(e){
+    status("Veröffentlichung fehlgeschlagen: "+e.message,"error");
+  }finally{
+    $("#saveBtn").disabled=false;
+  }
+}
 function logout(){sessionStorage.removeItem("bkw_admin_token");location.reload()}
 
 function nav(){
@@ -243,5 +255,4 @@ $("#loginBtn").onclick=login;$("#logoutBtn").onclick=logout;$("#saveBtn").onclic
 $("#repoOwner").value=state.owner;$("#repoName").value=state.repo||"";
 if(state.token&&state.owner){
   discoverShopRepo().then(found=>{state.repo=found.repo.name;state.branch=found.branch;return loadGitHub()}).then(()=>{enter()}).catch(()=>{sessionStorage.removeItem("bkw_admin_token");state.token=""});
-}
 }
