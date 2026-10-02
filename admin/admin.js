@@ -103,6 +103,50 @@ async function login(){
  }catch(e){loginStatus("GitHub-Anmeldung fehlgeschlagen: "+e.message,"error")}
  finally{$("#loginBtn").disabled=false}
 }
+
+function safeFileName(name){
+  const ext=(String(name).split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
+  const base=(String(name).replace(/\.[^.]+$/,"").toLowerCase()
+    .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
+    .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,60)) || "produktbild";
+  return `${base}.${ext||"jpg"}`;
+}
+async function uploadRepoFile(path,file,message){
+  if(!repoReady()) throw Error("Bitte zuerst mit GitHub verbinden.");
+  const content=await fileB64(file);
+  let sha;
+  try{
+    const old=await gh(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
+    sha=old.sha;
+  }catch(e){}
+  const body={message,content,branch:state.branch};
+  if(sha) body.sha=sha;
+  const r=await gh(`/contents/${path}`,{
+    method:"PUT",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(body)
+  });
+  return r.content?.path || path;
+}
+async function uploadProductImages(files,productId){
+  const list=Array.from(files||[]);
+  if(!list.length) return [];
+  const allowed=["image/jpeg","image/png","image/webp"];
+  const max=5*1024*1024;
+  const uploaded=[];
+  for(let i=0;i<list.length;i++){
+    const file=list[i];
+    if(!allowed.includes(file.type)) throw Error(`„${file.name}“ ist kein unterstütztes Bild. Erlaubt sind JPG, PNG und WebP.`);
+    if(file.size>max) throw Error(`„${file.name}“ ist größer als 5 MB.`);
+    const ext=(file.name.split(".").pop()||"jpg").toLowerCase();
+    const base=safeFileName(file.name).replace(/\.[^.]+$/,"");
+    const filename=`${base}-${productId}${list.length>1?`-${i+1}`:""}.${ext}`;
+    const path=`assets/products/${filename}`;
+    await uploadRepoFile(path,file,`Produktbild hochgeladen – ${filename}`);
+    uploaded.push(path);
+  }
+  return uploaded;
+}
 async function save(){
   if(!repoReady()){status("Bitte zuerst mit GitHub verbinden.","error");return;}
   $("#saveBtn").disabled=true;
@@ -156,18 +200,88 @@ function products(){
  draw();$("#addProduct").onclick=()=>productModal(null);
 }
 function productModal(id){
- const d=ensureData(), p=id?d.products.find(x=>x.id===id):{id:Math.max(0,...d.products.map(x=>Number(x.id)||0))+1,name:"Neues Produkt",category:d.categories[0]?.name||"3D Druck",price:0,image:"assets/products/product-01.jpg",images:["assets/products/product-01.jpg"],description:"",visible:true,customizable:false,featured:false,stock:0,sku:"BKW-"+String(Date.now()).slice(-4),sort:d.products.length+1,weightGrams:0};
+ const d=ensureData(), p=id?d.products.find(x=>x.id===id):{
+   id:Math.max(0,...d.products.map(x=>Number(x.id)||0))+1,
+   name:"Neues Produkt",category:d.categories[0]?.name||"3D Druck",price:0,
+   image:"assets/products/product-01.jpg",images:["assets/products/product-01.jpg"],
+   description:"",visible:true,customizable:false,featured:false,stock:0,
+   sku:"BKW-"+String(Date.now()).slice(-4),sort:d.products.length+1,weightGrams:0
+ };
  const cats=d.categories.map(c=>`<option ${c.name===p.category?"selected":""}>${esc(c.name)}</option>`).join("");
+ const currentImage=p.image||"assets/logo.png";
  openModal(id?"Produkt bearbeiten":"Neues Produkt",`<form id="productForm" class="form-grid">
-<label class="wide">Name<input name="name" value="${esc(p.name)}" required></label><label>Kategorie<select name="category">${cats}</select></label><label>Preis (€)<input name="price" type="number" step=".01" value="${Number(p.price||0)}"></label>
-<label>Bestand<input name="stock" type="number" value="${Number(p.stock||0)}"></label><label>Gewicht (g)<input name="weightGrams" type="number" min="0" step="1" value="${Number(p.weightGrams||0)}" required></label><label>Artikelnummer<input name="sku" value="${esc(p.sku||"")}"></label><label>Sortierung<input name="sort" type="number" value="${Number(p.sort||1)}"></label>
+<label class="wide">Name<input name="name" value="${esc(p.name)}" required></label>
+<label>Kategorie<select name="category">${cats}</select></label>
+<label>Preis (€)<input name="price" type="number" step=".01" value="${Number(p.price||0)}"></label>
+<label>Bestand<input name="stock" type="number" value="${Number(p.stock||0)}"></label>
+<label>Gewicht (g)<input name="weightGrams" type="number" min="0" step="1" value="${Number(p.weightGrams||0)}" required></label>
+<label>Artikelnummer<input name="sku" value="${esc(p.sku||"")}"></label>
+<label>Sortierung<input name="sort" type="number" value="${Number(p.sort||1)}"></label>
 <label class="wide">Beschreibung<textarea name="description">${esc(p.description||"")}</textarea></label>
-<label class="check"><input name="visible" type="checkbox" ${p.visible!==false?"checked":""}> Im Shop sichtbar</label><label class="check"><input name="featured" type="checkbox" ${p.featured?"checked":""}> Hervorgehoben</label><label class="check"><input name="customizable" type="checkbox" ${p.customizable?"checked":""}> Personalisierbar</label>
+<label class="check"><input name="visible" type="checkbox" ${p.visible!==false?"checked":""}> Im Shop sichtbar</label>
+<label class="check"><input name="featured" type="checkbox" ${p.featured?"checked":""}> Hervorgehoben</label>
+<label class="check"><input name="customizable" type="checkbox" ${p.customizable?"checked":""}> Personalisierbar</label>
+<div class="wide upload-box" style="border:1px solid #ddd;border-radius:12px;padding:12px">
+  <b>Produktbilder hochladen</b>
+  <div style="margin:6px 0 10px;color:#666;font-size:.92em">JPG, PNG oder WebP · maximal 5 MB pro Bild</div>
+  <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+  <div id="productImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+    <img src="../${esc(currentImage)}" alt="Aktuelles Produktbild" style="width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc">
+  </div>
+  <div id="productUploadStatus" style="margin-top:8px"></div>
+</div>
 <label class="wide">Bildpfad<input name="image" value="${esc(p.image||"")}"></label>
 <label class="wide">Bilder, durch Komma getrennt<textarea name="images">${esc((p.images||[]).join(", "))}</textarea></label>
-<div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}<button class="main-btn">Speichern</button></div></form>`);
+<div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}<button class="main-btn" id="saveProductBtn">Speichern</button></div></form>`);
+
  $("#cancelModal").onclick=closeModal;
- $("#productForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);const n={...p,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),image:f.get("image"),images:String(f.get("images")).split(",").map(x=>x.trim()).filter(Boolean)};if(id)Object.assign(p,n);else d.products.push(n);closeModal();renderView();renderCards()}
+ const fileInput=$("#productImageFiles"), preview=$("#productImagePreview"), uploadStatus=$("#productUploadStatus");
+ fileInput.onchange=()=>{
+   const files=Array.from(fileInput.files||[]);
+   preview.innerHTML="";
+   if(!files.length){
+     preview.innerHTML=`<img src="../${esc(currentImage)}" alt="Aktuelles Produktbild" style="width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc">`;
+     return;
+   }
+   files.forEach(file=>{
+     const img=document.createElement("img");
+     img.alt=file.name; img.style.cssText="width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc";
+     img.src=URL.createObjectURL(file);
+     preview.appendChild(img);
+   });
+   uploadStatus.textContent=`${files.length} Bild${files.length===1?"":"er"} ausgewählt. Beim Speichern werden ${files.length===1?"wird das Bild":"die Bilder"} zu GitHub hochgeladen.`;
+ };
+
+ $("#productForm").onsubmit=async e=>{
+   e.preventDefault();
+   const f=new FormData(e.target), saveBtn=$("#saveProductBtn");
+   saveBtn.disabled=true;
+   uploadStatus.textContent="";
+   try{
+     let image=f.get("image")||"";
+     let images=String(f.get("images")||"").split(",").map(x=>x.trim()).filter(Boolean);
+     const files=fileInput.files;
+     if(files&&files.length){
+       uploadStatus.textContent="Bilder werden zu GitHub hochgeladen …";
+       const uploaded=await uploadProductImages(files,p.id);
+       if(uploaded.length){ image=uploaded[0]; images=[...uploaded,...images.filter(x=>!uploaded.includes(x))]; }
+       uploadStatus.textContent="Bilder hochgeladen.";
+     }
+     const n={
+       ...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),
+       stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),
+       sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),
+       visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),
+       image,images
+     };
+     if(id) Object.assign(p,n); else d.products.push(n);
+     closeModal(); renderView(); renderCards();
+     status("Produkt geändert. Jetzt oben „Änderungen veröffentlichen“ speichern.","ok");
+   }catch(err){
+     uploadStatus.textContent=`Fehler: ${err.message}`;
+     saveBtn.disabled=false;
+   }
+ };
 }
 function duplicateProduct(id){const d=ensureData(),p=d.products.find(x=>x.id===id);if(!p)return;const q=JSON.parse(JSON.stringify(p));q.id=Math.max(0,...d.products.map(x=>Number(x.id)||0))+1;q.sku=(q.sku||"BKW")+"-K";q.name+=" – Kopie";q.sort=d.products.length+1;d.products.push(q);renderView();renderCards()}
 function openModal(title,body){$("#modalTitle").textContent=title;$("#modalBody").innerHTML=body;$("#modal").classList.remove("hidden")}
