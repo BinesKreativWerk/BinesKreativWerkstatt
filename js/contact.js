@@ -36,3 +36,14 @@ async function submitContactForm(event) {
     button.textContent = originalText;
   }
 }
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const params=new URLSearchParams(window.location.search);
+  const productName=params.get("anfrage");
+  if(!productName)return;
+  const subject=document.getElementById("contact-subject");
+  const message=document.getElementById("contact-message");
+  if(subject&&!subject.value)subject.value=`Preisanfrage: ${productName}`;
+  if(message&&!message.value)message.value=`Ich interessiere mich für das Produkt „${productName}“ und möchte gerne den Preis erfahren.`;
+});

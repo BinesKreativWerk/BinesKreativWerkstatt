@@ -8,7 +8,7 @@ let cart = (() => { try { return JSON.parse(localStorage.getItem(CART_KEY)) || [
 function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);}
 function getProduct(id){return products.find(product=>product.id===Number(id));}
 function saveCart(){localStorage.setItem(CART_KEY,JSON.stringify(cart));renderCart();}
-function addToCart(id,qty=1,note=""){const product=getProduct(id);if(!product)return;const clean=String(note||"").trim();const existing=cart.find(item=>item.id===product.id&&item.note===clean);if(existing)existing.qty+=Math.max(1,Number(qty)||1);else cart.push({id:product.id,qty:Math.max(1,Number(qty)||1),note:clean});saveCart();openCart();}
+function addToCart(id,qty=1,note=""){const product=getProduct(id);if(!product)return;if(product.priceOnRequest){window.location.href=`kontakt.html?anfrage=${encodeURIComponent(product.name)}`;return;}const clean=String(note||"").trim();const existing=cart.find(item=>item.id===product.id&&item.note===clean);if(existing)existing.qty+=Math.max(1,Number(qty)||1);else cart.push({id:product.id,qty:Math.max(1,Number(qty)||1),note:clean});saveCart();openCart();}
 function changeQty(id,amount,encodedNote=""){const note=decodeURIComponent(encodedNote||"");const item=cart.find(entry=>entry.id===Number(id)&&entry.note===note);if(!item)return;item.qty+=Number(amount);if(item.qty<=0)cart=cart.filter(entry=>entry!==item);saveCart();}
 function removeItem(id,encodedNote=""){const note=decodeURIComponent(encodedNote||"");cart=cart.filter(entry=>!(entry.id===Number(id)&&entry.note===note));saveCart();}
 function clearCart(){if(cart.length&&confirm("Warenkorb wirklich vollständig leeren?")){cart=[];localStorage.removeItem(CART_KEY);renderCart();}}
@@ -20,7 +20,7 @@ function getCoupon(){return(localStorage.getItem(COUPON_KEY)||"").trim().toUpper
 function applyCoupon(){const code=(document.getElementById("coupon-code")?.value||"").trim().toUpperCase();if(!couponCodes[code]){localStorage.removeItem(COUPON_KEY);renderCart();alert("Dieser Gutscheincode ist ungültig.");return;}localStorage.setItem(COUPON_KEY,code);renderCart();alert(`Gutscheincode ${code} wurde angewendet.`);}
 function clearCoupon(){localStorage.removeItem(COUPON_KEY);const input=document.getElementById("coupon-code");if(input)input.value="";renderCart();}
 function calculateCart(){
-  const validCart=cart.filter(item=>getProduct(item.id));
+  const validCart=cart.filter(item=>{const product=getProduct(item.id);return product&&!product.priceOnRequest;});
   if(validCart.length!==cart.length){cart=validCart;localStorage.setItem(CART_KEY,JSON.stringify(cart));}
   const subtotal=cart.reduce((sum,item)=>{const product=getProduct(item.id);return sum+product.price*item.qty;},0);
   const coupon=getCoupon();
@@ -51,7 +51,7 @@ function buildOrderText() {
   const totals = calculateCart();
   const lines = cart.map(item => {
     const product = getProduct(item.id);
-    if (!product) return "";
+    if (!product || product.priceOnRequest) return "";
     const itemWeight=(Number(product.weightGrams)||0)*item.qty;
     return `${product.name} | Menge: ${item.qty} | Einzelpreis: ${product.price.toFixed(2)} € | Summe: ${(product.price * item.qty).toFixed(2)} € | Gewicht: ${itemWeight} g${item.note ? ` | Wunsch: ${item.note}` : ""}`;
   }).filter(Boolean);
@@ -72,40 +72,51 @@ function ensureOrderModal() {
   wrapper.className = "order-modal hidden";
   wrapper.innerHTML = `
     <div class="order-card" role="dialog" aria-modal="true" aria-labelledby="order-title">
-      <h2 id="order-title">Bestellanfrage senden</h2>
-      <p>Die Bestellung wird als E-Mail an Bine's KreativWerkstatt gesendet. Eine Zahlung erfolgt erst nach persönlicher Bestätigung.</p>
+      <div class="order-progress" aria-label="Bestellschritte">
+        <span class="active">1. Angaben</span><span>2. Prüfen</span><span>3. Senden</span>
+      </div>
+      <h2 id="order-title">Ihre Bestellung</h2>
+      <p class="order-intro"><strong>Ganz in Ruhe:</strong> Bitte tragen Sie Ihre Daten ein. Danach können Sie alles noch einmal in Ruhe prüfen, bevor Sie die Anfrage absenden.</p>
+      <div class="order-note-box">Mit dem Absenden senden Sie zunächst eine Bestellanfrage. Wir bestätigen die Bestellung persönlich. Es wird an dieser Stelle noch keine Zahlung ausgelöst.</div>
       <form id="order-form" onsubmit="submitOrderEmail(event)">
         <input type="hidden" id="order-details" name="order_details">
         <input type="hidden" id="order-total" name="order_total">
         <input type="hidden" id="order-coupon" name="coupon">
         <input type="hidden" id="order-shipping" name="shipping">
 
-        <div class="order-grid">
-          <div><label for="order-firstname">Vorname *</label><input id="order-firstname" name="first_name" required autocomplete="given-name"></div>
-          <div><label for="order-lastname">Nachname *</label><input id="order-lastname" name="last_name" required autocomplete="family-name"></div>
-          <div class="wide"><label for="order-email">E-Mail *</label><input id="order-email" type="email" name="reply_to" required autocomplete="email"></div>
-          <div class="wide"><label for="order-phone">Telefon (optional)</label><input id="order-phone" type="tel" name="phone" autocomplete="tel"></div>
-          <div class="wide"><label for="order-street">Straße und Hausnummer *</label><input id="order-street" name="street" required autocomplete="street-address"></div>
-          <div><label for="order-zip">PLZ *</label><input id="order-zip" name="postal_code" required inputmode="numeric" autocomplete="postal-code"></div>
-          <div><label for="order-city">Ort *</label><input id="order-city" name="city" required autocomplete="address-level2"></div>
-          <div class="wide"><label for="order-notes">Zusätzliche Nachricht</label><textarea id="order-notes" name="customer_message" rows="4"></textarea></div>
-        </div>
+        <section class="order-section">
+          <h3>1. Ihre Kontaktdaten</h3>
+          <p class="form-help">Bitte füllen Sie die Felder mit einem <strong>*</strong> aus. Wir benötigen diese Angaben für die Bearbeitung und den Versand.</p>
+          <div class="order-grid">
+            <div><label for="order-firstname">Vorname *</label><input id="order-firstname" name="first_name" required autocomplete="given-name"></div>
+            <div><label for="order-lastname">Nachname *</label><input id="order-lastname" name="last_name" required autocomplete="family-name"></div>
+            <div class="wide"><label for="order-email">E-Mail-Adresse *</label><input id="order-email" type="email" name="reply_to" required autocomplete="email"><small class="field-help">An diese Adresse können wir Ihnen antworten.</small></div>
+            <div class="wide"><label for="order-phone">Telefonnummer <span class="optional">(optional)</span></label><input id="order-phone" type="tel" name="phone" autocomplete="tel"></div>
+            <div class="wide"><label for="order-street">Straße und Hausnummer *</label><input id="order-street" name="street" required autocomplete="street-address"></div>
+            <div><label for="order-zip">PLZ *</label><input id="order-zip" name="postal_code" required inputmode="numeric" autocomplete="postal-code"></div>
+            <div><label for="order-city">Ort *</label><input id="order-city" name="city" required autocomplete="address-level2"></div>
+            <div class="wide"><label for="order-notes">Nachricht an uns <span class="optional">(optional)</span></label><textarea id="order-notes" name="customer_message" rows="4"></textarea></div>
+          </div>
+        </section>
 
-        <h3>Bestellübersicht</h3>
+        <section class="order-section">
+          <h3>2. Bestellung in Ruhe prüfen</h3>
         <pre id="order-preview" class="order-preview"></pre>
+
+        </section>
 
         <label class="consent-check">
           <input type="checkbox" required>
-          Ich bestätige die Richtigkeit meiner Angaben und stimme der Übermittlung per E-Mail zur Bearbeitung meiner Bestellanfrage zu.
+          Ich bestätige, dass meine Angaben richtig sind und zur Bearbeitung meiner Bestellanfrage per E-Mail übermittelt werden dürfen.
         </label>
 
         <div class="order-actions">
-          <button class="main-btn" id="order-submit-btn" type="submit">Bestellung per E-Mail senden</button>
-          <button class="outline-btn" type="button" onclick="closeOrderModal()">Abbrechen</button>
+          <button class="main-btn large-action" id="order-submit-btn" type="submit">3. Bestellung verbindlich anfragen</button>
+          <button class="outline-btn large-action" type="button" onclick="closeOrderModal()">Zurück zum Warenkorb</button>
         </div>
         <p id="order-status" class="form-status" role="status" aria-live="polite"></p>
       </form>
-      <small class="muted">Der E-Mail-Versand erfolgt über EmailJS. Zugangsdaten stehen in js/email-config.js.</small>
+      <p class="order-help"><strong>Sie brauchen Hilfe?</strong> Schließen Sie das Fenster einfach und schauen Sie sich Ihren Warenkorb noch einmal an. Sie können die Menge jederzeit mit <strong>+</strong> und <strong>−</strong> ändern.</p>
     </div>`;
   document.body.appendChild(wrapper);
 }

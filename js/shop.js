@@ -40,6 +40,10 @@ function saveCart() {
 function addToCart(id, quantity = 1, note = "") {
   const product = getProduct(id);
   if (!product) return;
+  if (product.priceOnRequest) {
+    window.location.href = `kontakt.html?anfrage=${encodeURIComponent(product.name)}`;
+    return;
+  }
   if (product.category === "FSK 18" && !isFskConfirmed()) {
     requestFskAccess();
     return;
@@ -128,7 +132,10 @@ function clearCoupon() {
 }
 
 function calculateCart() {
-  const validCart = cart.filter(item => getProduct(item.id));
+  const validCart = cart.filter(item => {
+    const product = getProduct(item.id);
+    return product && !product.priceOnRequest;
+  });
   if (validCart.length !== cart.length) {
     cart = validCart;
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
@@ -438,8 +445,8 @@ function renderProducts(list) {
       <span class="badge">${escapeHtml(product.category)}</span>
       ${product.customizable ? '<span class="badge">Personalisierbar</span>' : ""}
       <p>${escapeHtml(product.description)}</p>
-      <strong>${product.price.toFixed(2)} €</strong>
-      <button type="button" onclick="addToCart(${product.id})">In den Warenkorb</button>
+      ${product.priceOnRequest ? '<strong>Preis auf Anfrage</strong>' : `<strong>${product.price.toFixed(2)} €</strong>`}
+      ${product.priceOnRequest ? `<a class="main-btn" href="kontakt.html?anfrage=${encodeURIComponent(product.name)}">Preis anfragen</a>` : `<button type="button" onclick="addToCart(${product.id})">In den Warenkorb</button>`}
     </article>`).join("");
 }
 
