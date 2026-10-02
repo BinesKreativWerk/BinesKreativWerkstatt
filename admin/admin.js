@@ -2,6 +2,7 @@
 "use strict";
 
 const state = {
+  pendingImageDeletes: [],
   token: sessionStorage.getItem("bkw_admin_token") || "",
   owner: localStorage.getItem("bkw_repo_owner") || "", repo: localStorage.getItem("bkw_repo_name") || "",
   branch: localStorage.getItem("bkw_repo_branch") || "main", data: null, sha: null, view: "overview"
@@ -156,11 +157,44 @@ async function uploadProductImages(files,productId){
   }
   return uploaded;
 }
+async function deleteRepoFile(path){
+  if(!repoReady() || !path) throw Error("Bitte zuerst mit GitHub verbinden.");
+  let old;
+  try{
+    old=await gh(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
+  }catch(e){
+    if(String(e.message||"").includes("404")) return true;
+    throw e;
+  }
+  await gh(`/contents/${path}`,{
+    method:"DELETE",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({message:`Produktbild gelöscht – ${path.split("/").pop()}`,sha:old.sha,branch:state.branch})
+  });
+  return true;
+}
+function queueImageDelete(path){
+  if(path && !state.pendingImageDeletes.includes(path)) state.pendingImageDeletes.push(path);
+}
+async function publishPendingImageDeletes(){
+  const d=ensureData();
+  const queue=[...state.pendingImageDeletes];
+  const stillUsed=new Set();
+  d.products.forEach(p=>{
+    [p.image,...(Array.isArray(p.images) ? p.images : String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean))].filter(Boolean).forEach(x=>stillUsed.add(x));
+  });
+  for(const path of queue){
+    if(stillUsed.has(path)) continue;
+    await deleteRepoFile(path);
+  }
+  state.pendingImageDeletes=[];
+}
 async function save(){
   if(!repoReady()){status("Bitte zuerst mit GitHub verbinden.","error");return;}
   $("#saveBtn").disabled=true;
   status("Änderungen werden zu GitHub veröffentlicht …");
   try{
+    await publishPendingImageDeletes();
     await saveGitHub();
     status("Erfolgreich veröffentlicht.","ok");
   }catch(e){
@@ -224,6 +258,7 @@ function productModal(id){
    <label style="display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:700;font-size:.9em;cursor:pointer">
     <input type="radio" name="mainImageChoice" value="existing:${esc(src)}" ${src===mainImage?'checked':''}> Hauptbild
    </label>
+   <button type="button" class="outline-btn danger" data-remove-image="${esc(src)}" style="width:100%;margin-top:7px">🗑️ Bild löschen</button>
  </div>`).join("");
  openModal(id?"Produkt bearbeiten":"Neues Produkt",`<form id="productForm" class="form-grid">
 <label class="wide">Name<input name="name" value="${esc(p.name)}" required></label>
@@ -251,9 +286,41 @@ function productModal(id){
 </div>
 <label class="wide">Bildpfad<input name="image" value="${esc(p.image||"")}" readonly></label>
 <label class="wide">Bilder, durch Komma getrennt<textarea name="images">${esc(existingImages.join(", "))}</textarea></label>
-<div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}<button class="main-btn" id="saveProductBtn">Speichern</button></div></form>`);
+<div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}${id?btn("Produkt löschen","outline-btn danger",'type="button" id="deleteProductFromModal"'):""}<button class="main-btn" id="saveProductBtn">Speichern</button></div></form>`);
 
  $("#cancelModal").onclick=closeModal;
+ if(id){
+   $("#deleteProductFromModal").onclick=()=>{
+     if(!confirm(`Produkt „${p.name}“ wirklich löschen? Das Produkt wird beim Veröffentlichen aus dem Shop entfernt.`)) return;
+     const paths=[p.image,...(Array.isArray(p.images)?p.images:String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean))].filter(Boolean);
+     paths.forEach(queueImageDelete);
+     d.products=d.products.filter(x=>x.id!==id);
+     closeModal(); renderView(); renderCards();
+     status("Produkt gelöscht. Mit „Änderungen veröffentlichen“ wird es endgültig übernommen.","ok");
+   };
+ }
+ document.querySelectorAll("[data-remove-image]").forEach(b=>b.onclick=()=>{
+   const src=b.dataset.removeImage;
+   const card=b.closest("[data-existing-image]");
+   const cards=[...document.querySelectorAll("[data-existing-image]")];
+   const remaining=cards.filter(c=>c!==card).map(c=>c.dataset.existingImage);
+   const currentMain=String($("#productForm").elements.image.value||"").trim();
+   if(currentMain===src){
+     if(remaining.length){
+       const next=remaining[0];
+       const r=[...document.querySelectorAll('input[name="mainImageChoice"]')].find(x=>x.value.replace(/^existing:/,"")===next);
+       if(r){r.checked=true; $("#productForm").elements.image.value=next;}
+     }else{
+       $("#productForm").elements.image.value="";
+     }
+   }
+   const area=$("#existingImagePreview");
+   card.remove();
+   const ta=$("#productForm").elements.images;
+   ta.value=remaining.filter(x=>x!==src).join(", ");
+   queueImageDelete(src);
+   status("Bild entfernt. Mit „Speichern“ und anschließend „Änderungen veröffentlichen“ wird es endgültig gelöscht.","ok");
+ });
  const fileInput=$("#productImageFiles"), preview=$("#productImagePreview"), uploadStatus=$("#productUploadStatus");
  let selectedMainFileIndex=-1;
  fileInput.onchange=()=>{
