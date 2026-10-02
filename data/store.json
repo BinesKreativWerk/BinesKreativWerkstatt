@@ -29,7 +29,7 @@
     },
     {
       "id": 2,
-      "name": "Lesezeichen",
+      "name": "Lesezeichen  ab 4.oo euro",
       "category": "Epoxidharz",
       "price": 0,
       "priceOnRequest": true,
@@ -38,11 +38,11 @@
         "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3-2.jpeg",
         "assets/products/product-01.jpg"
       ],
-      "description": "Verschiede Lesezeichen - Personalisiert - Wunschmotiv - Lesezeichen Hintergrund aussuchen aus: 3D-Druck, Acryl, Epoxidharz - Preisspanne: ab. 4,50€",
+      "description": "Verschiede Lesezeichen - Personalisiert - Wunschmotiv - Lesezeichen Hintergrund aussuchen aus: 3D-Druck, Acryl, Epoxidharz - Preisspanne: ab. 4,00€",
       "visible": true,
       "customizable": false,
       "featured": false,
-      "stock": 10,
+      "stock": 37,
       "sku": "BKW-6341",
       "sort": 2,
       "weightGrams": 0
