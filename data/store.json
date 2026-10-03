@@ -270,28 +270,28 @@
     {
       "id": "stifte-zubeh-r",
       "name": "Stifte &Zubehör",
-      "label": "Neue Kategorie",
+      "label": "Stifte &Zubehör",
       "sort": 7,
       "active": true
     },
     {
       "id": "perlen-handarbeiten",
       "name": "Perlen Handarbeiten",
-      "label": "Neue Kategorie",
+      "label": "Perlen Handarbeiten",
       "sort": 8,
       "active": true
     },
     {
       "id": "tshirt-taschen-ect-mit-uv-dtf-b-gelbildern",
       "name": "Tshirt ,Taschen ect.  mit UV  DTF Bügelbildern",
-      "label": "Neue Kategorie",
+      "label": "Tshirt ,Taschen ect.  mit UV  DTF Bügelbildern",
       "sort": 9,
       "active": true
     },
     {
       "id": "fertige-sofort-erh-ltliche-sachen-je-1x-vorhanden",
       "name": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
-      "label": "Neue Kategorie",
+      "label": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
       "sort": 10,
       "active": true
     }
