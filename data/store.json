@@ -242,6 +242,13 @@
       "label": "Neue Kategorie",
       "sort": 7,
       "active": true
+    },
+    {
+      "id": "perlen-handarbeiten",
+      "name": "Perlen Handarbeiten",
+      "label": "Neue Kategorie",
+      "sort": 8,
+      "active": true
     }
   ],
   "management": {
