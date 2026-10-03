@@ -280,6 +280,13 @@
       "label": "Neue Kategorie",
       "sort": 8,
       "active": true
+    },
+    {
+      "id": "tshirt-taschen-ect-mit-uv-dtf-b-gelbildern",
+      "name": "Tshirt ,Taschen ect.  mit UV  DTF Bügelbildern",
+      "label": "Neue Kategorie",
+      "sort": 9,
+      "active": true
     }
   ],
   "management": {
