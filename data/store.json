@@ -287,6 +287,13 @@
       "label": "Neue Kategorie",
       "sort": 9,
       "active": true
+    },
+    {
+      "id": "fertige-sofort-erh-ltliche-sachen-je-1x-vorhanden",
+      "name": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
+      "label": "Neue Kategorie",
+      "sort": 10,
+      "active": true
     }
   ],
   "management": {
