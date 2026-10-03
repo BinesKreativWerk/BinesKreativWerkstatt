@@ -9,15 +9,15 @@
   "products": [
     {
       "id": 1,
-      "name": "3D Druck & Acryl Schlüsselanhänger",
-      "category": "Sublimation",
+      "name": "3D Druck & Acryl Schlüsselanhänger ab 3,99€",
+      "category": "3D Druck",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-2-1.jpeg",
       "images": [
         "assets/products/whatsapp-image-2026-10-01-at-11-30-31-2-1.jpeg"
       ],
-      "description": "Schlüsselanhänger mit eigenen Wunschmotiv und Harzversiegelung - Wunschmotiv/ Wunschschrift entscheiden und Personalisieren lassen - Druck-Farbe aussuchen, Anhängerbasis des 3D druck & Acryl - Motiv bei der Anfrage hinzufügen - alles nach Absprache Anhänger kosten: 3,50€ - 6,00€",
+      "description": "Schlüsselanhänger mit eigenen Wunschmotiv und Harzversiegelung - Wunschmotiv/ Wunschschrift entscheiden und Personalisieren lassen - Druck-Farbe aussuchen, Anhängerbasis des 3D druck & Acryl - Motiv bei der Anfrage hinzufügen - alles nach Absprache Anhänger kosten: 3,99€ - 6,00€",
       "visible": true,
       "customizable": false,
       "featured": false,
