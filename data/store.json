@@ -235,6 +235,13 @@
       "label": "Handarbeit ",
       "sort": 6,
       "active": true
+    },
+    {
+      "id": "stifte-zubeh-r",
+      "name": "Stifte &Zubehör",
+      "label": "Neue Kategorie",
+      "sort": 7,
+      "active": true
     }
   ],
   "management": {
