@@ -294,6 +294,13 @@
       "label": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
       "sort": 10,
       "active": true
+    },
+    {
+      "id": "nekopaws3d",
+      "name": "NekoPaws3D",
+      "label": "NekoPaws3D ",
+      "sort": 11,
+      "active": true
     }
   ],
   "management": {
