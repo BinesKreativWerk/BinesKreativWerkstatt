@@ -1,10 +1,10 @@
 {
   "site": {
-    "shopName": "BineKreativWerkstatt",
-    "tagline": "Unikate mit Herz ♡",
-    "contactEmail": "[DEINE E-MAIL-ADRESSE]",
-    "heroTitle": "Einzigartige Unikate mit Herz gemacht ♡",
-    "heroText": "3D-gedruckt, von Hand bemalt und mit UV-Harz versiegelt – für dich mit Liebe gefertigt."
+    "shopName": "Bine's KreativWerkstatt",
+    "tagline": "3D Druck • Handarbeit • Sublimation",
+    "contactEmail": "binesw2026@gmail.com",
+    "heroTitle": "Kreative Unikate<br>mit Herz gemacht ♡",
+    "heroText": "3D-gedruckt, von Hand bemalt und mit UV-Harz versiegelt –alles  für dich mit Liebe gefertigt.\n"
   },
   "products": [
     {
@@ -243,7 +243,7 @@
   "shopName": "Bine's KreativWerkstatt",
   "tagline": "3D Druck • Handarbeit • Sublimation",
   "heroTitle": "Kreative Unikate<br>mit Herz gemacht ♡",
-  "contactEmail": "[DEINE E-MAIL-ADRESSE]",
+  "contactEmail": "binesw2026@gmail.com",
   "categories": [
     {
       "id": "sticker",
