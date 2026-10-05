@@ -1,0 +1,13 @@
+PREIS AUF ANFRAGE – ADMIN
+
+Im Produktformular gibt es jetzt die Option „Preis auf Anfrage“.
+
+Wenn aktiviert:
+- Im Adminbereich wird statt des Preises „Preis auf Anfrage“ angezeigt.
+- Im öffentlichen Shop erscheint „Preis auf Anfrage“.
+- Statt „In den Warenkorb“ wird „Preis anfragen“ angezeigt.
+- Der Link öffnet das Kontaktformular und füllt Betreff und Nachricht mit dem Produktnamen vor.
+
+Wenn deaktiviert, funktioniert das Produkt wie bisher mit einem festen Preis und Warenkorb.
+
+Nach Änderungen im Adminbereich weiterhin „Änderungen veröffentlichen“ verwenden.

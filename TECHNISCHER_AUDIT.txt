@@ -1,0 +1,45 @@
+Bine’s KreativWerkstatt – technischer Funktionsstand
+Stand: 05.10.2026
+
+Geprüft und zusammengeführt:
+- Shop-Frontend und Produktübersicht
+- dynamische Kategorie-Buttons auf der Startseite
+- Produktdetailseite und Mediengalerie
+- Hauptbild-Auswahl
+- mehrere Bilder/GIFs/Videos
+- Einzelmedium löschen
+- Produkt löschen
+- Preis auf Anfrage
+- Warenkorb
+- Bestellanfrage per EmailJS
+- Kontakt-/Preisanfrage per EmailJS
+- Gewichtsbasierte Versandkosten
+- Gutscheine
+- FSK-18-Zugriff
+- Admin-GitHub-Veröffentlichung
+- Produkt-/Kategorieverwaltung
+- Bestellungen, Produktion, Kunden, Rechnungen, Statistik
+- Backup/Import
+- Gästebuch-Moderation
+- Shop-Einstellungen
+
+Wichtige technische Korrekturen in diesem Gesamtstand:
+1. Neue Kategorien werden automatisch aus data/store.json als Buttons auf der Startseite aufgebaut.
+2. Gewichtsstufen des Versands werden auch im öffentlichen Warenkorb berücksichtigt.
+3. Preis-auf-Anfrage-Produkte gelangen nicht in den Warenkorb.
+4. Produkte mit Bestand 0 sind nicht direkt bestellbar.
+5. Das im Admin markierte Hauptbild wird auf der Produktseite ebenfalls priorisiert.
+6. Beim Abbrechen eines neuen Produktes werden bereits hochgeladene neue Medien zur Bereinigung vorgemerkt.
+7. Die aktuelle Kontakt-Template-ID template_q4j1x73 und Bestell-Template-ID template_6mvb1fg sind eingebunden.
+8. Der GitHub-Admin-Token wird weiterhin nur in der Browsersitzung verwendet und nicht im Projekt gespeichert.
+9. Der HTML-Fehler im Galerieformular wurde korrigiert.
+
+Sicherheits-/Architekturhinweis:
+- Bestellungen und Kundendaten werden nicht automatisch in data/store.json vom öffentlichen Shop gespeichert, weil diese Datei auf GitHub Pages öffentlich ist.
+- Die Bestellanfrage wird über EmailJS übermittelt. Die Adminbereiche für Bestellungen/Kunden sind für manuelle Verwaltung vorhanden.
+- Für echte automatische, nicht öffentliche Auftragsdaten wäre ein serverseitiges Backend bzw. eine sichere Datenbank erforderlich.
+
+Statische Tests:
+- JavaScript-Dateien mit Node-Syntaxprüfung kontrolliert.
+- Referenzen auf die zentralen Shopdateien geprüft.
+- store.json auf erwartete Kernbereiche geprüft.
