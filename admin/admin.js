@@ -2,9 +2,10 @@
 "use strict";
 
 const state = {
+  pendingImageDeletes: [],
   token: sessionStorage.getItem("bkw_admin_token") || "",
   owner: localStorage.getItem("bkw_repo_owner") || "", repo: localStorage.getItem("bkw_repo_name") || "",
-  branch: localStorage.getItem("bkw_repo_branch") || "main", data: null, sha: null, view: "overview", pendingDeletes: []
+  branch: localStorage.getItem("bkw_repo_branch") || "main", data: null, sha: null, view: "overview"
 };
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -69,37 +70,20 @@ async function loadGitHub(){
  state.sha=r.sha; state.data=ensureData(JSON.parse(fromB64(r.content))); 
 }
 async function saveGitHub(){
-  const content=JSON.stringify(ensureData(),null,2);
-  const body={message:"Shopverwaltung aktualisiert – Bine's KreativWerkstatt",content:b64Text(content),branch:state.branch};
-  if(state.sha) body.sha=state.sha;
-  try{
-    const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-    state.sha=r.content?.sha||state.sha;
-  }catch(e){
-    if(!String(e.message||"").includes("409")) throw e;
-    const fresh=await gh(`/contents/data/store.json?ref=${encodeURIComponent(state.branch)}`);
-    state.sha=fresh.sha;
-    const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({...body,sha:state.sha})});
-    state.sha=r.content?.sha||state.sha;
-  }
-  // Entfernte Medien erst beim Veröffentlichen aus GitHub löschen.
-  const stillUsed=new Set();
-  ensureData().products.forEach(p=>{
-    getProductMedia(p).forEach(m=>{if(m.src) stillUsed.add(m.src)});
-    if(p.image) stillUsed.add(p.image);
-  });
-  const unique=[...new Set(state.pendingDeletes||[])].filter(path=>path && !stillUsed.has(path));
-  for(const path of unique){
-    try{
-      const current=await gh(`/contents/${encodePath(path)}?ref=${encodeURIComponent(state.branch)}`);
-      await gh(`/contents/${encodePath(path)}`,{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:`Produktmedium gelöscht – ${path}`,sha:current.sha,branch:state.branch})});
-    }catch(e){
-      console.warn("Medium konnte nicht gelöscht werden:",path,e);
-    }
-  }
-  state.pendingDeletes=[];
+ const content=JSON.stringify(ensureData(),null,2);
+ const body={message:"Shopverwaltung aktualisiert – Bine's KreativWerkstatt",content:b64Text(content),branch:state.branch};
+ if(state.sha) body.sha=state.sha;
+ try{
+   const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+   state.sha=r.content?.sha||state.sha;
+ }catch(e){
+   if(!String(e.message||"").includes("409")) throw e;
+   const fresh=await gh(`/contents/data/store.json?ref=${encodeURIComponent(state.branch)}`);
+   state.sha=fresh.sha;
+   const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({...body,sha:state.sha})});
+   state.sha=r.content?.sha||state.sha;
+ }
 }
-function encodePath(path){return String(path).split("/").map(encodeURIComponent).join("/");}
 function enter(){
  $("#loginView").classList.add("hidden");$("#dashboardView").classList.remove("hidden");$("#logoutBtn").classList.remove("hidden");
  $("#modeText").textContent="Verbunden mit GitHub – Änderungen können veröffentlicht werden.";
@@ -153,36 +137,64 @@ async function uploadRepoFile(path,file,message){
   });
   return r.content?.path || path;
 }
-async function uploadProductMedia(files,productId){
+async function uploadProductImages(files,productId){
   const list=Array.from(files||[]);
   if(!list.length) return [];
-  if(list.length>10) throw Error("Bitte höchstens 10 Medien gleichzeitig auswählen.");
-  const allowedImages=["image/jpeg","image/png","image/webp","image/gif"];
-  const allowedVideos=["video/mp4","video/webm","video/ogg"];
-  const maxImage=10*1024*1024;
-  const maxVideo=50*1024*1024;
+  if(list.length>10) throw Error("Bitte höchstens 10 Produktbilder gleichzeitig auswählen.");
+  const allowed=["image/jpeg","image/png","image/webp"];
+  const max=5*1024*1024;
   const uploaded=[];
   for(let i=0;i<list.length;i++){
     const file=list[i];
-    const isVideo=allowedVideos.includes(file.type);
-    const isImage=allowedImages.includes(file.type);
-    if(!isImage&&!isVideo) throw Error(`„${file.name}“ ist kein unterstütztes Medium. Erlaubt sind JPG, PNG, WebP, GIF, MP4, WebM und OGG.`);
-    const max=isVideo?maxVideo:maxImage;
-    if(file.size>max) throw Error(`„${file.name}“ ist zu groß. Maximum: ${isVideo?"50 MB":"10 MB"}.`);
-    const ext=(file.name.split(".").pop()|| (isVideo?"mp4":"jpg")).toLowerCase().replace(/[^a-z0-9]/g,"") || (isVideo?"mp4":"jpg");
-    const base=safeFileName(file.name).replace(/\.[^.]+$/i,"")||"produktmedium";
+    if(!allowed.includes(file.type)) throw Error(`„${file.name}“ ist kein unterstütztes Bild. Erlaubt sind JPG, PNG und WebP.`);
+    if(file.size>max) throw Error(`„${file.name}“ ist größer als 5 MB.`);
+    const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+    const base=safeFileName(file.name).replace(/\.[^.]+$/i,"")||"produktbild";
     const filename=`${base}-${productId}-${Date.now()}-${i+1}.${ext}`;
     const path=`assets/products/${filename}`;
-    await uploadRepoFile(path,file,`Produktmedium hochgeladen – ${filename}`);
-    uploaded.push({src:path,type:isVideo?"video":"image",name:file.name});
+    await uploadRepoFile(path,file,`Produktbild hochgeladen – ${filename}`);
+    uploaded.push(path);
   }
   return uploaded;
+}
+async function deleteRepoFile(path){
+  if(!repoReady() || !path) throw Error("Bitte zuerst mit GitHub verbinden.");
+  let old;
+  try{
+    old=await gh(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
+  }catch(e){
+    if(String(e.message||"").includes("404")) return true;
+    throw e;
+  }
+  await gh(`/contents/${path}`,{
+    method:"DELETE",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({message:`Produktbild gelöscht – ${path.split("/").pop()}`,sha:old.sha,branch:state.branch})
+  });
+  return true;
+}
+function queueImageDelete(path){
+  if(path && !state.pendingImageDeletes.includes(path)) state.pendingImageDeletes.push(path);
+}
+async function publishPendingImageDeletes(){
+  const d=ensureData();
+  const queue=[...state.pendingImageDeletes];
+  const stillUsed=new Set();
+  d.products.forEach(p=>{
+    [p.image,...(Array.isArray(p.images) ? p.images : String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean))].filter(Boolean).forEach(x=>stillUsed.add(x));
+  });
+  for(const path of queue){
+    if(stillUsed.has(path)) continue;
+    await deleteRepoFile(path);
+  }
+  state.pendingImageDeletes=[];
 }
 async function save(){
   if(!repoReady()){status("Bitte zuerst mit GitHub verbinden.","error");return;}
   $("#saveBtn").disabled=true;
   status("Änderungen werden zu GitHub veröffentlicht …");
   try{
+    await publishPendingImageDeletes();
     await saveGitHub();
     status("Erfolgreich veröffentlicht.","ok");
   }catch(e){
@@ -225,42 +237,29 @@ function products(){
  document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>productModal(Number(b.dataset.edit)));
  document.querySelectorAll("[data-dup]").forEach(b=>b.onclick=()=>duplicateProduct(Number(b.dataset.dup)));
  document.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=()=>{const p=d.products.find(x=>x.id==b.dataset.toggle);p.visible=p.visible===false;renderView();renderCards()});
- document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{const p=d.products.find(x=>x.id==b.dataset.del);if(!p)return;if(confirm("Produkt wirklich löschen? Das Produkt und seine nicht anderweitig verwendeten Medien werden beim Veröffentlichen entfernt.")){getProductMedia(p).forEach(m=>{if(m.src&&!state.pendingDeletes.includes(m.src))state.pendingDeletes.push(m.src)});d.products=d.products.filter(x=>x.id!=b.dataset.del);renderView();renderCards()}});
+ document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(confirm("Produkt wirklich löschen?")){d.products=d.products.filter(x=>x.id!=b.dataset.del);renderView();renderCards()}});
  $("#productSearch").oninput=e=>document.querySelectorAll(".product-card").forEach(c=>c.style.display=c.textContent.toLowerCase().includes(e.target.value.toLowerCase())?"":"none");
  };
  draw();$("#addProduct").onclick=()=>productModal(null);
-}
-function getProductMedia(p){
-  const out=[];
-  if(Array.isArray(p?.media)) out.push(...p.media.filter(m=>m&&m.src).map(m=>({src:String(m.src),type:m.type||guessMediaType(m.src),name:m.name||""})));
-  else if(Array.isArray(p?.images)) out.push(...p.images.filter(Boolean).map(src=>({src:String(src),type:"image",name:""})));
-  else if(typeof p?.images==="string") out.push(...p.images.split(",").map(x=>x.trim()).filter(Boolean).map(src=>({src,type:"image",name:""})));
-  if(p?.image && !out.some(m=>m.src===p.image)) out.unshift({src:p.image,type:"image",name:""});
-  return [...new Map(out.map(m=>[m.src,m])).values()];
-}
-function guessMediaType(src){
-  const ext=String(src||"").split("?")[0].split(".").pop()?.toLowerCase();
-  return ["mp4","webm","ogg","mov"].includes(ext)?"video":"image";
-}
-function mediaThumbHtml(m,i,mainImage){
-  const isVideo=m.type==="video";
-  const preview=isVideo
-    ? `<video src="../${esc(m.src)}" muted preload="metadata" style="width:110px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc"></video>`
-    : `<img src="../${esc(m.src)}" alt="${esc(m.name||`Medium ${i+1}`)}" style="width:110px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc">`;
-  const mainControl=isVideo?`<span class="muted" style="font-size:.85em">Video</span>`:`<label class="check" style="margin:0"><input type="radio" name="mainMedia" value="${esc(m.src)}" ${mainImage===m.src?"checked":""}> ⭐ Hauptbild</label>`;
-  return `<div class="media-item" data-media-src="${esc(m.src)}" style="display:flex;flex-direction:column;gap:6px;width:140px;padding:8px;border:1px solid #ddd;border-radius:10px;background:#fff">${preview}${mainControl}<button type="button" class="outline-btn danger media-delete" data-media-delete="${esc(m.src)}">🗑️ Löschen</button></div>`;
 }
 function productModal(id){
  const d=ensureData(), p=id?d.products.find(x=>x.id===id):{
    id:Math.max(0,...d.products.map(x=>Number(x.id)||0))+1,
    name:"Neues Produkt",category:d.categories[0]?.name||"3D Druck",price:0,priceOnRequest:false,
-   image:"assets/products/product-01.jpg",images:["assets/products/product-01.jpg"],media:[{src:"assets/products/product-01.jpg",type:"image"}],
+   image:"assets/products/product-01.jpg",images:["assets/products/product-01.jpg"],
    description:"",visible:true,customizable:false,featured:false,stock:0,
    sku:"BKW-"+String(Date.now()).slice(-4),sort:d.products.length+1,weightGrams:0
  };
- let media=getProductMedia(p);
- let mainImage=p.image||media.find(m=>m.type==="image")?.src||"";
  const cats=d.categories.map(c=>`<option ${c.name===p.category?"selected":""}>${esc(c.name)}</option>`).join("");
+ const existingImages=[...(Array.isArray(p.images)?p.images:String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean)),p.image].filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i);
+ const mainImage=p.image||existingImages[0]||"assets/logo.png";
+ const imageCards=existingImages.map((src,i)=>`<div class="admin-image-card" data-existing-image="${esc(src)}" style="position:relative;border:2px solid ${src===mainImage?'#b71c1c':'#ccc'};border-radius:10px;padding:6px;background:#fff">
+   <img src="../${esc(src)}" alt="Produktbild ${i+1}" style="width:110px;height:110px;object-fit:cover;border-radius:7px;display:block">
+   <label style="display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:700;font-size:.9em;cursor:pointer">
+    <input type="radio" name="mainImageChoice" value="existing:${esc(src)}" ${src===mainImage?'checked':''}> Hauptbild
+   </label>
+   <button type="button" class="outline-btn danger" data-remove-image="${esc(src)}" style="width:100%;margin-top:7px">🗑️ Bild löschen</button>
+ </div>`).join("");
  openModal(id?"Produkt bearbeiten":"Neues Produkt",`<form id="productForm" class="form-grid">
 <label class="wide">Name<input name="name" value="${esc(p.name)}" required></label>
 <label>Kategorie<select name="category">${cats}</select></label>
@@ -275,56 +274,103 @@ function productModal(id){
 <label class="check"><input name="featured" type="checkbox" ${p.featured?"checked":""}> Hervorgehoben</label>
 <label class="check"><input name="customizable" type="checkbox" ${p.customizable?"checked":""}> Personalisierbar</label>
 <div class="wide upload-box" style="border:1px solid #ddd;border-radius:12px;padding:12px">
-  <b>Produktmedien</b>
-  <div style="margin:6px 0 10px;color:#666;font-size:.92em">Bilder: JPG, PNG, WebP, GIF · Videos: MP4, WebM, OGG · Bilder max. 10 MB · Videos max. 50 MB</div>
-  <input id="productMediaFiles" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg" multiple>
-  <div id="productMediaPreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">${media.map((m,i)=>mediaThumbHtml(m,i,mainImage)).join("")}</div>
+  <b>Produktbilder</b>
+  <div style="margin:6px 0 10px;color:#666;font-size:.92em">Das markierte <strong>Hauptbild</strong> wird im Shop direkt in der Produktübersicht angezeigt. Du kannst das Hauptbild jederzeit ändern.</div>
+  <div id="existingImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">${imageCards||'<span style="color:#777">Noch kein Produktbild vorhanden.</span>'}</div>
+  <hr style="margin:14px 0;border:0;border-top:1px solid #ddd">
+  <b>Weitere Bilder hochladen</b>
+  <div style="margin:6px 0 10px;color:#666;font-size:.92em">JPG, PNG oder WebP · maximal 5 MB pro Bild</div>
+  <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+  <div id="productImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"></div>
   <div id="productUploadStatus" style="margin-top:8px"></div>
-  <div class="muted" style="margin-top:8px">⭐ Das markierte Bild ist das Hauptbild und wird direkt in der Shopübersicht angezeigt. Videos können nicht Hauptbild sein.</div>
 </div>
-<div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}<button class="main-btn" id="saveProductBtn">Speichern</button></div></form>`);
+<label class="wide">Bildpfad<input name="image" value="${esc(p.image||"")}" readonly></label>
+<label class="wide">Bilder, durch Komma getrennt<textarea name="images">${esc(existingImages.join(", "))}</textarea></label>
+<div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}${id?btn("Produkt löschen","outline-btn danger",'type="button" id="deleteProductFromModal"'):""}<button class="main-btn" id="saveProductBtn">Speichern</button></div></form>`);
 
- const preview=$("#productMediaPreview"), fileInput=$("#productMediaFiles"), uploadStatus=$("#productUploadStatus");
- const rerenderMedia=()=>{
-   preview.innerHTML=media.map((m,i)=>mediaThumbHtml(m,i,mainImage)).join("")||'<div class="muted">Noch keine Medien vorhanden.</div>';
-   preview.querySelectorAll("[data-media-delete]").forEach(b=>b.onclick=()=>{
-     const src=b.dataset.mediaDelete;
-     if(!confirm("Dieses Medium wirklich löschen?")) return;
-     media=media.filter(m=>m.src!==src);
-     if(src===mainImage) mainImage=media.find(m=>m.type==="image")?.src||"";
-     if(id && !state.pendingDeletes.includes(src)) state.pendingDeletes.push(src);
-     rerenderMedia();
-   });
-   preview.querySelectorAll('input[name="mainMedia"]').forEach(r=>r.onchange=()=>{mainImage=r.value;rerenderMedia()});
- };
  $("#cancelModal").onclick=closeModal;
- rerenderMedia();
+ if(id){
+   $("#deleteProductFromModal").onclick=()=>{
+     if(!confirm(`Produkt „${p.name}“ wirklich löschen? Das Produkt wird beim Veröffentlichen aus dem Shop entfernt.`)) return;
+     const paths=[p.image,...(Array.isArray(p.images)?p.images:String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean))].filter(Boolean);
+     paths.forEach(queueImageDelete);
+     d.products=d.products.filter(x=>x.id!==id);
+     closeModal(); renderView(); renderCards();
+     status("Produkt gelöscht. Mit „Änderungen veröffentlichen“ wird es endgültig übernommen.","ok");
+   };
+ }
+ document.querySelectorAll("[data-remove-image]").forEach(b=>b.onclick=()=>{
+   const src=b.dataset.removeImage;
+   const card=b.closest("[data-existing-image]");
+   const cards=[...document.querySelectorAll("[data-existing-image]")];
+   const remaining=cards.filter(c=>c!==card).map(c=>c.dataset.existingImage);
+   const currentMain=String($("#productForm").elements.image.value||"").trim();
+   if(currentMain===src){
+     if(remaining.length){
+       const next=remaining[0];
+       const r=[...document.querySelectorAll('input[name="mainImageChoice"]')].find(x=>x.value.replace(/^existing:/,"")===next);
+       if(r){r.checked=true; $("#productForm").elements.image.value=next;}
+     }else{
+       $("#productForm").elements.image.value="";
+     }
+   }
+   const area=$("#existingImagePreview");
+   card.remove();
+   const ta=$("#productForm").elements.images;
+   ta.value=remaining.filter(x=>x!==src).join(", ");
+   queueImageDelete(src);
+   status("Bild entfernt. Mit „Speichern“ und anschließend „Änderungen veröffentlichen“ wird es endgültig gelöscht.","ok");
+ });
+ const fileInput=$("#productImageFiles"), preview=$("#productImagePreview"), uploadStatus=$("#productUploadStatus");
+ let selectedMainFileIndex=-1;
  fileInput.onchange=()=>{
    const files=Array.from(fileInput.files||[]);
-   if(!files.length){uploadStatus.textContent="";return;}
-   uploadStatus.textContent=`${files.length} Medium${files.length===1?"":"ien"} ausgewählt. Beim Speichern werden sie zu GitHub hochgeladen.`;
+   preview.innerHTML="";
+   selectedMainFileIndex=files.length?0:-1;
+   files.forEach((file,index)=>{
+     const wrap=document.createElement("div");
+     wrap.style.cssText="border:2px solid "+(index===0?"#b71c1c":"#ccc")+";border-radius:10px;padding:6px;background:#fff";
+     const img=document.createElement("img"); img.alt=file.name; img.style.cssText="width:110px;height:110px;object-fit:cover;border-radius:7px;display:block"; img.src=URL.createObjectURL(file);
+     const label=document.createElement("label"); label.style.cssText="display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:700;font-size:.9em;cursor:pointer";
+     const radio=document.createElement("input"); radio.type="radio"; radio.name="newMainImageChoice"; radio.checked=index===0;
+     radio.onchange=()=>{selectedMainFileIndex=index;preview.querySelectorAll("div").forEach((el,i)=>el.style.borderColor=i===index?"#b71c1c":"#ccc");};
+     label.append(radio," Hauptbild"); wrap.append(img,label); preview.appendChild(wrap);
+   });
+   uploadStatus.textContent=files.length?`${files.length} neue${files.length===1?'s':'e'} Bild${files.length===1?'':'er'} ausgewählt. Das markierte Bild wird als Hauptbild übernommen.`:"";
  };
+ document.querySelectorAll('input[name="mainImageChoice"]').forEach(r=>r.onchange=()=>{
+   const value=r.value.replace(/^existing:/,"");
+   $("#productForm").elements.image.value=value;
+   document.querySelectorAll("[data-existing-image]").forEach(card=>card.style.borderColor=card.dataset.existingImage===value?"#b71c1c":"#ccc");
+ });
+
  $("#productForm").onsubmit=async e=>{
    e.preventDefault();
-   const f=new FormData(e.target), saveBtn=$("#saveProductBtn"); saveBtn.disabled=true; uploadStatus.textContent="";
+   const f=new FormData(e.target), saveBtn=$("#saveProductBtn");
+   saveBtn.disabled=true; uploadStatus.textContent="";
    try{
-     const files=fileInput.files;
-     if(files&&files.length){
-       uploadStatus.textContent=`${files.length} Medium${files.length===1?"":"ien"} werden zu GitHub hochgeladen …`;
-       const uploaded=await uploadProductMedia(files,p.id);
-       media=[...media,...uploaded.filter(x=>!media.some(m=>m.src===x.src))];
-       if(!mainImage) mainImage=uploaded.find(m=>m.type==="image")?.src||"";
-       rerenderMedia();
-       uploadStatus.textContent="Medien hochgeladen. Produktdaten gespeichert – jetzt veröffentlichen.";
+     let image=String(f.get("image")||"").trim();
+     let images=String(f.get("images")||"").split(",").map(x=>x.trim()).filter(Boolean);
+     const files=Array.from(fileInput.files||[]);
+     if(files.length){
+       uploadStatus.textContent=`${files.length} Bild${files.length===1?'':'er'} werden zu GitHub hochgeladen …`;
+       const uploaded=await uploadProductImages(files,p.id);
+       images=[...images,...uploaded.filter(x=>!images.includes(x))];
+       if(selectedMainFileIndex>=0&&uploaded[selectedMainFileIndex]) image=uploaded[selectedMainFileIndex];
+       uploadStatus.textContent="Bilder hochgeladen. Produktdaten gespeichert – jetzt veröffentlichen.";
      }
-     const images=media.filter(m=>m.type!=="video").map(m=>m.src);
-     const videos=media.filter(m=>m.type==="video").map(m=>m.src);
-     if(mainImage&&!images.includes(mainImage)) mainImage=images[0]||"";
-     const n={...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),priceOnRequest:f.has("priceOnRequest"),stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),image:mainImage,images, videos, media};
+     if(!image&&images.length) image=images[0];
+     if(image&&!images.includes(image)) images.unshift(image);
+     images=[...new Set(images)].filter(Boolean);
+     const n={...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),priceOnRequest:f.has("priceOnRequest"),stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),image,images};
      if(id) Object.assign(p,n); else d.products.push(n);
      closeModal(); renderView(); renderCards();
      status("Produkt gespeichert. Jetzt oben „Änderungen veröffentlichen“ drücken.","ok");
-   }catch(err){uploadStatus.textContent=`Fehler: ${err.message}`;status(`Produkt konnte nicht gespeichert werden: ${err.message}`,"error");saveBtn.disabled=false;}
+   }catch(err){
+     uploadStatus.textContent=`Fehler: ${err.message}`;
+     status(`Produkt konnte nicht gespeichert werden: ${err.message}`,"error");
+     saveBtn.disabled=false;
+   }
  };
 }
 function duplicateProduct(id){const d=ensureData(),p=d.products.find(x=>x.id===id);if(!p)return;const q=JSON.parse(JSON.stringify(p));q.id=Math.max(0,...d.products.map(x=>Number(x.id)||0))+1;q.sku=(q.sku||"BKW")+"-K";q.name+=" – Kopie";q.sort=d.products.length+1;d.products.push(q);renderView();renderCards()}
