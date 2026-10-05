@@ -1,26 +1,30 @@
 
-/* ===== BKW Produktseite: Medienrenderer ===== */
-function bkwProductMediaKind(url, mime = "") {
+/* ===== BKW Produktseite: bewegte Produktmedien ===== */
+function bkwPublicMediaKind(url, mime = "") {
   const m = String(mime || "").toLowerCase();
   const u = String(url || "").split("?")[0].toLowerCase();
   if (m.startsWith("video/") || /\.(mp4|webm|ogg)$/.test(u)) return "video";
   if (m === "image/gif" || /\.gif$/.test(u)) return "gif";
   return "image";
 }
-function bkwRenderProductMedia(container, url, mime = "") {
-  if (!container) return null;
-  container.innerHTML = "";
-  const kind = bkwProductMediaKind(url, mime);
-  const el = kind === "video" ? document.createElement("video") : document.createElement("img");
-  el.src = url;
-  el.alt = "";
+
+function bkwPublicCreateMedia(url, mime = "", className = "") {
+  const kind = bkwPublicMediaKind(url, mime);
   if (kind === "video") {
-    el.controls = true;
-    el.playsInline = true;
-    el.preload = "metadata";
+    const video = document.createElement("video");
+    video.src = url;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    if (className) video.className = className;
+    return video;
   }
-  container.appendChild(el);
-  return el;
+
+  const image = document.createElement("img");
+  image.src = url;
+  image.alt = "";
+  if (className) image.className = className;
+  return image;
 }
 
 "use strict";
