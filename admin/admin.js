@@ -1,4 +1,32 @@
 
+/* Bewegte Produktmedien: GIF/Video-Erkennung */
+function bkwMediaKind(url, type = "") {
+  const t = String(type || "").toLowerCase();
+  const u = String(url || "").split("?")[0].toLowerCase();
+  if (t.startsWith("video/") || /\.(mp4|webm|ogg)$/.test(u)) return "video";
+  if (t === "image/gif" || /\.gif$/.test(u)) return "gif";
+  return "image";
+}
+
+function bkwCreateMediaPreview(url, type = "", className = "") {
+  const kind = bkwMediaKind(url, type);
+  if (kind === "video") {
+    const el = document.createElement("video");
+    el.src = url;
+    el.controls = true;
+    el.playsInline = true;
+    el.preload = "metadata";
+    if (className) el.className = className;
+    return el;
+  }
+  const el = document.createElement("img");
+  el.src = url;
+  el.alt = "";
+  if (className) el.className = className;
+  return el;
+}
+
+
 "use strict";
 
 const state = {

@@ -15,3 +15,24 @@
 @media(max-width:1100px){.header{flex-wrap:wrap}.nav{order:3;flex-basis:100%;padding-bottom:3px}.products{grid-template-columns:repeat(2,minmax(0,1fr))}.features{grid-template-columns:1fr 1fr}.footer-inner{grid-template-columns:1fr 1fr}.footer{padding-top:45px}}
 @media(max-width:760px){body{background-size:auto 760px;background-attachment:scroll}.topbar{gap:8px;font-size:9px}.header{padding:8px 12px}.brand{min-width:0;flex:1}.brand .logo{width:50px;height:50px}.brand h1{font-size:17px}.brand p{font-size:8px}.header-actions{width:100%}.header-actions input{flex:1;width:auto}.nav{gap:2px}.nav a,.nav button{padding:7px 6px;font-size:10px}.hero{width:100%;border-radius:0;grid-template-columns:1fr;min-height:auto;padding:42px 22px 48px;gap:20px;text-align:center}.hero-text{margin:auto}.hero p{font-size:18px}.hero-cat{order:-1;max-width:230px;margin:auto}.hero-cat img{width:205px;max-height:205px}.features{width:calc(100% - 20px);grid-template-columns:1fr 1fr}.features div:nth-child(2){border-right:0}.features div{border-bottom:1px solid rgba(255,50,75,.12)}.shop-section{width:100%;padding:16px 10px 48px}.products{grid-template-columns:1fr;gap:14px}.product-card img{height:230px}.detail-card{grid-template-columns:1fr}.product-detail{width:calc(100% - 20px);padding:25px 0 50px}.page,.legal-page{width:calc(100% - 20px);padding:22px 18px;margin:25px auto 50px}.order-grid{grid-template-columns:1fr}.order-grid .wide{grid-column:auto}.cart{width:100%}.footer-inner{grid-template-columns:1fr;gap:28px}.footer-brand{text-align:center}.footer-bottom{flex-direction:column;align-items:center;text-align:center}.footer{padding:40px 20px 18px}}
 @media(max-width:430px){.features{grid-template-columns:1fr}.features div{border-right:0}.hero h2{font-size:33px}.hero-cat img{width:175px}.main-btn,.outline-btn{padding:10px 12px}.filters button{font-size:10px;padding:8px 10px}}
+
+
+/* Bewegte Produktmedien */
+.product-media-preview,
+.product-media-preview img,
+.product-media-preview video,
+.product-gallery img,
+.product-gallery video,
+.product-media img,
+.product-media video {
+  max-width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+}
+
+.product-gallery video,
+.product-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
