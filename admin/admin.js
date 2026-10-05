@@ -285,6 +285,7 @@ function productModal(id){
 <div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}<button class="main-btn" id="saveProductBtn">Speichern</button></div></form>`);
 
  const preview=$("#productMediaPreview"), fileInput=$("#productMediaFiles"), uploadStatus=$("#productUploadStatus");
+ let newlyUploaded = [];
  const rerenderMedia=()=>{
    preview.innerHTML=media.map((m,i)=>mediaThumbHtml(m,i,mainImage)).join("")||'<div class="muted">Noch keine Medien vorhanden.</div>';
    preview.querySelectorAll("[data-media-delete]").forEach(b=>b.onclick=()=>{
@@ -297,7 +298,10 @@ function productModal(id){
    });
    preview.querySelectorAll('input[name="mainMedia"]').forEach(r=>r.onchange=()=>{mainImage=r.value;rerenderMedia()});
  };
- $("#cancelModal").onclick=closeModal;
+ $("#cancelModal").onclick=()=>{
+   if (newlyUploaded.length) newlyUploaded.forEach(m=>{ if(m.src && !state.pendingDeletes.includes(m.src)) state.pendingDeletes.push(m.src); });
+   closeModal();
+ };
  rerenderMedia();
  fileInput.onchange=()=>{
    const files=Array.from(fileInput.files||[]);
@@ -312,6 +316,7 @@ function productModal(id){
      if(files&&files.length){
        uploadStatus.textContent=`${files.length} Medium${files.length===1?"":"ien"} werden zu GitHub hochgeladen …`;
        const uploaded=await uploadProductMedia(files,p.id);
+       newlyUploaded.push(...uploaded);
        media=[...media,...uploaded.filter(x=>!media.some(m=>m.src===x.src))];
        if(!mainImage) mainImage=uploaded.find(m=>m.type==="image")?.src||"";
        rerenderMedia();
@@ -399,7 +404,7 @@ function gallery(){
  const d=ensureData();$("#view-gallery").innerHTML=panel("Auftragsgalerie",`<button id="addGallery" class="main-btn">+ Referenzauftrag</button><div class="table-wrap"><table class="data-table"><thead><tr><th>Titel</th><th>Kategorie</th><th>Datum</th><th>Kunde</th><th>Freigabe</th><th></th></tr></thead><tbody>${d.management.gallery.map((g,i)=>`<tr><td>${esc(g.title)}</td><td>${esc(g.category)}</td><td>${esc(g.date)}</td><td>${esc(g.customer||"anonym")}</td><td>${g.consent?"freigegeben":"nicht freigegeben"}</td><td>${btn("Bearbeiten","outline-btn",'data-gallery="'+i+'"')}</td></tr>`).join("")||'<tr><td colspan="6">Noch keine Galerieeinträge.</td></tr>'}</tbody></table></div>`);
  document.querySelectorAll("[data-gallery]").forEach(b=>b.onclick=()=>galleryModal(Number(b.dataset.gallery)));$("#addGallery").onclick=()=>galleryModal(null)
 }
-function galleryModal(i){const d=ensureData(),g=i===null?{title:"",category:"3D-Druck",date:today(),customer:"",description:"",consent:false,visible:true,tags:""}:d.management.gallery[i];openModal("Auftragsgalerie",`<form id="galleryForm" class="form-grid"><label class="wide">Titel<input name="title" value="${esc(g.title)}"></label><label>Kategorie<input name="category" value="${esc(g.category)}"></label><label>Datum<input name="date" type="date" value="${esc(g.date)}"></label><label>Kundenname / Kürzel<input name="customer" value="${esc(g.customer||"")}"></label><label class="wide">Beschreibung<textarea name="description">${esc(g.description||"")}</textarea></label><label class="wide">Schlagwörter<input name="tags" value="${esc(g.tags||"")}></label><label class="check"><input name="visible" type="checkbox" ${g.visible!==false?"checked":""}> Öffentlich sichtbar</label><label class="check"><input name="consent" type="checkbox" ${g.consent?"checked":""}> Veröffentlichung freigegeben</label><div class="wide"><button class="main-btn">Speichern</button></div></form>`);$("#galleryForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),n={title:f.get("title"),category:f.get("category"),date:f.get("date"),customer:f.get("customer"),description:f.get("description"),tags:f.get("tags"),visible:f.has("visible"),consent:f.has("consent")};i===null?d.management.gallery.push(n):Object.assign(g,n);closeModal();renderView()}
+function galleryModal(i){const d=ensureData(),g=i===null?{title:"",category:"3D-Druck",date:today(),customer:"",description:"",consent:false,visible:true,tags:""}:d.management.gallery[i];openModal("Auftragsgalerie",`<form id="galleryForm" class="form-grid"><label class="wide">Titel<input name="title" value="${esc(g.title)}"></label><label>Kategorie<input name="category" value="${esc(g.category)}"></label><label>Datum<input name="date" type="date" value="${esc(g.date)}"></label><label>Kundenname / Kürzel<input name="customer" value="${esc(g.customer||"")}"></label><label class="wide">Beschreibung<textarea name="description">${esc(g.description||"")}</textarea></label><label class="wide">Schlagwörter<input name="tags" value="${esc(g.tags||"")}"></label><label class="check"><input name="visible" type="checkbox" ${g.visible!==false?"checked":""}> Öffentlich sichtbar</label><label class="check"><input name="consent" type="checkbox" ${g.consent?"checked":""}> Veröffentlichung freigegeben</label><div class="wide"><button class="main-btn">Speichern</button></div></form>`);$("#galleryForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),n={title:f.get("title"),category:f.get("category"),date:f.get("date"),customer:f.get("customer"),description:f.get("description"),tags:f.get("tags"),visible:f.has("visible"),consent:f.has("consent")};i===null?d.management.gallery.push(n):Object.assign(g,n);closeModal();renderView()}
 }
 function guestbook(){
  const d=ensureData(), entries=d.management.guestbook;

@@ -12,7 +12,9 @@ function productMedia(){
   if(Array.isArray(product?.media)) out.push(...product.media.filter(m=>m&&m.src).map(m=>({src:String(m.src),type:m.type||guessMediaType(m.src),name:m.name||""})));
   else if(Array.isArray(product?.images)) out.push(...product.images.filter(Boolean).map(src=>({src:String(src),type:"image"})));
   else if(typeof product?.images==="string") out.push(...product.images.split(",").map(x=>x.trim()).filter(Boolean).map(src=>({src,type:"image"})));
-  if(product?.image&&!out.some(m=>m.src===product.image)) out.unshift({src:product.image,type:"image"});
+  if (product?.image) {
+    out.unshift({src:String(product.image),type:"image",name:"Hauptbild"});
+  }
   return [...new Map(out.map(m=>[m.src,m])).values()];
 }
 function guessMediaType(src){const ext=String(src||"").split("?")[0].split(".").pop()?.toLowerCase();return ["mp4","webm","ogg","mov"].includes(ext)?"video":"image";}

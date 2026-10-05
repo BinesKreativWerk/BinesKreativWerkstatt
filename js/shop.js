@@ -29,7 +29,7 @@ function getProduct(id) {
 }
 
 function firstImage(product) {
-  return product?.image || (Array.isArray(product?.images)?product.images[0]:(typeof product?.images==="string"?product.images.split(",").map(x=>x.trim()).filter(Boolean)[0]:"")) || "assets/logo.png";
+  return product?.image || (Array.isArray(product?.images) ? product.images[0] : (typeof product?.images === "string" ? product.images.split(",").map(x => x.trim()).filter(Boolean)[0] : "")) || "assets/logo.png";
 }
 
 function saveCart() {
@@ -40,12 +40,21 @@ function saveCart() {
 function addToCart(id, quantity = 1, note = "") {
   const product = getProduct(id);
   if (!product) return;
+  if (product.priceOnRequest) {
+    window.location.href = `kontakt.html?anfrage=${encodeURIComponent(product.name)}`;
+    return;
+  }
+  if (Number(product.stock) <= 0) {
+    alert("Dieser Artikel ist derzeit nicht verfügbar.");
+    return;
+  }
   if (product.category === "FSK 18" && !isFskConfirmed()) {
     requestFskAccess();
     return;
   }
 
-  const qty = Math.max(1, Number(quantity) || 1);
+  const requestedQty = Math.max(1, Number(quantity) || 1);
+  const qty = Math.min(requestedQty, Math.max(1, Number(product.stock) || requestedQty));
   const cleanNote = String(note || "").trim();
   const existing = cart.find(item => item.id === product.id && item.note === cleanNote);
   if (existing) existing.qty += qty;
@@ -128,7 +137,10 @@ function clearCoupon() {
 }
 
 function calculateCart() {
-  const validCart = cart.filter(item => getProduct(item.id));
+  const validCart = cart.filter(item => {
+    const product = getProduct(item.id);
+    return product && !product.priceOnRequest;
+  });
   if (validCart.length !== cart.length) {
     cart = validCart;
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
@@ -136,7 +148,7 @@ function calculateCart() {
 
   const subtotal = cart.reduce((sum, item) => {
     const product = getProduct(item.id);
-    return sum + product.price * item.qty;
+    return sum + Number(product?.price || 0) * item.qty;
   }, 0);
 
   const coupon = getCoupon();
@@ -144,25 +156,38 @@ function calculateCart() {
   let discount = 0;
   if (couponData?.type === "percent") discount = subtotal * couponData.value / 100;
   if (couponData?.type === "fixed") discount = couponData.value;
-  discount = Math.min(subtotal, discount);
+  discount = Math.min(subtotal, Math.max(0, discount));
+
+  const totalWeightGrams = cart.reduce((sum, item) => {
+    const product = getProduct(item.id);
+    return sum + (Number(product?.weightGrams) || 0) * item.qty;
+  }, 0);
 
   const shippingKey = getShippingMethod();
-  const shipping = shippingMethods[shippingKey] || shippingMethods.hermes;
-  let shippingCost = subtotal === 0 || subtotal >= shipping.freeFrom ? 0 : shipping.price;
+  const shipping = shippingMethods[shippingKey] || Object.values(shippingMethods)[0] || {
+    label: "Versand", price: 0, freeFrom: 0, weightTiers: []
+  };
+
+  let shippingCost = 0;
+  let shippingTier = null;
+  if (subtotal > 0 && subtotal < Number(shipping.freeFrom || 0)) {
+    const tiers = Array.isArray(shipping.weightTiers) ? [...shipping.weightTiers] : [];
+    tiers.sort((a,b) => (a.maxGrams == null ? Infinity : Number(a.maxGrams)) - (b.maxGrams == null ? Infinity : Number(b.maxGrams)));
+    if (tiers.length) {
+      shippingTier = tiers.find(t => t.maxGrams == null || totalWeightGrams <= Number(t.maxGrams)) || tiers[tiers.length - 1];
+      shippingCost = Number(shippingTier?.price || 0);
+    } else {
+      shippingCost = Number(shipping.price || 0);
+    }
+  }
   if (couponData?.type === "shipping") shippingCost = 0;
 
   return {
-    subtotal,
-    discount,
-    coupon,
-    couponData,
-    shippingKey,
-    shipping,
-    shippingCost,
+    subtotal, discount, coupon, couponData, shippingKey, shipping,
+    shippingCost, shippingTier, totalWeightGrams,
     total: Math.max(0, subtotal - discount + shippingCost)
   };
 }
-
 function renderCart() {
   const itemBox = document.getElementById("cart-items");
   const summary = document.getElementById("cart-summary");
@@ -218,7 +243,8 @@ function buildOrderText() {
   lines.push(`Zwischensumme: ${totals.subtotal.toFixed(2)} €`);
   lines.push(`Gutschein: ${totals.coupon || "kein Code"}`);
   lines.push(`Rabatt: -${totals.discount.toFixed(2)} €`);
-  lines.push(`Versand: ${totals.shipping.label} (${totals.shippingCost.toFixed(2)} €)`);
+  lines.push(`Gesamtgewicht: ${totals.totalWeightGrams.toLocaleString("de-DE")} g`);
+  lines.push(`Versand: ${totals.shipping.label}${totals.shippingTier ? ` – Gewichtsgruppe: ${totals.shippingTier.maxGrams == null ? "letzte Stufe" : `bis ${Number(totals.shippingTier.maxGrams).toLocaleString("de-DE")} g`}` : ""} (${totals.shippingCost.toFixed(2)} €)`);
   lines.push(`Gesamt: ${totals.total.toFixed(2)} €`);
   return lines.join("\n");
 }
@@ -460,7 +486,7 @@ function renderProducts(list) {
       ${product.customizable ? '<span class="badge">Personalisierbar</span>' : ""}
       <p>${escapeHtml(product.description)}</p>
       ${product.priceOnRequest ? '<strong>Preis auf Anfrage</strong>' : `<strong>${product.price.toFixed(2)} €</strong>`}
-      ${product.priceOnRequest ? `<a class="main-btn" href="kontakt.html?anfrage=${encodeURIComponent(product.name)}">Preis anfragen</a>` : `<button type="button" onclick="addToCart(${product.id})">In den Warenkorb</button>`}
+      ${product.priceOnRequest ? `<a class="main-btn" href="kontakt.html?anfrage=${encodeURIComponent(product.name)}">Preis anfragen</a>` : `<button type="button" ${Number(product.stock)<=0?"disabled":""} onclick="addToCart(${product.id})">${Number(product.stock)<=0?"Nicht verfügbar":"In den Warenkorb"}</button>`}
     </article>`).join("");
 }
 
