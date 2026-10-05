@@ -1,46 +1,4 @@
 
-/* ===== BKW Produktmedien: Bild/GIF/Video ===== */
-const BKW_MEDIA_TYPES = [
-  "image/jpeg","image/png","image/webp","image/gif",
-  "video/mp4","video/webm","video/ogg"
-];
-
-function bkwIsSupportedMedia(file) {
-  return !!file && BKW_MEDIA_TYPES.includes(String(file.type || "").toLowerCase());
-}
-
-function bkwMediaKindFromUrl(url, mime = "") {
-  const m = String(mime || "").toLowerCase();
-  const u = String(url || "").split("?")[0].toLowerCase();
-  if (m.startsWith("video/") || /\.(mp4|webm|ogg)$/.test(u)) return "video";
-  if (m === "image/gif" || /\.gif$/.test(u)) return "gif";
-  return "image";
-}
-
-function bkwCreateMediaPreview(url, mime = "", className = "bkw-media-preview") {
-  const kind = bkwMediaKindFromUrl(url, mime);
-  if (kind === "video") {
-    const el = document.createElement("video");
-    el.src = url;
-    el.controls = true;
-    el.playsInline = true;
-    el.preload = "metadata";
-    el.className = className;
-    return el;
-  }
-  const el = document.createElement("img");
-  el.src = url;
-  el.alt = "";
-  el.className = className;
-  return el;
-}
-
-function bkwMediaLabel(url, mime = "") {
-  const kind = bkwMediaKindFromUrl(url, mime);
-  return kind === "video" ? "VIDEO" : kind === "gif" ? "GIF" : "BILD";
-}
-
-
 "use strict";
 
 const state = {
@@ -317,12 +275,13 @@ function productModal(id){
 <label class="check"><input name="customizable" type="checkbox" ${p.customizable?"checked":""}> Personalisierbar</label>
 <div class="wide upload-box" style="border:1px solid #ddd;border-radius:12px;padding:12px">
   <b>Produktbilder</b>
+<div class="bkw-media-upload-hint">Bilder (JPG, PNG, WebP), animierte GIFs und Videos (MP4, WebM, OGG) – mehrere Dateien möglich.</div>
   <div style="margin:6px 0 10px;color:#666;font-size:.92em">Das markierte <strong>Hauptbild</strong> wird im Shop direkt in der Produktübersicht angezeigt. Du kannst das Hauptbild jederzeit ändern.</div>
   <div id="existingImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">${imageCards||'<span style="color:#777">Noch kein Produktbild vorhanden.</span>'}</div>
   <hr style="margin:14px 0;border:0;border-top:1px solid #ddd">
-  <b>Weitere Bilder hochladen</b>
+  <b>Weitere Produktmedien hochladen</b>
   <div style="margin:6px 0 10px;color:#666;font-size:.92em">JPG, PNG oder WebP · maximal 5 MB pro Bild</div>
-  <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/ogg" multiple>
+  <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
   <div id="productImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"></div>
   <div id="productUploadStatus" style="margin-top:8px"></div>
 </div>
@@ -500,7 +459,7 @@ function settings(){
  $("#settingsForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);d.shopName=f.get("shopName");d.tagline=f.get("tagline");d.contactEmail=f.get("email");d.heroTitle=f.get("heroTitle");d.site={...(d.site||{}),shopName:d.shopName,tagline:d.tagline,contactEmail:d.contactEmail,heroTitle:d.heroTitle,heroText:f.get("heroText")};status("Einstellungen übernommen – noch nicht veröffentlicht.","ok");}
 }
 function backup(){
- $("#view-backup").innerHTML=panel("Backup & Wiederherstellung",`<div class="backup-box"><div class="panel"><h3>Export</h3><p class="muted">Sichere die komplette Shop-Konfiguration als JSON.</p><button id="exportBtn" class="main-btn">Backup herunterladen</button></div><div class="panel"><h3>Import</h3><p class="muted">Importiere eine zuvor gespeicherte JSON-Datei.</p><input id="importFile" type="file" accept="application/json,video/mp4,video/webm,video/ogg"></div></div><div class="panel"><h3>Veröffentlichung</h3><p class="muted">Nach Änderungen immer „Alles veröffentlichen“ drücken, wenn du mit GitHub verbunden bist.</p><button id="backupSave" class="main-btn">Jetzt veröffentlichen</button></div>`);
+ $("#view-backup").innerHTML=panel("Backup & Wiederherstellung",`<div class="backup-box"><div class="panel"><h3>Export</h3><p class="muted">Sichere die komplette Shop-Konfiguration als JSON.</p><button id="exportBtn" class="main-btn">Backup herunterladen</button></div><div class="panel"><h3>Import</h3><p class="muted">Importiere eine zuvor gespeicherte JSON-Datei.</p><input id="importFile" type="file" accept="application/json"></div></div><div class="panel"><h3>Veröffentlichung</h3><p class="muted">Nach Änderungen immer „Alles veröffentlichen“ drücken, wenn du mit GitHub verbunden bist.</p><button id="backupSave" class="main-btn">Jetzt veröffentlichen</button></div>`);
  $("#exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(ensureData(),null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="bine-kreativwerkstatt-backup.json";a.click();URL.revokeObjectURL(a.href)};
  $("#importFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{state.data=ensureData(JSON.parse(await f.text()));render();status("Backup importiert – bitte veröffentlichen.","ok")}catch(err){status("Backup ungültig: "+err.message,"error")}};
  $("#backupSave").onclick=save;
@@ -511,10 +470,3 @@ $("#repoOwner").value=state.owner;$("#repoName").value=state.repo||"";
 if(state.token&&state.owner){
   discoverShopRepo().then(found=>{state.repo=found.repo.name;state.branch=found.branch;return loadGitHub()}).then(()=>{enter()}).catch(()=>{sessionStorage.removeItem("bkw_admin_token");state.token=""});
 }
-
-document.addEventListener("change", (event) => {
-  const input = event.target;
-  if (!(input instanceof HTMLInputElement) || input.type !== "file") return;
-  if (!input.multiple) return;
-  input.accept = "image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg";
-}, true);
