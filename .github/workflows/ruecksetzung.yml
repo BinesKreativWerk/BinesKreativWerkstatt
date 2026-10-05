@@ -1,0 +1,21 @@
+name: Projekt auf alten Stand zurücksetzen
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Alten Stand wiederherstellen
+        run: |
+          git push --force origin 3f0e49c300f4079dcceb72b9c96d3b1f9116fa7:refs/heads/main
