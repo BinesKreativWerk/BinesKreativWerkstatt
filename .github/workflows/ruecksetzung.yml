@@ -16,6 +16,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Alten Stand wiederherstellen
+      - name: Alten Stand als neuen Projektstand übernehmen
         run: |
-          git push --force origin 3f0e49c300f4079dcceb72b9c96d3b1f9116fa7:refs/heads/main
+          git config user.name "BinesKreativWerk"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin
+          git read-tree --reset -u 3f0e49c300f4079dcceb72b9c96d3b1f9116fa7^{tree}
+          git add -A
+          git commit -m "Projektstand auf 3f0e49c zurückgesetzt"
+          git push origin HEAD:main
