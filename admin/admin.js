@@ -1,4 +1,32 @@
 
+/* ===== BKW Admin: Medienvorschau für Bild/GIF/Video ===== */
+function bkwAdminMediaKind(url, mime = "") {
+  const m = String(mime || "").toLowerCase();
+  const u = String(url || "").split("?")[0].toLowerCase();
+  if (m.startsWith("video/") || /\.(mp4|webm|ogg)$/.test(u)) return "video";
+  if (m === "image/gif" || /\.gif$/.test(u)) return "gif";
+  return "image";
+}
+
+function bkwAdminMediaPreview(url, mime = "") {
+  const kind = bkwAdminMediaKind(url, mime);
+  if (kind === "video") {
+    const video = document.createElement("video");
+    video.src = url;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.className = "admin-product-media-preview";
+    return video;
+  }
+  const image = document.createElement("img");
+  image.src = url;
+  image.alt = "";
+  image.className = "admin-product-media-preview";
+  return image;
+}
+
+
 "use strict";
 
 const state = {
@@ -275,11 +303,10 @@ function productModal(id){
 <label class="check"><input name="customizable" type="checkbox" ${p.customizable?"checked":""}> Personalisierbar</label>
 <div class="wide upload-box" style="border:1px solid #ddd;border-radius:12px;padding:12px">
   <b>Produktbilder</b>
-<div class="bkw-media-upload-hint">Bilder (JPG, PNG, WebP), animierte GIFs und Videos (MP4, WebM, OGG) – mehrere Dateien möglich.</div>
   <div style="margin:6px 0 10px;color:#666;font-size:.92em">Das markierte <strong>Hauptbild</strong> wird im Shop direkt in der Produktübersicht angezeigt. Du kannst das Hauptbild jederzeit ändern.</div>
   <div id="existingImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">${imageCards||'<span style="color:#777">Noch kein Produktbild vorhanden.</span>'}</div>
   <hr style="margin:14px 0;border:0;border-top:1px solid #ddd">
-  <b>Weitere Produktmedien hochladen</b>
+  <b>Weitere Bilder hochladen</b>
   <div style="margin:6px 0 10px;color:#666;font-size:.92em">JPG, PNG oder WebP · maximal 5 MB pro Bild</div>
   <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
   <div id="productImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"></div>
@@ -469,4 +496,27 @@ $("#loginBtn").onclick=login;$("#logoutBtn").onclick=logout;$("#saveBtn").onclic
 $("#repoOwner").value=state.owner;$("#repoName").value=state.repo||"";
 if(state.token&&state.owner){
   discoverShopRepo().then(found=>{state.repo=found.repo.name;state.branch=found.branch;return loadGitHub()}).then(()=>{enter()}).catch(()=>{sessionStorage.removeItem("bkw_admin_token");state.token=""});
+}
+
+function bkwUpgradeAdminMediaPreviews(root = document) {
+  root.querySelectorAll("img").forEach((img) => {
+    const src = img.currentSrc || img.src || "";
+    if (!src) return;
+    const kind = bkwAdminMediaKind(src);
+    if (kind !== "video") return;
+    const video = bkwAdminMediaPreview(src);
+    if (img.className) video.className = img.className + " admin-product-media-preview";
+    if (img.parentNode) img.parentNode.replaceChild(video, img);
+  });
+}
+
+if (!window.__BKW_ADMIN_MEDIA_PREVIEW_OBSERVER__) {
+  window.__BKW_ADMIN_MEDIA_PREVIEW_OBSERVER__ = true;
+  const observer = new MutationObserver(() => bkwUpgradeAdminMediaPreviews());
+  if (document.body) observer.observe(document.body, { childList: true, subtree: true });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => bkwUpgradeAdminMediaPreviews(), { once: true });
+  } else {
+    bkwUpgradeAdminMediaPreviews();
+  }
 }
