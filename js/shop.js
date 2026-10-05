@@ -1,30 +1,11 @@
 
-/* Bewegte Medien in Produktkarten */
-function bkwShopMediaKind(url, type = "") {
-  const t = String(type || "").toLowerCase();
+/* ===== BKW Shop: Medienrenderer ===== */
+function bkwShopMediaKind(url, mime = "") {
+  const m = String(mime || "").toLowerCase();
   const u = String(url || "").split("?")[0].toLowerCase();
-  if (t.startsWith("video/") || /\.(mp4|webm|ogg)$/.test(u)) return "video";
-  if (t === "image/gif" || /\.gif$/.test(u)) return "gif";
+  if (m.startsWith("video/") || /\.(mp4|webm|ogg)$/.test(u)) return "video";
+  if (m === "image/gif" || /\.gif$/.test(u)) return "gif";
   return "image";
-}
-
-function bkwCreateShopMedia(url, type = "", className = "") {
-  const kind = bkwShopMediaKind(url, type);
-  if (kind === "video") {
-    const el = document.createElement("video");
-    el.src = url;
-    el.muted = true;
-    el.loop = true;
-    el.playsInline = true;
-    el.preload = "metadata";
-    if (className) el.className = className;
-    return el;
-  }
-  const el = document.createElement("img");
-  el.src = url;
-  el.alt = "";
-  if (className) el.className = className;
-  return el;
 }
 
 "use strict";
