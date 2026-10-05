@@ -14,15 +14,6 @@ async function loadStoreData() {
     siteSettings = data.site || {};
     window.BINE_CATEGORIES = Array.isArray(data.categories) ? data.categories : [];
     products = (data.products || [])
-      .map(product => {
-        const media = Array.isArray(product.media)
-          ? product.media.filter(m => m && m.src).map(m => ({...m, type: m.type || ((String(m.src).match(/\.([a-z0-9]+)(?:\?.*)?$/i)||[])[1]||"jpg").toLowerCase().match(/^(mp4|webm|ogg|mov)$/) ? "video" : "image"}))
-          : [];
-        const images = Array.isArray(product.images) ? product.images.filter(Boolean) : (product.images ? String(product.images).split(",").map(x=>x.trim()).filter(Boolean) : []);
-        if (product.image && !images.includes(product.image)) images.unshift(product.image);
-        if (!media.length) images.forEach(src => media.push({src, type:"image"}));
-        return {...product, images, media, image: product.image || images[0] || "assets/logo.png"};
-      })
       .filter(product => product.visible !== false)
       .map(product => ({ ...product, weightGrams: Math.max(0, Number(product.weightGrams) || 0) }))
       .sort((a, b) => (a.sort || 9999) - (b.sort || 9999));
