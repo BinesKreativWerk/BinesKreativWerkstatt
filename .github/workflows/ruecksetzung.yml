@@ -21,7 +21,7 @@ jobs:
           git config user.name "BinesKreativWerk"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch origin
-          git read-tree --reset -u 3f0e49c300f4079dcceb72b9c96d3b1f9116fa7^{tree}
+          git read-tree --reset -u 3f0e49cef3ff6979bdfecdc6ea20ab4865fbbb6e^{tree}
           git add -A
           git commit -m "Projektstand auf 3f0e49c zurückgesetzt"
           git push origin HEAD:main
