@@ -6,13 +6,196 @@
     "heroTitle": "Einzigartige Unikate mit Herz gemacht ♡",
     "heroText": "3D-gedruckt, von Hand bemalt und mit UV-Harz versiegelt – für dich mit Liebe gefertigt."
   },
-  "products": [],
+  "products": [
+    {
+      "id": 1,
+      "name": "3D Druck & Acryl Schlüsselanhänger ab 3,99€    ",
+      "category": "3D Druck",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-2-1.jpeg",
+      "images": [
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-31-2-1.jpeg",
+        "assets/products/20261003-143912-1-1791039101046-1.jpg",
+        "assets/products/20261003-143836-1-1791039104423-2.jpg",
+        "assets/products/20261003-143639-1-1791039107806-3.jpg",
+        "assets/products/20261003-143453-1-1791039110985-4.jpg",
+        "assets/products/20261003-143409-1-1791039113949-5.jpg",
+        "assets/products/20261003-142853-1-1791039117443-6.jpg",
+        "assets/products/20261003-142540-1-1791039121140-7.jpg",
+        "assets/products/20261003-142401-1-1791039124592-8.jpg",
+        "assets/products/20261003-140854-1-1791039128017-9.jpg",
+        "assets/products/20261003-141835-1-1791039186969-1.jpg",
+        "assets/products/20261003-142130-1-1791039190544-2.jpg",
+        "assets/products/20261003-142103-1-1791039193310-3.jpg",
+        "assets/products/20261003-141946-1-1791039196579-4.jpg",
+        "assets/products/20261003-141705-1-1791039199969-5.jpg",
+        "assets/products/20261003-141443-1-1791039203857-6.jpg",
+        "assets/products/20261003-141342-1-1791039206828-7.jpg",
+        "assets/products/20261003-141139-0-1-1791039210308-8.jpg",
+        "assets/products/20261003-140934-1-1791039214000-9.jpg",
+        "assets/products/20261003-140426-1-1791039389383-1.jpg",
+        "assets/products/20261003-140501-1-1791039393196-2.jpg",
+        "assets/products/20261003-140434-1-1791039396474-3.jpg",
+        "assets/products/20261003-140256-1-1791039400666-4.jpg",
+        "assets/products/20261003-140148-1-1791039404566-5.jpg",
+        "assets/products/20261003-135908-1-1791039975063-1.jpg",
+        "assets/products/20261003-135805-1-1791039978624-2.jpg",
+        "assets/products/20261003-135733-1-1791039981900-3.jpg",
+        "assets/products/20261003-135657-1-1791039984666-4.jpg",
+        "assets/products/20261003-135605-1-1791039987843-5.jpg",
+        "assets/products/20261003-135508-1-1791039991022-6.jpg",
+        "assets/products/20261003-135213-1-1791039994504-7.jpg",
+        "assets/products/20261003-135334-1-1791039998189-8.jpg"
+      ],
+      "description": "Schlüsselanhänger mit eigenen Wunschmotiv und Harzversiegelung - Wunschmotiv/ Wunschschrift entscheiden und Personalisieren lassen - Druck-Farbe aussuchen, Anhängerbasis des 3D Druck & Acryl - Motiv bei der Anfrage hinzufügen - alles nach Absprache Anhänger kosten: 3,99€ - 6,00€\n\nBild kann hier schon ausgesucht werden,bitte per Kopie an mich bei der Anfrage\n\nFür sehr eilige :\nSofort erhältliche sind am  Ende zu sehen  je 1x vorhanden( Solange der Vorrat reicht )\n\nViel Spass beim stöbern ",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 37,
+      "sku": "BKW-7629",
+      "sort": 1,
+      "weightGrams": 0
+    },
+    {
+      "id": 2,
+      "name": "Lesezeichen  ab 4.oo euro",
+      "category": "Epoxidharz",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3-2.jpeg",
+      "images": [
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3-2.jpeg",
+        "assets/products/20261004-160221-2-1791122904061-1.jpg",
+        "assets/products/20261004-160307-2-1791122908589-2.jpg",
+        "assets/products/20261004-160345-2-1791122912002-3.jpg",
+        "assets/products/20261004-160437-2-1791122915415-4.jpg"
+      ],
+      "description": "Verschiede Lesezeichen - Personalisiert - Wunschmotiv - Lesezeichen Hintergrund aussuchen aus: 3D-Druck, Acryl, mit oder ohne Epoxidharz - Preisspanne: ab. 4,00€\n\nFertige die zu sehen sind jetzt 1- 2 mal vorhanden ",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 22,
+      "sku": "BKW-6341",
+      "sort": 2,
+      "weightGrams": 0
+    },
+    {
+      "id": 3,
+      "name": "Deko Stifte ab 7.80€",
+      "category": "Stifte &Zubehör",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3.jpeg",
+      "images": [
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3.jpeg",
+        "assets/products/product-01.jpg",
+        "assets/products/20260930-002834-3-1790971826914-1.jpg",
+        "assets/products/20260927-155140-3-1790972102310-1.jpg",
+        "assets/products/20260927-154301-3-1790972301537-1.jpg",
+        "assets/products/img-20260928-wa0136-3-1790976707003-1.jpeg",
+        "assets/products/img-20260920-wa0254-3-1790976748131-1.jpg",
+        "assets/products/20260916-135543-3-1790976803127-1.jpg",
+        "assets/products/img-20260928-wa0133-3-1790976866596-1.jpeg",
+        "assets/products/img-20260928-wa0125-3-1790976907662-1.jpg"
+      ],
+      "description": "Deko Stifte  - Wunschfarbe der Perlen - Wunschfarbe der Stiftgrundfarbe - Wunschanhänger (Charms) - Preis  ab 7.80 \n\nStifthalter gegen Aufpreis (ab 1 €) , Auswählbar per Anfrage ",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 10,
+      "sku": "BKW-8510",
+      "sort": 3,
+      "weightGrams": 0
+    },
+    {
+      "id": 4,
+      "name": "ThermoBecher & Tassen usw ",
+      "category": "Sublimation",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/img-20260928-wa0084-4-1790967605025-1.jpg",
+      "images": [
+        "assets/products/screenshot-20260925-074209-whatsapp-4-1790969112886-1.jpg",
+        "assets/products/img-20260928-wa0167-4-1790968874953-1.jpeg",
+        "assets/products/img-20260928-wa0084-4-1790967605025-1.jpg",
+        "assets/products/img-20260919-wa0085-4-1790967197055-1.jpg",
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-31-1-4.jpeg",
+        "assets/products/product-01.jpg"
+      ],
+      "description": "Preise und Wünsche ,  bei Anfertigung , direkt per Anfrage  \nThermo Becher gross ab 20€\nTrinkbecher klein ab 10€\nTassen  ab 10€\n\nalles  andere wie zb. Magnete und andere Formen  alles auch via Anfrage",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 0,
+      "sku": "BKW-7989",
+      "sort": 4,
+      "weightGrams": 0
+    },
+    {
+      "id": 5,
+      "name": "Markramee  Armbänder usw ab 10€  auch Vegane Garn (wenn gewünscht) ",
+      "category": "FadenKunst u.Basteln",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-30-5.jpeg",
+      "images": [
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-30-5.jpeg",
+        "assets/products/product-01.jpg\n\nIMG-20260928-WA0188IMG-20260928-WA0188",
+        "assets/products/20260419-125842-5-1790970991599-1.jpg",
+        "assets/products/20260429-190402-5-1790971088479-1.jpg",
+        "assets/products/20260421-160118-5-1790971342628-1.jpg",
+        "assets/products/20260430-170852-5-1790971420613-1.jpg"
+      ],
+      "description": "Handgefertig mit Preis auf Anfrage und richtet sich direkt nach Größe.\n\nab 10€  je nach Model und Zusätzen,wie zb,Perlen usw",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 119,
+      "sku": "BKW-2932",
+      "sort": 5,
+      "weightGrams": 0
+    },
+    {
+      "id": 6,
+      "name": " schöne Dinge  zum entdecken",
+      "category": "FadenKunst u.Basteln",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/20261003-135908-6-1791127217424-1.jpg",
+      "image": "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
+      "images": [
+        "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
+        "assets/products/20230409-145344-6-1790975758048-1.jpg",
+        "assets/products/20230429-114028-6-1790975791954-1.jpg",
+        "assets/products/20230429-114004-6-1790975856343-1.jpg",
+        "assets/products/screenshot-20230503-145451-pinterest-6-1790976144472-1.jpg",
+        "assets/products/20260429-190147-6-1791127157424-1.jpg",
+        "assets/products/20261003-135908-6-1791127217424-1.jpg",
+        "assets/products/20261003-135805-6-1791127222189-2.jpg",
+        "assets/products/20261003-135733-6-1791127226407-3.jpg",
+        "assets/products/20261003-135657-6-1791127234736-4.jpg",
+        "assets/products/20261003-135605-6-1791127239477-5.jpg",
+        "assets/products/20261003-135508-6-1791127243195-6.jpg",
+        "assets/products/20261003-135334-6-1791127246995-7.jpg",
+        "assets/products/20261003-135213-6-1791127250007-8.jpg"
+      ],
+      "description": "- Bücher neu gestalten \n- (Occi oder auch Tatting\n\nund vieles mehr \nPreis anfragen ( sofort erhältlich) \nje 1x vorhanden \nansonsten muss es neu angefertigt werden \n\n\n",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 0,
+      "sku": "BKW-9870",
+      "sort": 6,
+      "weightGrams": 0
+    }
+  ],
   "shippingMethods": [
     {
       "key": "hermes",
       "label": "Hermes Versand",
       "price": 4.95,
-      "freeFrom": 85,
+      "freeFrom": 80,
       "weightTiers": []
     },
     {
@@ -53,8 +236,8 @@
   "categories": [
     {
       "id": "sticker",
-      "name": "Sticker",
-      "label": "Sticker",
+      "name": "Sublimation",
+      "label": "Sublimation",
       "sort": 1,
       "active": true
     },
@@ -85,6 +268,48 @@
       "label": "FSK 18",
       "sort": 5,
       "active": true
+    },
+    {
+      "id": "fadenkunst-u-basteln",
+      "name": "FadenKunst u.Basteln",
+      "label": "Handarbeit ",
+      "sort": 6,
+      "active": true
+    },
+    {
+      "id": "stifte-zubeh-r",
+      "name": "Stifte &Zubehör",
+      "label": "Stifte &Zubehör",
+      "sort": 7,
+      "active": true
+    },
+    {
+      "id": "perlen-handarbeiten",
+      "name": "Perlen Handarbeiten",
+      "label": "Perlen Handarbeiten",
+      "sort": 8,
+      "active": true
+    },
+    {
+      "id": "tshirt-taschen-ect-mit-uv-dtf-b-gelbildern",
+      "name": "Tshirt ,Taschen ect.  mit UV  DTF Bügelbildern",
+      "label": "Tshirt ,Taschen ect.  mit UV  DTF Bügelbildern",
+      "sort": 9,
+      "active": true
+    },
+    {
+      "id": "fertige-sofort-erh-ltliche-sachen-je-1x-vorhanden",
+      "name": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
+      "label": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
+      "sort": 10,
+      "active": true
+    },
+    {
+      "id": "nekopaws3d",
+      "name": "NekoPaws3D",
+      "label": "NekoPaws3D ",
+      "sort": 11,
+      "active": true
     }
   ],
   "management": {
@@ -93,4 +318,3 @@
     "gallery": [],
     "guestbook": []
   }
-}
