@@ -211,6 +211,35 @@
       "sku": "BKW-9870",
       "sort": 6,
       "weightGrams": 0
+    },
+    {
+      "id": 7,
+      "name": "Tshorts , Taschen usw Uv DTF Bügelbilder ",
+      "category": "Tshirt ,Taschen ect. mit UV DTF Bügelbildern",
+      "price": 0,
+      "priceOnRequest": false,
+      "image": "assets/products/0-7-1791377144340-1.jpeg",
+      "images": [
+        "assets/products/product-01.jpg",
+        "assets/products/0-7-1791377144340-1.jpeg",
+        "assets/products/2-7-1791377147031-2.jpeg",
+        "assets/products/3-7-1791377149475-3.jpeg",
+        "assets/products/4-7-1791377151492-4.jpeg",
+        "assets/products/5-7-1791377154108-5.jpeg",
+        "assets/products/9-7-1791377156109-6.jpeg",
+        "assets/products/e-7-1791377158276-7.jpeg",
+        "assets/products/q-7-1791377160454-8.jpeg",
+        "assets/products/w-7-1791377162434-9.jpeg",
+        "assets/products/whatsapp-image-2026-10-07-at-14-41-40-7-1791377167740-10.jpeg"
+      ],
+      "description": "wird auf Anfrage erst angefertigt \n\nBügelbilder sind einige vorhanden ,hier sind nur ein paar zum vllt vorweg aussuchen ",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 0,
+      "sku": "BKW-7307",
+      "sort": 7,
+      "weightGrams": 0
     }
   ],
   "shippingMethods": [
