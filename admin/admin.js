@@ -169,13 +169,13 @@ async function uploadProductImages(files,productId){
   const list=Array.from(files||[]);
   if(!list.length) return [];
   if(list.length>10) throw Error("Bitte höchstens 10 Produktbilder gleichzeitig auswählen.");
-  const allowed=["image/jpeg","image/png","image/webp"];
-  const max=5*1024*1024;
+  const allowed=["image/jpeg","image/png","image/webp","image/gif","video/mp4","video/webm","video/ogg"];
+  const max=50*1024*1024;
   const uploaded=[];
   for(let i=0;i<list.length;i++){
     const file=list[i];
-    if(!allowed.includes(file.type)) throw Error(`„${file.name}“ ist kein unterstütztes Bild. Erlaubt sind JPG, PNG und WebP.`);
-    if(file.size>max) throw Error(`„${file.name}“ ist größer als 5 MB.`);
+    if(!allowed.includes(file.type)) throw Error(`„${file.name}“ ist kein unterstütztes Medium. Erlaubt sind JPG, PNG, WebP, GIF, MP4, WebM und OGG.`);
+    if(file.size>max) throw Error(`„${file.name}“ ist größer als 50 MB.`);
     const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
     const base=safeFileName(file.name).replace(/\.[^.]+$/i,"")||"produktbild";
     const filename=`${base}-${productId}-${Date.now()}-${i+1}.${ext}`;
@@ -307,8 +307,8 @@ function productModal(id){
   <div id="existingImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">${imageCards||'<span style="color:#777">Noch kein Produktbild vorhanden.</span>'}</div>
   <hr style="margin:14px 0;border:0;border-top:1px solid #ddd">
   <b>Weitere Bilder hochladen</b>
-  <div style="margin:6px 0 10px;color:#666;font-size:.92em">JPG, PNG oder WebP · maximal 5 MB pro Bild</div>
-  <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+  <div style="margin:6px 0 10px;color:#666;font-size:.92em">Bilder (JPG, PNG, WebP), animierte GIFs und Videos (MP4, WebM, OGG) · maximal 50 MB pro Datei</div>
+  <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg" multiple>
   <div id="productImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"></div>
   <div id="productUploadStatus" style="margin-top:8px"></div>
 </div>
