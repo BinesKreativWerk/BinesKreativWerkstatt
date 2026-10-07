@@ -99,18 +99,24 @@ async function loadGitHub(){
 }
 async function saveGitHub(){
  const content=JSON.stringify(ensureData(),null,2);
- const body={message:"Shopverwaltung aktualisiert – Bine's KreativWerkstatt",content:b64Text(content),branch:state.branch};
- if(state.sha) body.sha=state.sha;
- try{
-   const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-   state.sha=r.content?.sha||state.sha;
- }catch(e){
-   if(!String(e.message||"").includes("409")) throw e;
-   const fresh=await gh(`/contents/data/store.json?ref=${encodeURIComponent(state.branch)}`);
-   state.sha=fresh.sha;
-   const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({...body,sha:state.sha})});
-   state.sha=r.content?.sha||state.sha;
+ const base={message:"Shopverwaltung aktualisiert – Bine's KreativWerkstatt",content:b64Text(content),branch:state.branch};
+ let lastError;
+ for(let attempt=0;attempt<3;attempt++){
+   const body={...base};
+   if(state.sha) body.sha=state.sha;
+   try{
+     const r=await gh("/contents/data/store.json",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+     state.sha=r.content?.sha||state.sha;
+     return;
+   }catch(e){
+     lastError=e;
+     const msg=String(e.message||"");
+     if(!/409|422|fast.?forward/i.test(msg) || attempt===2) throw e;
+     const fresh=await gh(`/contents/data/store.json?ref=${encodeURIComponent(state.branch)}`);
+     state.sha=fresh.sha;
+   }
  }
+ throw lastError;
 }
 function enter(){
  $("#loginView").classList.add("hidden");$("#dashboardView").classList.remove("hidden");$("#logoutBtn").classList.remove("hidden");
@@ -151,52 +157,35 @@ function safeFileName(name){
 async function uploadRepoFile(path,file,message){
   if(!repoReady()) throw Error("Bitte zuerst mit GitHub verbinden.");
   const content=await fileB64(file);
-
-  // Für Medien wird der Git-Datenbank-Endpunkt verwendet. Das ist bei
-  // größeren Dateien robuster als /contents, weil die komplette Datei
-  // nicht zusätzlich als Contents-Payload verarbeitet werden muss.
-  try{
-    const blob=await gh("/git/blobs",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({content,encoding:"base64"})
-    });
-
-    const ref=await gh(`/git/ref/heads/${encodeURIComponent(state.branch)}`);
-    const commit=await gh(`/git/commits/${ref.object.sha}`);
-    const tree=await gh("/git/trees",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        base_tree:commit.tree.sha,
-        tree:[{path,mode:"100644",type:"blob",sha:blob.sha}]
-      })
-    });
-
-    const newCommit=await gh("/git/commits",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        message,
-        tree:tree.sha,
-        parents:[ref.object.sha]
-      })
-    });
-
-    await gh(`/git/refs/heads/${encodeURIComponent(state.branch)}`,{
-      method:"PATCH",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({sha:newCommit.sha,force:false})
-    });
-
-    return path;
-  }catch(e){
-    const msg=String(e?.message||e);
-    if(/NetworkError|Failed to fetch|Load failed/i.test(msg)){
-      throw Error("Der Upload konnte keine Verbindung zu GitHub herstellen. Bitte Internetverbindung, Browser-Erweiterungen oder VPN prüfen und erneut versuchen.");
+  let sha;
+  let lastError;
+  for(let attempt=0;attempt<3;attempt++){
+    try{
+      const old=await gh(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
+      sha=old.sha;
+    }catch(e){
+      if(!String(e.message||"").includes("404")) throw e;
+      sha=undefined;
     }
-    throw e;
+    const body={message,content,branch:state.branch};
+    if(sha) body.sha=sha;
+    try{
+      const r=await gh(`/contents/${path}`,{
+        method:"PUT",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(body)
+      });
+      return r.content?.path || path;
+    }catch(e){
+      lastError=e;
+      const msg=String(e.message||"");
+      if(!/409|422|fast.?forward/i.test(msg) || attempt===2) throw e;
+      // Branch-Stand hat sich zwischen Lesen und Schreiben geändert.
+      // Beim nächsten Versuch wird der aktuelle SHA erneut gelesen.
+      await new Promise(resolve=>setTimeout(resolve,500*(attempt+1)));
+    }
   }
+  throw lastError;
 }
 async function uploadProductImages(files,productId){
   const list=Array.from(files||[]);
