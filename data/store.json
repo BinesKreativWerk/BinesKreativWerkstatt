@@ -275,7 +275,7 @@
     {
       "id": 8,
       "name": "UV DTF Aufkleber  nur zum aussuchen für  die Herstellung eurer Wünsche",
-      "category": "Sublimation",
+      "category": "UV DTF Aufkleber zum aussuchen für die Herstellung eurer Wünsche",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-17-14-35-8-1791386237318-1.jpeg",
@@ -314,9 +314,9 @@
         "assets/products/dsc09792-8-1791385029490-7.jpg",
         "assets/products/whatsapp-image-2026-10-07-at-17-14-35-8-1791386237318-1.jpeg"
       ],
-      "description": "stöbert mal ,vllt findet ihr ja etwas schönes ,was ihr gerne auf eure Becher /Tassen usw weiter haben möchtet \n\ndiese DTF`s  werden nicht einzeln verkauft\n\nschaut mal wieder rein , öfters mal wieder neue ",
-      "visible": true,
-      "customizable": false,
+      "description": "stöbert mal ,vllt findet ihr ja etwas schönes ,was ihr gerne auf eure Becher /Tassen usw weiter haben möchtet \n\ndiese DTF`s  (werden nicht einzeln verkauft!!! ab: 2€ \n\nschaut mal wieder rein , öfters mal wieder neue ",
+      "visible": false,
+      "customizable": true,
       "featured": false,
       "stock": 0,
       "sku": "BKW-0364",
