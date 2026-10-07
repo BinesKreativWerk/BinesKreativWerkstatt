@@ -222,9 +222,9 @@
     {
       "id": 7,
       "name": "T-shirts , Taschen usw Uv DTF Bügelbilder , Sublimiation ",
-      "category": "Tshirt ,Taschen ect. mit UV DTF Bügelbildern",
+      "category": "Sublimation",
       "price": 0,
-      "priceOnRequest": false,
+      "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-15-06-38-7-1791378540586-1.jpeg",
       "images": [
         "assets/products/0-7-1791377144340-1.jpeg",
