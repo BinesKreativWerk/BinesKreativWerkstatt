@@ -1,0 +1,22 @@
+/* Bine's KreativWerkstatt – kleiner interaktiver Drachen */
+.bkw-dragon-mascot{position:fixed;right:18px;bottom:18px;z-index:260;font-family:Montserrat,Arial,sans-serif;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
+.bkw-dragon-bubble{max-width:270px;background:rgba(8,8,8,.96);color:#f7e9ec;border:1px solid #ff3155;border-radius:16px 16px 5px 16px;padding:11px 13px;box-shadow:0 12px 35px rgba(0,0,0,.5),0 0 22px rgba(255,20,55,.14);font-size:12px;line-height:1.45;pointer-events:auto;animation:bkwDragonBubbleIn .22s ease-out}
+.bkw-dragon-bubble strong{display:block;color:#ff5571;font:700 13px Cinzel,serif;margin-bottom:3px}
+.bkw-dragon-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.bkw-dragon-actions button{border:1px solid #7c2034;background:#17070b;color:#fff;border-radius:999px;padding:6px 9px;font:700 10px Montserrat,Arial,sans-serif;cursor:pointer}
+.bkw-dragon-actions button:hover,.bkw-dragon-actions button:focus-visible{border-color:#ff4163;background:#7f0e2c;outline:none}
+.bkw-dragon-pet{position:relative;width:86px;height:86px;border:1px solid #ff3155;border-radius:50%;background:radial-gradient(circle at 50% 35%,#3d0b13,#080808 68%);box-shadow:0 10px 28px rgba(0,0,0,.55),0 0 25px rgba(255,20,55,.18);cursor:pointer;pointer-events:auto;display:grid;place-items:center;transition:transform .2s,box-shadow .2s}
+.bkw-dragon-pet:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 13px 32px rgba(0,0,0,.6),0 0 30px rgba(255,30,60,.3)}
+.bkw-dragon-pet:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.bkw-dragon-svg{width:72px;height:72px;overflow:visible;animation:bkwDragonFloat 3s ease-in-out infinite}
+.bkw-dragon-pet.is-happy .bkw-dragon-svg{animation:bkwDragonHappy .65s ease-in-out 2}
+.bkw-dragon-pet.is-sleepy .bkw-dragon-svg{animation:bkwDragonSleepy 1.4s ease-in-out}
+.bkw-dragon-eye{transform-origin:center;animation:bkwDragonBlink 4.8s infinite}
+.bkw-dragon-pet::after{content:'🐾';position:absolute;right:-3px;bottom:-2px;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#080808;border:1px solid #ff3155;font-size:12px}
+@keyframes bkwDragonFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-5px) rotate(1deg)}}
+@keyframes bkwDragonBlink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.08)}}
+@keyframes bkwDragonHappy{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-8deg) translateY(-6px)}50%{transform:rotate(8deg) translateY(-9px)}75%{transform:rotate(-5deg) translateY(-4px)}}
+@keyframes bkwDragonSleepy{0%{transform:scale(.98)}50%{transform:scale(.9) translateY(4px)}100%{transform:scale(1)}}
+@keyframes bkwDragonBubbleIn{from{opacity:0;transform:translateY(5px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:600px){.bkw-dragon-mascot{right:10px;bottom:10px}.bkw-dragon-bubble{max-width:min(270px,calc(100vw - 30px));font-size:11px}.bkw-dragon-pet{width:70px;height:70px}.bkw-dragon-svg{width:59px;height:59px}.bkw-dragon-actions button{padding:6px 8px}}
+@media(prefers-reduced-motion:reduce){.bkw-dragon-svg,.bkw-dragon-eye{animation:none}.bkw-dragon-bubble{animation:none}}
