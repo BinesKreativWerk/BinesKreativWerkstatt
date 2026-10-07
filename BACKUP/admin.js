@@ -151,52 +151,19 @@ function safeFileName(name){
 async function uploadRepoFile(path,file,message){
   if(!repoReady()) throw Error("Bitte zuerst mit GitHub verbinden.");
   const content=await fileB64(file);
-
-  // Für Medien wird der Git-Datenbank-Endpunkt verwendet. Das ist bei
-  // größeren Dateien robuster als /contents, weil die komplette Datei
-  // nicht zusätzlich als Contents-Payload verarbeitet werden muss.
+  let sha;
   try{
-    const blob=await gh("/git/blobs",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({content,encoding:"base64"})
-    });
-
-    const ref=await gh(`/git/ref/heads/${encodeURIComponent(state.branch)}`);
-    const commit=await gh(`/git/commits/${ref.object.sha}`);
-    const tree=await gh("/git/trees",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        base_tree:commit.tree.sha,
-        tree:[{path,mode:"100644",type:"blob",sha:blob.sha}]
-      })
-    });
-
-    const newCommit=await gh("/git/commits",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        message,
-        tree:tree.sha,
-        parents:[ref.object.sha]
-      })
-    });
-
-    await gh(`/git/refs/heads/${encodeURIComponent(state.branch)}`,{
-      method:"PATCH",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({sha:newCommit.sha,force:false})
-    });
-
-    return path;
-  }catch(e){
-    const msg=String(e?.message||e);
-    if(/NetworkError|Failed to fetch|Load failed/i.test(msg)){
-      throw Error("Der Upload konnte keine Verbindung zu GitHub herstellen. Bitte Internetverbindung, Browser-Erweiterungen oder VPN prüfen und erneut versuchen.");
-    }
-    throw e;
-  }
+    const old=await gh(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
+    sha=old.sha;
+  }catch(e){}
+  const body={message,content,branch:state.branch};
+  if(sha) body.sha=sha;
+  const r=await gh(`/contents/${path}`,{
+    method:"PUT",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(body)
+  });
+  return r.content?.path || path;
 }
 async function uploadProductImages(files,productId){
   const list=Array.from(files||[]);
