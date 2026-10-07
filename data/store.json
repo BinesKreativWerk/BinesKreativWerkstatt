@@ -185,7 +185,7 @@
       "name": " schöne Dinge zum entdecken ( alles was auf Bldern zu sehen ist, sofort erhältlich )",
       "category": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
       "price": 0,
-      "priceOnRequest": false,
+      "priceOnRequest": true,
       "image": "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
       "images": [
         "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
@@ -318,7 +318,7 @@
       "visible": true,
       "customizable": false,
       "featured": false,
-      "stock": 17,
+      "stock": 0,
       "sku": "BKW-0364",
       "sort": 8,
       "weightGrams": 0
@@ -443,14 +443,14 @@
       "name": "NekoPaws3D",
       "label": "NekoPaws3D ",
       "sort": 11,
-      "active": true
+      "active": false
     },
     {
       "id": "uv-dtf-aufkleber-zum-aussuchen-f-r-die-herstellung-eurer-w-nsche",
       "name": "UV DTF Aufkleber zum aussuchen für  die Herstellung eurer Wünsche",
       "label": "UV DTF -Ob Bügel oder Sticker nur Beispiele zur Hersteullung) kein Einzelverkauf",
       "sort": 12,
-      "active": false
+      "active": true
     },
     {
       "id": "uv-dtf-aufkleber-zum-aussuchen",
