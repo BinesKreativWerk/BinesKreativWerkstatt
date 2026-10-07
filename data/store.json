@@ -332,7 +332,7 @@
       "name": "NekoPaws3D",
       "label": "NekoPaws3D ",
       "sort": 11,
-      "active": true
+      "active": false
     }
   ],
   "management": {
