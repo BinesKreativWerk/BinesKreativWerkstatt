@@ -183,9 +183,9 @@
     {
       "id": 6,
       "name": " schöne Dinge zum entdecken ( alles was auf Bldern zu sehen ist, sofort erhältlich )",
-      "category": "FadenKunst u.Basteln",
+      "category": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
       "price": 0,
-      "priceOnRequest": true,
+      "priceOnRequest": false,
       "image": "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
       "images": [
         "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
