@@ -275,10 +275,10 @@
     {
       "id": 8,
       "name": "UV DTF Aufkleber  nur zum aussuchen für  die Herstellung eurer Wünsche",
-      "category": "Sublimation",
+      "category": "UV DTF Aufkleber zum aussuchen für die Herstellung eurer Wünsche",
       "price": 0,
-      "priceOnRequest": false,
-      "image": "assets/products/dsc09764-8-1791384933324-1.jpg",
+      "priceOnRequest": true,
+      "image": "assets/products/dsc09766-8-1791384994071-1.jpg",
       "images": [
         "assets/products/product-01.jpg",
         "assets/products/dsc09760-8-1791384787725-1.jpg",
@@ -304,13 +304,20 @@
         "assets/products/dsc09780-8-1791384953575-5.jpg",
         "assets/products/dsc09781-8-1791384959125-6.jpg",
         "assets/products/dsc09790-8-1791384964282-7.jpg",
-        "assets/products/dsc09791-8-1791384969612-8.jpg"
+        "assets/products/dsc09791-8-1791384969612-8.jpg",
+        "assets/products/dsc09766-8-1791384994071-1.jpg",
+        "assets/products/dsc09767-8-1791384999385-2.jpg",
+        "assets/products/dsc09774-8-1791385004506-3.jpg",
+        "assets/products/dsc09775-8-1791385011228-4.jpg",
+        "assets/products/dsc09782-8-1791385017774-5.jpg",
+        "assets/products/dsc09783-8-1791385024436-6.jpg",
+        "assets/products/dsc09792-8-1791385029490-7.jpg"
       ],
       "description": "",
       "visible": true,
       "customizable": false,
       "featured": false,
-      "stock": 0,
+      "stock": 108,
       "sku": "BKW-0364",
       "sort": 8,
       "weightGrams": 0
