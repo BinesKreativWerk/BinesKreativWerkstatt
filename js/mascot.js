@@ -72,7 +72,7 @@
         </g>
 
         <!-- body, clearly animal-like -->
-        <path d="M61 91 C58 105 59 137 76 151 C91 163 139 163 154 151 C171 137 172 105 159 91 C142 75 78 75 61 91z" fill="url(#dragonSkin)" stroke="#430811" stroke-width="4" filter="url(#dragonShadow)"/>
+        <path class="dragon-body" d="M61 91 C58 105 59 137 76 151 C91 163 139 163 154 151 C171 137 172 105 159 91 C142 75 78 75 61 91z" fill="url(#dragonSkin)" stroke="#430811" stroke-width="4" filter="url(#dragonShadow)"/>
 
         <!-- belly scales -->
         <path d="M91 98 C82 111 83 139 94 151 C102 158 114 158 122 151 C133 139 134 111 125 98 C117 90 99 90 91 98z" fill="url(#dragonBelly)" stroke="#742e32" stroke-width="2.5"/>
@@ -88,7 +88,7 @@
         </g>
 
         <!-- neck and head -->
-        <path d="M65 88 C48 74 46 50 57 34 C68 18 92 11 117 16 C143 20 160 38 159 61 C158 83 145 99 125 108 C101 118 77 108 65 88z" fill="url(#dragonSkin)" stroke="#430811" stroke-width="4" filter="url(#dragonShadow)"/>
+        <path class="dragon-head" d="M65 88 C48 74 46 50 57 34 C68 18 92 11 117 16 C143 20 160 38 159 61 C158 83 145 99 125 108 C101 118 77 108 65 88z" fill="url(#dragonSkin)" stroke="#430811" stroke-width="4" filter="url(#dragonShadow)"/>
 
         <!-- horns -->
         <path d="M75 38 C58 29 56 12 67 4 C78 16 82 27 82 39z" fill="url(#dragonHorn)" stroke="#4d1c20" stroke-width="3"/>
@@ -116,7 +116,7 @@
         </g>
 
         <!-- long muzzle / snout -->
-        <path d="M78 76 C82 66 95 63 108 66 C121 63 134 66 139 76 C145 89 136 101 122 105 C110 109 98 109 86 105 C72 101 65 89 78 76z" fill="url(#dragonBelly)" stroke="#6b1c20" stroke-width="2.5"/>
+        <path class="dragon-muzzle" d="M78 76 C82 66 95 63 108 66 C121 63 134 66 139 76 C145 89 136 101 122 105 C110 109 98 109 86 105 C72 101 65 89 78 76z" fill="url(#dragonBelly)" stroke="#6b1c20" stroke-width="2.5"/>
         <!-- nostrils -->
         <ellipse cx="91" cy="82" rx="4" ry="2.8" fill="#4c0d15"/>
         <ellipse cx="126" cy="82" rx="4" ry="2.8" fill="#4c0d15"/>
@@ -131,7 +131,7 @@
         </g>
 
         <!-- heart collar -->
-        <path d="M73 103 Q107 116 145 103" fill="none" stroke="#211014" stroke-width="3"/>
+        <path class="dragon-collar" d="M73 103 Q107 116 145 103" fill="none" stroke="#211014" stroke-width="3"/>
         <path d="M105 108v12" stroke="#dca9a0" stroke-width="2"/>
         <path d="M105 125 C98 118 88 126 105 137 C122 126 112 118 105 125z" fill="#ff4d61" stroke="#5d1019" stroke-width="2"/>
       </svg>
@@ -174,6 +174,29 @@
     }
     if (action === 'close') hideBubble();
   });
+
+
+  // Kleine, natürliche Leerlauf-Choreografie: Flügel, Schwanz, Kopf und Pfoten bewegen sich unabhängig.
+  const svg = host.querySelector('.bkw-dragon-svg');
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const idleMoves = ['bkw-idle-look','bkw-idle-tail','bkw-idle-wing','bkw-idle-step','bkw-idle-breathe'];
+  let idleTimer = 0;
+  const playIdleMove = () => {
+    if (prefersReducedMotion || !svg) return;
+    const move = idleMoves[Math.floor(Math.random() * idleMoves.length)];
+    svg.classList.remove(...idleMoves);
+    void svg.offsetWidth;
+    svg.classList.add(move);
+    window.setTimeout(() => svg.classList.remove(move), 1900);
+  };
+  const scheduleIdle = () => {
+    window.clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(() => {
+      playIdleMove();
+      scheduleIdle();
+    }, 5200 + Math.random() * 4200);
+  };
+  scheduleIdle();
 
   // Erste Begrüßung mit kleiner Verzögerung, damit die Seite zuerst sauber lädt.
   window.setTimeout(() => showBubble(0), 1100);

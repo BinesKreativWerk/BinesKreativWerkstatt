@@ -22,3 +22,60 @@
 @keyframes bkwDragonSpark{0%,100%{opacity:.25;transform:translateY(0) rotate(0)}50%{opacity:1;transform:translateY(-5px) rotate(10deg)}}
 @media(max-width:600px){.bkw-dragon-mascot{right:9px;bottom:9px}.bkw-dragon-bubble{max-width:min(280px,calc(100vw - 26px));font-size:11px}.bkw-dragon-pet{width:96px;height:96px}.bkw-dragon-svg{width:94px;height:94px}.bkw-dragon-actions button{padding:6px 8px}.bkw-dragon-pet::after{width:25px;height:25px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){.bkw-dragon-svg,.bkw-dragon-eye,.bkw-dragon-spark{animation:none}.bkw-dragon-bubble{animation:none}}
+
+/* Erweiterte Körperanimationen: Der Drache wirkt lebendiger, ohne eine zusätzliche Grafik zu laden. */
+.bkw-dragon-svg .dragon-head{transform-box:fill-box;transform-origin:50% 80%}
+.bkw-dragon-svg .dragon-muzzle{transform-box:fill-box;transform-origin:50% 35%}
+.bkw-dragon-svg .dragon-body{transform-box:fill-box;transform-origin:50% 55%}
+.bkw-dragon-svg .dragon-tail{transform-box:fill-box;transform-origin:10% 50%}
+.bkw-dragon-svg .wing{transform-box:fill-box;transform-origin:50% 90%}
+.bkw-dragon-svg .dragon-legs-front,.bkw-dragon-svg .dragon-legs-back{transform-box:fill-box;transform-origin:50% 80%}
+.bkw-dragon-svg .dragon-collar{transform-box:fill-box;transform-origin:50% 50%}
+
+@keyframes bkwIdleLook{
+  0%,100%{transform:rotate(0deg) translateX(0)}
+  25%{transform:rotate(-4deg) translateX(-2px)}
+  55%{transform:rotate(3deg) translateX(2px)}
+  75%{transform:rotate(0deg) translateX(0)}
+}
+@keyframes bkwIdleTail{
+  0%,100%{transform:rotate(0deg)}
+  25%{transform:rotate(7deg)}
+  50%{transform:rotate(-8deg)}
+  75%{transform:rotate(5deg)}
+}
+@keyframes bkwIdleWing{
+  0%,100%{transform:rotate(0deg)}
+  22%{transform:rotate(-9deg) translateY(-2px)}
+  44%{transform:rotate(7deg) translateY(1px)}
+  66%{transform:rotate(-5deg)}
+}
+@keyframes bkwIdleStep{
+  0%,100%{transform:rotate(0deg) translateY(0)}
+  28%{transform:rotate(-2deg) translateY(-2px)}
+  50%{transform:rotate(2deg) translateY(1px)}
+  72%{transform:rotate(-1deg) translateY(-1px)}
+}
+@keyframes bkwIdleBreathe{
+  0%,100%{transform:scale(1)}
+  45%{transform:scale(1.018,1.012)}
+}
+.bkw-dragon-svg.bkw-idle-look .dragon-head{animation:bkwIdleLook 1.6s ease-in-out}
+.bkw-dragon-svg.bkw-idle-look .dragon-muzzle{animation:bkwIdleLook 1.6s ease-in-out}
+.bkw-dragon-svg.bkw-idle-tail .dragon-tail{animation:bkwIdleTail 1.7s ease-in-out}
+.bkw-dragon-svg.bkw-idle-wing .wing{animation:bkwIdleWing 1.5s ease-in-out}
+.bkw-dragon-svg.bkw-idle-step .dragon-legs-front{animation:bkwIdleStep 1.45s ease-in-out}
+.bkw-dragon-svg.bkw-idle-step .dragon-legs-back{animation:bkwIdleStep 1.45s ease-in-out reverse}
+.bkw-dragon-svg.bkw-idle-breathe .dragon-body{animation:bkwIdleBreathe 1.8s ease-in-out}
+.bkw-dragon-svg.bkw-idle-breathe .dragon-collar{animation:bkwIdleBreathe 1.8s ease-in-out}
+
+/* Beim Anklicken wird daraus eine deutlichere Reaktion. */
+.bkw-dragon-pet.is-happy .wing{animation:bkwIdleWing .75s ease-in-out 2}
+.bkw-dragon-pet.is-happy .dragon-tail{animation:bkwIdleTail .8s ease-in-out 2}
+.bkw-dragon-pet.is-happy .dragon-head{animation:bkwIdleLook .78s ease-in-out 2}
+
+@media(prefers-reduced-motion:reduce){
+  .bkw-dragon-svg .dragon-head,.bkw-dragon-svg .dragon-muzzle,.bkw-dragon-svg .dragon-body,
+  .bkw-dragon-svg .dragon-tail,.bkw-dragon-svg .wing,.bkw-dragon-svg .dragon-legs-front,
+  .bkw-dragon-svg .dragon-legs-back,.bkw-dragon-svg .dragon-collar{animation:none!important}
+}
