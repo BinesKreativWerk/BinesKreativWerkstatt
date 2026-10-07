@@ -186,7 +186,7 @@
       "category": "FadenKunst u.Basteln",
       "price": 0,
       "priceOnRequest": true,
-      "image": "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
+      "image": "assets/products/2-6-1791380381311-1.jpeg",
       "images": [
         "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
         "assets/products/20230409-145344-6-1790975758048-1.jpg",
@@ -208,7 +208,17 @@
         "assets/products/dsc09732-6-1791219520799-4.jpg",
         "assets/products/dsc09733-6-1791219526930-5.jpg",
         "assets/products/dsc09734-6-1791219536149-6.jpg",
-        "assets/products/img-20260920-wa0245-6-1791219542089-7.jpg"
+        "assets/products/img-20260920-wa0245-6-1791219542089-7.jpg",
+        "assets/products/2-6-1791380381311-1.jpeg",
+        "assets/products/3-6-1791380383476-2.jpeg",
+        "assets/products/4-6-1791380385700-3.jpeg",
+        "assets/products/5-6-1791380388204-4.jpeg",
+        "assets/products/6-6-1791380390935-5.jpeg",
+        "assets/products/d-6-1791380394599-6.jpeg",
+        "assets/products/f-6-1791380396619-7.jpeg",
+        "assets/products/g-6-1791380398832-8.jpeg",
+        "assets/products/h-6-1791380400873-9.jpeg",
+        "assets/products/s-6-1791380403004-10.jpeg"
       ],
       "description": "- Bücher neu gestalten \n- (Occi oder auch Tatting\n\nund vieles mehr \nPreis anfragen ( sofort erhältlich) \nje 1x vorhanden \nansonsten muss es neu angefertigt werden \n\n\n",
       "visible": true,
@@ -222,9 +232,9 @@
     {
       "id": 7,
       "name": "T-shirts , Taschen usw Uv DTF Bügelbilder , Sublimiation ",
-      "category": "Sublimation",
+      "category": "Tshirt ,Taschen ect. mit UV DTF Bügelbildern",
       "price": 0,
-      "priceOnRequest": true,
+      "priceOnRequest": false,
       "image": "assets/products/whatsapp-image-2026-10-07-at-15-06-38-7-1791378540586-1.jpeg",
       "images": [
         "assets/products/0-7-1791377144340-1.jpeg",
