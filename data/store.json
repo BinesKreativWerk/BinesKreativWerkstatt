@@ -275,10 +275,10 @@
     {
       "id": 8,
       "name": "UV DTF Aufkleber  nur zum aussuchen für  die Herstellung eurer Wünsche",
-      "category": "UV DTF Aufkleber zum aussuchen für die Herstellung eurer Wünsche",
+      "category": "Sublimation",
       "price": 0,
       "priceOnRequest": false,
-      "image": "assets/products/dsc09760-8-1791384787725-1.jpg",
+      "image": "assets/products/dsc09762-8-1791384850965-1.jpg",
       "images": [
         "assets/products/product-01.jpg",
         "assets/products/dsc09760-8-1791384787725-1.jpg",
@@ -288,7 +288,15 @@
         "assets/products/dsc09776-8-1791384812171-5.jpg",
         "assets/products/dsc09777-8-1791384817727-6.jpg",
         "assets/products/dsc09784-8-1791384822455-7.jpg",
-        "assets/products/dsc09786-8-1791384829489-8.jpg"
+        "assets/products/dsc09786-8-1791384829489-8.jpg",
+        "assets/products/dsc09762-8-1791384850965-1.jpg",
+        "assets/products/dsc09763-8-1791384864971-2.jpg",
+        "assets/products/dsc09770-8-1791384869978-3.jpg",
+        "assets/products/dsc09771-8-1791384875567-4.jpg",
+        "assets/products/dsc09778-8-1791384881854-5.jpg",
+        "assets/products/dsc09779-8-1791384889324-6.jpg",
+        "assets/products/dsc09788-8-1791384894746-7.jpg",
+        "assets/products/dsc09789-8-1791384899836-8.jpg"
       ],
       "description": "",
       "visible": true,
