@@ -271,6 +271,33 @@
       "sku": "BKW-7307",
       "sort": 7,
       "weightGrams": 0
+    },
+    {
+      "id": 8,
+      "name": "UV DTF Aufkleber  nur zum aussuchen für  die Herstellung eurer Wünsche",
+      "category": "UV DTF Aufkleber zum aussuchen für die Herstellung eurer Wünsche",
+      "price": 0,
+      "priceOnRequest": false,
+      "image": "assets/products/dsc09760-8-1791384787725-1.jpg",
+      "images": [
+        "assets/products/product-01.jpg",
+        "assets/products/dsc09760-8-1791384787725-1.jpg",
+        "assets/products/dsc09761-8-1791384793422-2.jpg",
+        "assets/products/dsc09768-8-1791384800189-3.jpg",
+        "assets/products/dsc09769-8-1791384806339-4.jpg",
+        "assets/products/dsc09776-8-1791384812171-5.jpg",
+        "assets/products/dsc09777-8-1791384817727-6.jpg",
+        "assets/products/dsc09784-8-1791384822455-7.jpg",
+        "assets/products/dsc09786-8-1791384829489-8.jpg"
+      ],
+      "description": "",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 0,
+      "sku": "BKW-0364",
+      "sort": 8,
+      "weightGrams": 0
     }
   ],
   "shippingMethods": [
@@ -393,6 +420,13 @@
       "label": "NekoPaws3D ",
       "sort": 11,
       "active": false
+    },
+    {
+      "id": "uv-dtf-aufkleber-zum-aussuchen-f-r-die-herstellung-eurer-w-nsche",
+      "name": "UV DTF Aufkleber zum aussuchen für  die Herstellung eurer Wünsche",
+      "label": "UV DTF -Ob Bügel oder Sticker nur Beispiele zur Hersteullung) kein Einzelverkauf",
+      "sort": 12,
+      "active": true
     }
   ],
   "management": {
