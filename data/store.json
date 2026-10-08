@@ -336,10 +336,18 @@
       "category": "3D Druck",
       "price": 0,
       "priceOnRequest": true,
-      "image": "assets/products/3d-druck-hauptbild-9-1791499955768-1.jpeg",
+      "image": "assets/products/3d-herzanhaenger-9-1791500045172-1.jpeg",
       "images": [
         "assets/products/product-01.jpg",
-        "assets/products/3d-druck-hauptbild-9-1791499955768-1.jpeg"
+        "assets/products/3d-druck-hauptbild-9-1791499955768-1.jpeg",
+        "assets/products/3d-herzanhaenger-9-1791500045172-1.jpeg",
+        "assets/products/dsc09735-9-1791500047442-2.jpg",
+        "assets/products/dsc09736-9-1791500055227-3.jpg",
+        "assets/products/dsc09754-9-1791500060616-4.jpg",
+        "assets/products/dsc09756-9-1791500067824-5.jpg",
+        "assets/products/dsc09757-9-1791500072118-6.jpg",
+        "assets/products/dsc09758-9-1791500077184-7.jpg",
+        "assets/products/img-20260928-wa0008-9-1791500082828-8.jpeg"
       ],
       "description": "",
       "visible": true,
