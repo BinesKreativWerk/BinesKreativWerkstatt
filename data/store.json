@@ -329,6 +329,26 @@
       "sku": "BKW-0364",
       "sort": 8,
       "weightGrams": 0
+    },
+    {
+      "id": 9,
+      "name": "3D Druck  aus Pla/ Petg  mit Herzen erstellt und ausgedruckt",
+      "category": "3D Druck",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/3d-druck-hauptbild-9-1791499955768-1.jpeg",
+      "images": [
+        "assets/products/product-01.jpg",
+        "assets/products/3d-druck-hauptbild-9-1791499955768-1.jpeg"
+      ],
+      "description": "",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 0,
+      "sku": "BKW-5045",
+      "sort": 9,
+      "weightGrams": 0
     }
   ],
   "shippingMethods": [
