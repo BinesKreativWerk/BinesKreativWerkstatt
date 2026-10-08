@@ -465,6 +465,13 @@
       "label": "UV DTF Aufkleber zum Aussuchen",
       "sort": 13,
       "active": true
+    },
+    {
+      "id": "3d-druck-aus-pla-petg",
+      "name": "3D Druck  aus Pla/ Petg",
+      "label": "3D Druck",
+      "sort": 14,
+      "active": true
     }
   ],
   "management": {
