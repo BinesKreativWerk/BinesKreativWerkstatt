@@ -81,7 +81,7 @@
     {
       "id": 3,
       "name": "Deko Stifte ab 7.80€  ",
-      "category": "Stifte &Zubehör",
+      "category": "Perlenstifte  & Zubehör",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3.jpeg",
@@ -436,7 +436,7 @@
     },
     {
       "id": "stifte-zubeh-r",
-      "name": "Stifte &Zubehör",
+      "name": "Perlenstifte  & Zubehör",
       "label": "Stifte &Zubehör",
       "sort": 2,
       "active": true
