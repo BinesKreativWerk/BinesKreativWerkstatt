@@ -10,7 +10,7 @@
     {
       "id": 1,
       "name": "3D Druck & Acryl Schlüsselanhänger ab 3,99€    ",
-      "category": "3D Druck",
+      "category": "3D Druck & Acryl  & Makramee  Schlüsselanhänger ab 3,99€",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-2-1.jpeg",
@@ -345,7 +345,7 @@
     {
       "id": 9,
       "name": "3D Druck  aus Pla/ Petg  mit Herzen erstellt und ausgedruckt",
-      "category": "3D Druck",
+      "category": "3D Druck & Acryl  & Makramee  Schlüsselanhänger ab 3,99€",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-18-09-13-9-1791500829057-1.jpeg",
@@ -443,7 +443,7 @@
     },
     {
       "id": "3d-druck",
-      "name": "3D Druck",
+      "name": "3D Druck & Acryl  & Makramee  Schlüsselanhänger ab 3,99€",
       "label": "3D Druck",
       "sort": 2,
       "active": true
