@@ -56,7 +56,7 @@
     {
       "id": 2,
       "name": "Lesezeichen  ab 4.oo euro",
-      "category": "Epoxidharz",
+      "category": "Epoxidharz Acryl 3D Druck",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3-2.jpeg",
@@ -450,7 +450,7 @@
     },
     {
       "id": "epoxidharz",
-      "name": "Epoxidharz",
+      "name": "Epoxidharz Acryl 3D Druck",
       "label": "Epoxidharz",
       "sort": 4,
       "active": true
