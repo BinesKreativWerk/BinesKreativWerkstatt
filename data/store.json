@@ -294,7 +294,7 @@
     {
       "id": 8,
       "name": "UV DTF Aufkleber  nur zum aussuchen für  die Herstellung eurer Wünsche",
-      "category": "UV DTF Aufkleber zum Aussuchen",
+      "category": "UV DTF Aufkleber  nur zum aussuchen für  die Herstellung eurer Wünsche",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-17-14-35-8-1791386237318-1.jpeg",
@@ -471,10 +471,10 @@
     },
     {
       "id": "uv-dtf-aufkleber-zum-aussuchen",
-      "name": "UV DTF Aufkleber zum Aussuchen",
+      "name": "UV DTF Aufkleber  nur zum aussuchen für  die Herstellung eurer Wünsche",
       "label": "UV DTF Aufkleber zum Aussuchen",
       "sort": 7,
-      "active": true
+      "active": false
     },
     {
       "id": "fadenkunst-u-basteln",
