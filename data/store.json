@@ -435,6 +435,13 @@
       "active": true
     },
     {
+      "id": "stifte-zubeh-r",
+      "name": "Stifte &Zubehör",
+      "label": "Stifte &Zubehör",
+      "sort": 2,
+      "active": true
+    },
+    {
       "id": "3d-druck",
       "name": "3D Druck",
       "label": "3D Druck",
@@ -445,55 +452,48 @@
       "id": "epoxidharz",
       "name": "Epoxidharz",
       "label": "Epoxidharz",
-      "sort": 3,
-      "active": true
-    },
-    {
-      "id": "bundles",
-      "name": "Bundles",
-      "label": "Bundles",
       "sort": 4,
-      "active": true
-    },
-    {
-      "id": "fsk-18",
-      "name": "FSK 18",
-      "label": "FSK 18",
-      "sort": 5,
-      "active": true
-    },
-    {
-      "id": "fadenkunst-u-basteln",
-      "name": "FadenKunst u.Basteln",
-      "label": "Handarbeit ",
-      "sort": 6,
-      "active": true
-    },
-    {
-      "id": "stifte-zubeh-r",
-      "name": "Stifte &Zubehör",
-      "label": "Stifte &Zubehör",
-      "sort": 7,
-      "active": true
-    },
-    {
-      "id": "perlen-handarbeiten",
-      "name": "Perlen Handarbeiten",
-      "label": "Perlen Handarbeiten",
-      "sort": 8,
       "active": true
     },
     {
       "id": "tshirt-taschen-ect-mit-uv-dtf-b-gelbildern",
       "name": "Tshirt ,Taschen ect.  mit UV  DTF Bügelbildern",
       "label": "Tshirt ,Taschen ect.  mit UV  DTF Bügelbildern",
+      "sort": 5,
+      "active": true
+    },
+    {
+      "id": "uv-dtf-aufkleber-zum-aussuchen-f-r-die-herstellung-eurer-w-nsche",
+      "name": "UV DTF Aufkleber zum aussuchen für  die Herstellung eurer Wünsche",
+      "label": "UV DTF -Ob Bügel oder Sticker nur Beispiele zur Hersteullung) kein Einzelverkauf",
+      "sort": 6,
+      "active": true
+    },
+    {
+      "id": "uv-dtf-aufkleber-zum-aussuchen",
+      "name": "UV DTF Aufkleber zum Aussuchen",
+      "label": "UV DTF Aufkleber zum Aussuchen",
+      "sort": 7,
+      "active": true
+    },
+    {
+      "id": "fadenkunst-u-basteln",
+      "name": "FadenKunst u.Basteln",
+      "label": "Handarbeit ",
+      "sort": 8,
+      "active": true
+    },
+    {
+      "id": "3d-druck-aus-pla-petg",
+      "name": "3D Druck  aus Pla/ Petg",
+      "label": "3D Druck",
       "sort": 9,
       "active": true
     },
     {
-      "id": "fertige-sofort-erh-ltliche-sachen-je-1x-vorhanden",
-      "name": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
-      "label": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
+      "id": "perlen-handarbeiten",
+      "name": "Perlen Handarbeiten",
+      "label": "Perlen Handarbeiten",
       "sort": 10,
       "active": true
     },
@@ -505,23 +505,23 @@
       "active": false
     },
     {
-      "id": "uv-dtf-aufkleber-zum-aussuchen-f-r-die-herstellung-eurer-w-nsche",
-      "name": "UV DTF Aufkleber zum aussuchen für  die Herstellung eurer Wünsche",
-      "label": "UV DTF -Ob Bügel oder Sticker nur Beispiele zur Hersteullung) kein Einzelverkauf",
+      "id": "fertige-sofort-erh-ltliche-sachen-je-1x-vorhanden",
+      "name": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
+      "label": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
       "sort": 12,
       "active": true
     },
     {
-      "id": "uv-dtf-aufkleber-zum-aussuchen",
-      "name": "UV DTF Aufkleber zum Aussuchen",
-      "label": "UV DTF Aufkleber zum Aussuchen",
+      "id": "bundles",
+      "name": "Bundles",
+      "label": "Bundles",
       "sort": 13,
       "active": true
     },
     {
-      "id": "3d-druck-aus-pla-petg",
-      "name": "3D Druck  aus Pla/ Petg",
-      "label": "3D Druck",
+      "id": "fsk-18",
+      "name": "FSK 18",
+      "label": "FSK 18",
       "sort": 14,
       "active": true
     }
