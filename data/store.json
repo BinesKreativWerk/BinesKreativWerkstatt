@@ -113,7 +113,7 @@
     {
       "id": 4,
       "name": "ThermoBecher & Tassen  usw ab 10€  alles was sich Sublimieren lässt zb :  Magnete, Kugelscshreiber,Anhänger",
-      "category": "Sublimation",
+      "category": "ThermoBecher & Tassen  usw  alles was sich Sublimieren lässt zb   Magnete) ab 10€",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/img-20260928-wa0084-4-1790967605025-1.jpg",
@@ -260,7 +260,7 @@
     {
       "id": 7,
       "name": "T-shirts , Taschen usw Uv DTF Bügelbilder , Sublimiation ",
-      "category": "Sublimation",
+      "category": "ThermoBecher & Tassen  usw  alles was sich Sublimieren lässt zb   Magnete) ab 10€",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-15-06-38-7-1791378540586-1.jpeg",
@@ -429,7 +429,7 @@
   "categories": [
     {
       "id": "sticker",
-      "name": "Sublimation",
+      "name": "ThermoBecher & Tassen  usw  alles was sich Sublimieren lässt zb   Magnete) ab 10€",
       "label": "Sublimation",
       "sort": 1,
       "active": true
