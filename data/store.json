@@ -500,16 +500,16 @@
       "active": true
     },
     {
-      "id": "nekopaws3d",
-      "name": "NekoPaws3D",
-      "label": "NekoPaws3D ",
-      "sort": 11,
-      "active": false
-    },
-    {
       "id": "fertige-sofort-erh-ltliche-sachen-je-1x-vorhanden",
       "name": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
       "label": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
+      "sort": 11,
+      "active": true
+    },
+    {
+      "id": "nekopaws3d",
+      "name": "NekoPaws3D",
+      "label": "NekoPaws3D ",
       "sort": 12,
       "active": true
     },
