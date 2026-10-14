@@ -347,12 +347,11 @@
     {
       "id": 9,
       "name": "3D Druck  aus Pla/ Petg  mit Herzen erstellt und ausgedruckt",
-      "category": "3D Druck & Acryl  & Makramee  Schlüsselanhänger ab 3,99€",
+      "category": "3D Druck aus Pla/ Petg",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-18-09-13-9-1791500829057-1.jpeg",
       "images": [
-        "assets/products/product-01.jpg",
         "assets/products/3d-herzanhaenger-9-1791500045172-1.jpeg",
         "assets/products/dsc09735-9-1791500047442-2.jpg",
         "assets/products/dsc09736-9-1791500055227-3.jpg",
@@ -375,7 +374,7 @@
         "assets/products/whatsapp-image-2026-10-09-at-01-39-28-9-1791504291884-2.jpeg",
         "assets/products/hand-9-1791504312159-1.jpeg"
       ],
-      "description": "es gibt extrem vieles was man 3D drucken kann \n\nerstellen selber ,immer wieder was neues \n\nfragt einfach mal an , was ihr möchtet .....entscheiden dann ob es machbar ist \n\nkleiner Tip NekoPaws3D   erstellt super schöne Resin Figuren mit viel Liebe (hier verlinkt auf der STartseite)",
+      "description": "es gibt extrem vieles was man 3D drucken kann \n\nerstellen selber ,immer wieder was neues \n\nfragt einfach mal an , was ihr möchtet .....entscheiden dann ob es machbar ist \n\nkleiner Tip -NekoPaws3D-  erstellt super schöne Resin Figuren ,mit viel Liebe (hier verlinkt auf der Startseite)",
       "visible": true,
       "customizable": false,
       "featured": false,
