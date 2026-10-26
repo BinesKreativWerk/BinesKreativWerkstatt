@@ -502,11 +502,53 @@ function guestbook(){
  $("#view-guestbook").innerHTML=panel("Gästebuch moderieren",`<div class="table-wrap"><table class="data-table"><thead><tr><th>Name</th><th>Eintrag</th><th>Datum</th><th>Status</th><th></th></tr></thead><tbody>${entries.map((g,i)=>`<tr><td>${esc(g.name)}</td><td>${esc(g.text)}</td><td>${esc(g.date)}</td><td>${g.approved?"freigegeben":"wartet"}</td><td>${btn(g.approved?"Ausblenden":"Freigeben","outline-btn",'data-gb="'+i+'')}</td></tr>`).join("")||'<tr><td colspan="5">Keine Gästebucheinträge im Management-Speicher.</td></tr>'}</tbody></table></div>`);
  document.querySelectorAll("[data-gb]").forEach(b=>b.onclick=()=>{entries[Number(b.dataset.gb)].approved=!entries[Number(b.dataset.gb)].approved;renderView()})
 }
-function settings(){
- const d=ensureData(),site=d.site||{};
- $("#view-settings").innerHTML=panel("Shop & E-Mail",`<form id="settingsForm" class="form-grid"><label>Shopname<input name="shopName" value="${esc(d.shopName||site.shopName)}"></label><label>Untertitel<input name="tagline" value="${esc(d.tagline||site.tagline)}"></label><label class="wide">E-Mail<input name="email" value="${esc(d.contactEmail||site.contactEmail)}"></label><label class="wide">Hero-Titel<input name="heroTitle" value="${esc(d.heroTitle||site.heroTitle)}"></label><label class="wide">Hero-Text<textarea name="heroText">${esc(site.heroText||"")}</textarea></label><div class="wide"><button class="main-btn">Übernehmen</button></div></form><p class="muted">EmailJS Service-ID, Template-ID und Public Key bleiben separat in <code>js/email-config.js</code>.</p>`);
- $("#settingsForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);d.shopName=f.get("shopName");d.tagline=f.get("tagline");d.contactEmail=f.get("email");d.heroTitle=f.get("heroTitle");d.site={...(d.site||{}),shopName:d.shopName,tagline:d.tagline,contactEmail:d.contactEmail,heroTitle:d.heroTitle,heroText:f.get("heroText")};status("Einstellungen übernommen – noch nicht veröffentlicht.","ok");}
+
+function guestbook() {
+  const d = ensureData();
+  const entries = d.management.guestbook;
+
+  $("#view-guestbook").innerHTML = panel(
+    "Gästebuch moderieren",
+    `<div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Eintrag</th>
+            <th>Datum</th>
+            <th>Status</th>
+            <th>Aktion</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${entries.map((g, i) => `
+            <tr>
+              <td>${esc(g.name)}</td>
+              <td>${esc(g.text)}</td>
+              <td>${esc(g.date)}</td>
+              <td>${g.approved ? "freigegeben" : "wartet"}</td>
+              <td>
+                <button class="outline-btn" data-gb="${i}">
+                  ${g.approved ? "Ausblenden" : "Freigeben"}
+                </button>
+              </td>
+            </tr>
+          `).join("") || '<tr><td colspan="5">Keine Gästebucheinträge vorhanden.</td></tr>'}
+        </tbody>
+      </table>
+    </div>`
+  );
+
+  document.querySelectorAll("[data-gb]").forEach(button => {
+    button.onclick = () => {
+      const entry = entries[Number(button.dataset.gb)];
+      if (!entry) return;
+      entry.approved = !entry.approved;
+      renderView();
+    };
+  });
 }
+
 function backup(){
  $("#view-backup").innerHTML=panel("Backup & Wiederherstellung",`<div class="backup-box"><div class="panel"><h3>Export</h3><p class="muted">Sichere die komplette Shop-Konfiguration als JSON.</p><button id="exportBtn" class="main-btn">Backup herunterladen</button></div><div class="panel"><h3>Import</h3><p class="muted">Importiere eine zuvor gespeicherte JSON-Datei.</p><input id="importFile" type="file" accept="application/json"></div></div><div class="panel"><h3>Veröffentlichung</h3><p class="muted">Nach Änderungen immer „Alles veröffentlichen“ drücken, wenn du mit GitHub verbunden bist.</p><button id="backupSave" class="main-btn">Jetzt veröffentlichen</button></div>`);
  $("#exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(ensureData(),null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="bine-kreativwerkstatt-backup.json";a.click();URL.revokeObjectURL(a.href)};
