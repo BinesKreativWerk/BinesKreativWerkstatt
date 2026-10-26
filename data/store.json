@@ -391,19 +391,19 @@
     },
     {
       "id": 10,
-      "name": "Decorieren mit Strasssteinen",
-      "category": "FadenKunst u.Basteln",
+      "name": "Decorieren mit Strasssteinen ",
+      "category": "Strasssteine",
       "price": 0,
-      "priceOnRequest": false,
+      "priceOnRequest": true,
       "image": "assets/products/funkel-10-1793032489054-1.jpeg",
       "images": [
         "assets/products/product-01.jpg",
         "assets/products/beispiel-funkel-10-1793032464906-1.jpeg",
         "assets/products/funkel-10-1793032489054-1.jpeg"
       ],
-      "description": "du du magst Gläser oder andere Gegenstände verschönert haben...?...dann bist du hier richtig\n\n",
+      "description": " du magst Gläser oder andere Gegenstände verschönert haben...?...dann bist du hier richtig\n\n",
       "visible": true,
-      "customizable": false,
+      "customizable": true,
       "featured": false,
       "stock": 0,
       "sku": "BKW-8534",
@@ -551,6 +551,13 @@
       "name": "FSK 18",
       "label": "FSK 18",
       "sort": 14,
+      "active": true
+    },
+    {
+      "id": "strasssteine",
+      "name": "Strasssteine",
+      "label": "mit Strasssteinchen neu gestalten",
+      "sort": 15,
       "active": true
     }
   ],
