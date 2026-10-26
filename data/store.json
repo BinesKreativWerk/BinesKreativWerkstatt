@@ -388,6 +388,27 @@
       "sku": "BKW-5045",
       "sort": 9,
       "weightGrams": 0
+    },
+    {
+      "id": 10,
+      "name": "Decorieren mit Strasssteinen",
+      "category": "FadenKunst u.Basteln",
+      "price": 0,
+      "priceOnRequest": false,
+      "image": "assets/products/funkel-10-1793032489054-1.jpeg",
+      "images": [
+        "assets/products/product-01.jpg",
+        "assets/products/beispiel-funkel-10-1793032464906-1.jpeg",
+        "assets/products/funkel-10-1793032489054-1.jpeg"
+      ],
+      "description": "du du magst Gläser oder andere Gegenstände verschönert haben...?...dann bist du hier richtig\n\n",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 0,
+      "sku": "BKW-8534",
+      "sort": 10,
+      "weightGrams": 0
     }
   ],
   "shippingMethods": [
