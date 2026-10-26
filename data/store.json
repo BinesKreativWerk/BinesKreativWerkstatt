@@ -268,7 +268,7 @@
     {
       "id": 7,
       "name": "T-shirts , Taschen usw Uv DTF Bügelbilder , Sublimiation ",
-      "category": "ThermoBecher & Tassen  usw  alles was sich Sublimieren lässt zb   Magnete) ab 10€",
+      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-15-06-38-7-1791378540586-1.jpeg",
@@ -291,9 +291,9 @@
         "assets/products/whatsapp-image-2026-09-28-at-02-27-00-7-1791379287292-1.jpeg"
       ],
       "description": "wird auf Anfrage erst angefertigt \n\nBügelbilder  UV DTF sind einige vorhanden ,hier sind nur ein paar zum vllt vorweg aussuchen ",
-      "visible": true,
-      "customizable": false,
-      "featured": false,
+      "visible": false,
+      "customizable": true,
+      "featured": true,
       "stock": 0,
       "sku": "BKW-7307",
       "sort": 7,
