@@ -560,13 +560,7 @@
         "name": "Jenny",
         "text": "Dein Shop ist so Mega schön geworden, muss einfach mal gesagt werden .\nDie liebe Bine stellt all die schönen Sachen mit viel Liebe und in Handarbeit her .. 🥰🥰",
         "date": "26.10.2026",
-        "approved": false
-      },
-      {
-        "name": "Steffi",
-        "text": "Meine Bestellung wurde perfekt ausgeführt und Sonderwünsche werden auch erfüllt. Danke daß es Dich gibt.",
-        "date": "26.10.2026",
-        "approved": false
+        "approved": true
       }
     ]
   }
