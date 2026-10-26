@@ -542,7 +542,7 @@
         "name": "David",
         "text": "Admintest",
         "date": "26.10.2026",
-        "approved": false
+        "approved": true
       }
     ]
   }
