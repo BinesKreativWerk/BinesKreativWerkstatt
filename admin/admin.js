@@ -1,4 +1,5 @@
 
+
 /* ===== BKW Admin: Medienvorschau für Bild/GIF/Video ===== */
 function bkwAdminMediaKind(url, mime = "") {
   const m = String(mime || "").toLowerCase();
@@ -498,10 +499,44 @@ function gallery(){
 function galleryModal(i){const d=ensureData(),g=i===null?{title:"",category:"3D-Druck",date:today(),customer:"",description:"",consent:false,visible:true,tags:""}:d.management.gallery[i];openModal("Auftragsgalerie",`<form id="galleryForm" class="form-grid"><label class="wide">Titel<input name="title" value="${esc(g.title)}"></label><label>Kategorie<input name="category" value="${esc(g.category)}"></label><label>Datum<input name="date" type="date" value="${esc(g.date)}"></label><label>Kundenname / Kürzel<input name="customer" value="${esc(g.customer||"")}"></label><label class="wide">Beschreibung<textarea name="description">${esc(g.description||"")}</textarea></label><label class="wide">Schlagwörter<input name="tags" value="${esc(g.tags||"")}></label><label class="check"><input name="visible" type="checkbox" ${g.visible!==false?"checked":""}> Öffentlich sichtbar</label><label class="check"><input name="consent" type="checkbox" ${g.consent?"checked":""}> Veröffentlichung freigegeben</label><div class="wide"><button class="main-btn">Speichern</button></div></form>`);$("#galleryForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),n={title:f.get("title"),category:f.get("category"),date:f.get("date"),customer:f.get("customer"),description:f.get("description"),tags:f.get("tags"),visible:f.has("visible"),consent:f.has("consent")};i===null?d.management.gallery.push(n):Object.assign(g,n);closeModal();renderView()}
 }
 function guestbook(){
- const d=ensureData(), entries=d.management.guestbook;
- $("#view-guestbook").innerHTML=panel("Gästebuch moderieren",`<div class="table-wrap"><table class="data-table"><thead><tr><th>Name</th><th>Eintrag</th><th>Datum</th><th>Status</th><th></th></tr></thead><tbody>${entries.map((g,i)=>`<tr><td>${esc(g.name)}</td><td>${esc(g.text)}</td><td>${esc(g.date)}</td><td>${g.approved?"freigegeben":"wartet"}</td><td>${btn(g.approved?"Ausblenden":"Freigeben","outline-btn",'data-gb="'+i+'')}</td></tr>`).join("")||'<tr><td colspan="5">Keine Gästebucheinträge im Management-Speicher.</td></tr>'}</tbody></table></div>`);
- document.querySelectorAll("[data-gb]").forEach(b=>b.onclick=()=>{entries[Number(b.dataset.gb)].approved=!entries[Number(b.dataset.gb)].approved;renderView()})
+  const d = ensureData();
+  const entries = d.management.guestbook;
+  const rows = entries.map((g, i) => `
+    <tr>
+      <td>${esc(g.name || "Unbekannt")}</td>
+      <td>${esc(g.text || "")}</td>
+      <td>${esc(g.date || "")}</td>
+      <td>${g.approved ? "Freigegeben" : "Wartet auf Freigabe"}</td>
+      <td><button type="button" class="outline-btn" data-gb="${i}">${g.approved ? "Ausblenden" : "Freigeben"}</button></td>
+    </tr>
+  `).join("");
+
+  $("#view-guestbook").innerHTML = panel(
+    "Gästebuch moderieren",
+    `<div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Eintrag</th><th>Datum</th><th>Status</th><th>Aktion</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="5">Keine Gästebucheinträge vorhanden.</td></tr>'}</tbody>
+      </table>
+    </div>`
+  );
+
+  document.querySelectorAll("#view-guestbook [data-gb]").forEach(button => {
+    button.onclick = () => {
+      const entry = entries[Number(button.dataset.gb)];
+      if (!entry) return;
+      entry.approved = !entry.approved;
+      renderView();
+      status(
+        entry.approved
+          ? "Eintrag freigegeben. Bitte jetzt Alles veröffentlichen anklicken."
+          : "Eintrag ausgeblendet. Bitte jetzt Alles veröffentlichen anklicken.",
+        "ok"
+      );
+    };
+  });
 }
+
 function settings(){
  const d=ensureData(),site=d.site||{};
  $("#view-settings").innerHTML=panel("Shop & E-Mail",`<form id="settingsForm" class="form-grid"><label>Shopname<input name="shopName" value="${esc(d.shopName||site.shopName)}"></label><label>Untertitel<input name="tagline" value="${esc(d.tagline||site.tagline)}"></label><label class="wide">E-Mail<input name="email" value="${esc(d.contactEmail||site.contactEmail)}"></label><label class="wide">Hero-Titel<input name="heroTitle" value="${esc(d.heroTitle||site.heroTitle)}"></label><label class="wide">Hero-Text<textarea name="heroText">${esc(site.heroText||"")}</textarea></label><div class="wide"><button class="main-btn">Übernehmen</button></div></form><p class="muted">EmailJS Service-ID, Template-ID und Public Key bleiben separat in <code>js/email-config.js</code>.</p>`);
