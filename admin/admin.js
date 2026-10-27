@@ -1,33 +1,3 @@
-
-
-/* ===== BKW Admin: Medienvorschau für Bild/GIF/Video ===== */
-function bkwAdminMediaKind(url, mime = "") {
-  const m = String(mime || "").toLowerCase();
-  const u = String(url || "").split("?")[0].toLowerCase();
-  if (m.startsWith("video/") || /\.(mp4|webm|ogg)$/.test(u)) return "video";
-  if (m === "image/gif" || /\.gif$/.test(u)) return "gif";
-  return "image";
-}
-
-function bkwAdminMediaPreview(url, mime = "") {
-  const kind = bkwAdminMediaKind(url, mime);
-  if (kind === "video") {
-    const video = document.createElement("video");
-    video.src = url;
-    video.controls = true;
-    video.playsInline = true;
-    video.preload = "metadata";
-    video.className = "admin-product-media-preview";
-    return video;
-  }
-  const image = document.createElement("img");
-  image.src = url;
-  image.alt = "";
-  image.className = "admin-product-media-preview";
-  return image;
-}
-
-
 "use strict";
 
 const state = {
@@ -191,7 +161,7 @@ async function uploadRepoFile(path,file,message){
 async function uploadProductImages(files,productId){
   const list=Array.from(files||[]);
   if(!list.length) return [];
-  if(list.length>10) throw Error("Bitte höchstens 10 Produktbilder gleichzeitig auswählen.");
+  if(list.length>10) throw Error("Bitte höchstens 10 Produktdateien gleichzeitig auswählen.");
   const allowed=["image/jpeg","image/png","image/webp","image/gif","video/mp4","video/webm","video/ogg"];
   const max=50*1024*1024;
   const uploaded=[];
@@ -203,7 +173,7 @@ async function uploadProductImages(files,productId){
     const base=safeFileName(file.name).replace(/\.[^.]+$/i,"")||"produktbild";
     const filename=`${base}-${productId}-${Date.now()}-${i+1}.${ext}`;
     const path=`assets/products/${filename}`;
-    await uploadRepoFile(path,file,`Produktbild hochgeladen – ${filename}`);
+    await uploadRepoFile(path,file,`Produktmedium hochgeladen – ${filename}`);
     uploaded.push(path);
   }
   return uploaded;
@@ -302,8 +272,11 @@ function productModal(id){
    sku:"BKW-"+String(Date.now()).slice(-4),sort:d.products.length+1,weightGrams:0
  };
  const cats=d.categories.map(c=>`<option ${c.name===p.category?"selected":""}>${esc(c.name)}</option>`).join("");
- const existingImages=[...(Array.isArray(p.images)?p.images:String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean)),p.image].filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i);
- const mainImage=p.image||existingImages[0]||"assets/logo.png";
+ const rawImages=Array.isArray(p.images)?p.images:String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean);
+ const isVideoPath=x=>/\.(mp4|webm|ogg)(\?.*)?$/i.test(String(x||""));
+ const existingVideos=[...(Array.isArray(p.videos)?p.videos:String(p.videos||"").split(",").map(x=>x.trim()).filter(Boolean)),...rawImages.filter(isVideoPath)].filter((x,i,a)=>x&&a.indexOf(x)===i);
+ const existingImages=[...rawImages.filter(x=>!isVideoPath(x)),p.image].filter(x=>x&&!isVideoPath(x)).filter((x,i,a)=>a.indexOf(x)===i);
+ const mainImage=(p.image&&!isVideoPath(p.image)?p.image:existingImages[0])||"assets/logo.png";
  const imageCards=existingImages.map((src,i)=>`<div class="admin-image-card" data-existing-image="${esc(src)}" style="position:relative;border:2px solid ${src===mainImage?'#b71c1c':'#ccc'};border-radius:10px;padding:6px;background:#fff">
    <img src="../${esc(src)}" alt="Produktbild ${i+1}" style="width:110px;height:110px;object-fit:cover;border-radius:7px;display:block">
    <label style="display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:700;font-size:.9em;cursor:pointer">
@@ -325,25 +298,26 @@ function productModal(id){
 <label class="check"><input name="featured" type="checkbox" ${p.featured?"checked":""}> Hervorgehoben</label>
 <label class="check"><input name="customizable" type="checkbox" ${p.customizable?"checked":""}> Personalisierbar</label>
 <div class="wide upload-box" style="border:1px solid #ddd;border-radius:12px;padding:12px">
-  <b>Produktbilder</b>
+  <b>Produktbilder und Videos</b>
   <div style="margin:6px 0 10px;color:#666;font-size:.92em">Das markierte <strong>Hauptbild</strong> wird im Shop direkt in der Produktübersicht angezeigt. Du kannst das Hauptbild jederzeit ändern.</div>
   <div id="existingImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">${imageCards||'<span style="color:#777">Noch kein Produktbild vorhanden.</span>'}</div>
   <hr style="margin:14px 0;border:0;border-top:1px solid #ddd">
-  <b>Weitere Bilder hochladen</b>
-  <div style="margin:6px 0 10px;color:#666;font-size:.92em">Bilder (JPG, PNG, WebP), animierte GIFs und Videos (MP4, WebM, OGG) · maximal 50 MB pro Datei</div>
+  <b>Weitere Bilder und Videos hochladen</b>
+  <div style="margin:6px 0 10px;color:#666;font-size:.92em">Bilder (JPG, PNG, WebP), animierte GIFs und Videos (MP4, WebM, OGG) · maximal 50 MB pro Datei. Videos werden direkt auf der Produktseite angezeigt.</div>
   <input id="productImageFiles" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg" multiple>
   <div id="productImagePreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"></div>
   <div id="productUploadStatus" style="margin-top:8px"></div>
 </div>
 <label class="wide">Bildpfad<input name="image" value="${esc(p.image||"")}" readonly></label>
-<label class="wide">Bilder, durch Komma getrennt<textarea name="images">${esc(existingImages.join(", "))}</textarea></label>
+<label class="wide">Bildpfade, durch Komma getrennt<textarea name="images">${esc(existingImages.join(", "))}</textarea></label>
+<label class="wide">Videopfade, durch Komma getrennt<textarea name="videos">${esc(existingVideos.join(", "))}</textarea></label>
 <div class="wide toolbar">${btn("Abbrechen","outline-btn",'type="button" id="cancelModal"')}${id?btn("Produkt löschen","outline-btn danger",'type="button" id="deleteProductFromModal"'):""}<button class="main-btn" id="saveProductBtn">Speichern</button></div></form>`);
 
  $("#cancelModal").onclick=closeModal;
  if(id){
    $("#deleteProductFromModal").onclick=()=>{
      if(!confirm(`Produkt „${p.name}“ wirklich löschen? Das Produkt wird beim Veröffentlichen aus dem Shop entfernt.`)) return;
-     const paths=[p.image,...(Array.isArray(p.images)?p.images:String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean))].filter(Boolean);
+     const paths=[p.image,...(Array.isArray(p.images)?p.images:String(p.images||"").split(",").map(x=>x.trim()).filter(Boolean)),...(Array.isArray(p.videos)?p.videos:String(p.videos||"").split(",").map(x=>x.trim()).filter(Boolean))].filter(Boolean);
      paths.forEach(queueImageDelete);
      d.products=d.products.filter(x=>x.id!==id);
      closeModal(); renderView(); renderCards();
@@ -377,17 +351,27 @@ function productModal(id){
  fileInput.onchange=()=>{
    const files=Array.from(fileInput.files||[]);
    preview.innerHTML="";
-   selectedMainFileIndex=files.length?0:-1;
+   selectedMainFileIndex=files.findIndex(file=>file.type.startsWith("image/"));
    files.forEach((file,index)=>{
      const wrap=document.createElement("div");
-     wrap.style.cssText="border:2px solid "+(index===0?"#b71c1c":"#ccc")+";border-radius:10px;padding:6px;background:#fff";
-     const img=document.createElement("img"); img.alt=file.name; img.style.cssText="width:110px;height:110px;object-fit:cover;border-radius:7px;display:block"; img.src=URL.createObjectURL(file);
-     const label=document.createElement("label"); label.style.cssText="display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:700;font-size:.9em;cursor:pointer";
-     const radio=document.createElement("input"); radio.type="radio"; radio.name="newMainImageChoice"; radio.checked=index===0;
-     radio.onchange=()=>{selectedMainFileIndex=index;preview.querySelectorAll("div").forEach((el,i)=>el.style.borderColor=i===index?"#b71c1c":"#ccc");};
-     label.append(radio," Hauptbild"); wrap.append(img,label); preview.appendChild(wrap);
+     const isVideo=file.type.startsWith("video/");
+     wrap.style.cssText="border:2px solid "+(index===selectedMainFileIndex?"#b71c1c":"#ccc")+";border-radius:10px;padding:6px;background:#fff";
+     let media;
+     if(isVideo){media=document.createElement("video");media.controls=true;media.playsInline=true;media.preload="metadata";}
+     else {media=document.createElement("img");media.alt=file.name;}
+     media.style.cssText="width:110px;height:110px;object-fit:cover;border-radius:7px;display:block";
+     media.src=URL.createObjectURL(file);
+     const title=document.createElement("div");title.textContent=(isVideo?"🎬 Video: ":"🖼️ Bild: ")+file.name;title.style.cssText="max-width:150px;overflow-wrap:anywhere;font-size:.8em;margin-top:5px";
+     wrap.append(media,title);
+     if(!isVideo){
+       const label=document.createElement("label");label.style.cssText="display:flex;align-items:center;gap:6px;margin-top:6px;font-weight:700;font-size:.9em;cursor:pointer";
+       const radio=document.createElement("input");radio.type="radio";radio.name="newMainImageChoice";radio.checked=index===selectedMainFileIndex;
+       radio.onchange=()=>{selectedMainFileIndex=index;preview.querySelectorAll("div").forEach(el=>el.style.borderColor=el===wrap?"#b71c1c":"#ccc");};
+       label.append(radio," Hauptbild");wrap.append(label);
+     }
+     preview.appendChild(wrap);
    });
-   uploadStatus.textContent=files.length?`${files.length} neue${files.length===1?'s':'e'} Bild${files.length===1?'':'er'} ausgewählt. Das markierte Bild wird als Hauptbild übernommen.`:"";
+   uploadStatus.textContent=files.length?`${files.length} Datei${files.length===1?"":"en"} ausgewählt. Nur Bilder können als Hauptbild verwendet werden.`:"";
  };
  document.querySelectorAll('input[name="mainImageChoice"]').forEach(r=>r.onchange=()=>{
    const value=r.value.replace(/^existing:/,"");
@@ -401,19 +385,25 @@ function productModal(id){
    saveBtn.disabled=true; uploadStatus.textContent="";
    try{
      let image=String(f.get("image")||"").trim();
-     let images=String(f.get("images")||"").split(",").map(x=>x.trim()).filter(Boolean);
+     let images=String(f.get("images")||"").split(",").map(x=>x.trim()).filter(Boolean).filter(x=>! /\.(mp4|webm|ogg)(\?.*)?$/i.test(x));
+     let videos=String(f.get("videos")||"").split(",").map(x=>x.trim()).filter(Boolean);
      const files=Array.from(fileInput.files||[]);
      if(files.length){
-       uploadStatus.textContent=`${files.length} Bild${files.length===1?'':'er'} werden zu GitHub hochgeladen …`;
+       uploadStatus.textContent=`${files.length} Datei${files.length===1?"":"en"} werden zu GitHub hochgeladen …`;
        const uploaded=await uploadProductImages(files,p.id);
-       images=[...images,...uploaded.filter(x=>!images.includes(x))];
-       if(selectedMainFileIndex>=0&&uploaded[selectedMainFileIndex]) image=uploaded[selectedMainFileIndex];
-       uploadStatus.textContent="Bilder hochgeladen. Produktdaten gespeichert – jetzt veröffentlichen.";
+       const uploadedVideos=uploaded.filter(x=>/\.(mp4|webm|ogg)(\?.*)?$/i.test(x));
+       const uploadedImages=uploaded.filter(x=>! /\.(mp4|webm|ogg)(\?.*)?$/i.test(x));
+       images=[...images,...uploadedImages.filter(x=>!images.includes(x))];
+       videos=[...videos,...uploadedVideos.filter(x=>!videos.includes(x))];
+       const chosenPath=selectedMainFileIndex>=0?uploaded[selectedMainFileIndex]:null;
+       if(chosenPath&&! /\.(mp4|webm|ogg)(\?.*)?$/i.test(chosenPath)) image=chosenPath;
+       uploadStatus.textContent="Bilder und Videos hochgeladen. Produktdaten gespeichert – jetzt veröffentlichen.";
      }
      if(!image&&images.length) image=images[0];
      if(image&&!images.includes(image)) images.unshift(image);
      images=[...new Set(images)].filter(Boolean);
-     const n={...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),priceOnRequest:f.has("priceOnRequest"),stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),image,images};
+     videos=[...new Set(videos)].filter(Boolean);
+     const n={...p,id:p.id,name:f.get("name"),category:f.get("category"),price:Number(f.get("price")||0),priceOnRequest:f.has("priceOnRequest"),stock:Number(f.get("stock")||0),weightGrams:Math.max(0,Number(f.get("weightGrams")||0)),sku:f.get("sku"),sort:Number(f.get("sort")||1),description:f.get("description"),visible:f.has("visible"),featured:f.has("featured"),customizable:f.has("customizable"),image,images,videos};
      if(id) Object.assign(p,n); else d.products.push(n);
      closeModal(); renderView(); renderCards();
      status("Produkt gespeichert. Jetzt oben „Änderungen veröffentlichen“ drücken.","ok");
@@ -499,44 +489,10 @@ function gallery(){
 function galleryModal(i){const d=ensureData(),g=i===null?{title:"",category:"3D-Druck",date:today(),customer:"",description:"",consent:false,visible:true,tags:""}:d.management.gallery[i];openModal("Auftragsgalerie",`<form id="galleryForm" class="form-grid"><label class="wide">Titel<input name="title" value="${esc(g.title)}"></label><label>Kategorie<input name="category" value="${esc(g.category)}"></label><label>Datum<input name="date" type="date" value="${esc(g.date)}"></label><label>Kundenname / Kürzel<input name="customer" value="${esc(g.customer||"")}"></label><label class="wide">Beschreibung<textarea name="description">${esc(g.description||"")}</textarea></label><label class="wide">Schlagwörter<input name="tags" value="${esc(g.tags||"")}></label><label class="check"><input name="visible" type="checkbox" ${g.visible!==false?"checked":""}> Öffentlich sichtbar</label><label class="check"><input name="consent" type="checkbox" ${g.consent?"checked":""}> Veröffentlichung freigegeben</label><div class="wide"><button class="main-btn">Speichern</button></div></form>`);$("#galleryForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),n={title:f.get("title"),category:f.get("category"),date:f.get("date"),customer:f.get("customer"),description:f.get("description"),tags:f.get("tags"),visible:f.has("visible"),consent:f.has("consent")};i===null?d.management.gallery.push(n):Object.assign(g,n);closeModal();renderView()}
 }
 function guestbook(){
-  const d = ensureData();
-  const entries = d.management.guestbook;
-  const rows = entries.map((g, i) => `
-    <tr>
-      <td>${esc(g.name || "Unbekannt")}</td>
-      <td>${esc(g.text || "")}</td>
-      <td>${esc(g.date || "")}</td>
-      <td>${g.approved ? "Freigegeben" : "Wartet auf Freigabe"}</td>
-      <td><button type="button" class="outline-btn" data-gb="${i}">${g.approved ? "Ausblenden" : "Freigeben"}</button></td>
-    </tr>
-  `).join("");
-
-  $("#view-guestbook").innerHTML = panel(
-    "Gästebuch moderieren",
-    `<div class="table-wrap">
-      <table class="data-table">
-        <thead><tr><th>Name</th><th>Eintrag</th><th>Datum</th><th>Status</th><th>Aktion</th></tr></thead>
-        <tbody>${rows || '<tr><td colspan="5">Keine Gästebucheinträge vorhanden.</td></tr>'}</tbody>
-      </table>
-    </div>`
-  );
-
-  document.querySelectorAll("#view-guestbook [data-gb]").forEach(button => {
-    button.onclick = () => {
-      const entry = entries[Number(button.dataset.gb)];
-      if (!entry) return;
-      entry.approved = !entry.approved;
-      renderView();
-      status(
-        entry.approved
-          ? "Eintrag freigegeben. Bitte jetzt Alles veröffentlichen anklicken."
-          : "Eintrag ausgeblendet. Bitte jetzt Alles veröffentlichen anklicken.",
-        "ok"
-      );
-    };
-  });
+ const d=ensureData(), entries=d.management.guestbook;
+ $("#view-guestbook").innerHTML=panel("Gästebuch moderieren",`<div class="table-wrap"><table class="data-table"><thead><tr><th>Name</th><th>Eintrag</th><th>Datum</th><th>Status</th><th></th></tr></thead><tbody>${entries.map((g,i)=>`<tr><td>${esc(g.name)}</td><td>${esc(g.text)}</td><td>${esc(g.date)}</td><td>${g.approved?"freigegeben":"wartet"}</td><td>${btn(g.approved?"Ausblenden":"Freigeben","outline-btn",'data-gb="'+i+'')}</td></tr>`).join("")||'<tr><td colspan="5">Keine Gästebucheinträge im Management-Speicher.</td></tr>'}</tbody></table></div>`);
+ document.querySelectorAll("[data-gb]").forEach(b=>b.onclick=()=>{entries[Number(b.dataset.gb)].approved=!entries[Number(b.dataset.gb)].approved;renderView()})
 }
-
 function settings(){
  const d=ensureData(),site=d.site||{};
  $("#view-settings").innerHTML=panel("Shop & E-Mail",`<form id="settingsForm" class="form-grid"><label>Shopname<input name="shopName" value="${esc(d.shopName||site.shopName)}"></label><label>Untertitel<input name="tagline" value="${esc(d.tagline||site.tagline)}"></label><label class="wide">E-Mail<input name="email" value="${esc(d.contactEmail||site.contactEmail)}"></label><label class="wide">Hero-Titel<input name="heroTitle" value="${esc(d.heroTitle||site.heroTitle)}"></label><label class="wide">Hero-Text<textarea name="heroText">${esc(site.heroText||"")}</textarea></label><div class="wide"><button class="main-btn">Übernehmen</button></div></form><p class="muted">EmailJS Service-ID, Template-ID und Public Key bleiben separat in <code>js/email-config.js</code>.</p>`);
@@ -555,25 +511,3 @@ if(state.token&&state.owner){
   discoverShopRepo().then(found=>{state.repo=found.repo.name;state.branch=found.branch;return loadGitHub()}).then(()=>{enter()}).catch(()=>{sessionStorage.removeItem("bkw_admin_token");state.token=""});
 }
 
-function bkwUpgradeAdminMediaPreviews(root = document) {
-  root.querySelectorAll("img").forEach((img) => {
-    const src = img.currentSrc || img.src || "";
-    if (!src) return;
-    const kind = bkwAdminMediaKind(src);
-    if (kind !== "video") return;
-    const video = bkwAdminMediaPreview(src);
-    if (img.className) video.className = img.className + " admin-product-media-preview";
-    if (img.parentNode) img.parentNode.replaceChild(video, img);
-  });
-}
-
-if (!window.__BKW_ADMIN_MEDIA_PREVIEW_OBSERVER__) {
-  window.__BKW_ADMIN_MEDIA_PREVIEW_OBSERVER__ = true;
-  const observer = new MutationObserver(() => bkwUpgradeAdminMediaPreviews());
-  if (document.body) observer.observe(document.body, { childList: true, subtree: true });
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => bkwUpgradeAdminMediaPreviews(), { once: true });
-  } else {
-    bkwUpgradeAdminMediaPreviews();
-  }
-}
