@@ -120,7 +120,7 @@
     },
     {
       "id": 4,
-      "name": "Glitzer Becher ,ThermoBecher & Tassen   alles was sich Sublimieren lässt zb :  Magnete, Kugelschreiber,Anhänger",
+      "name": "Glitzer Becher ,ThermoBecher & Tassen , Magnete, Kugelschreiber,Anhänger",
       "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
       "price": 0,
       "priceOnRequest": true,
@@ -164,7 +164,8 @@
       "stock": 23,
       "sku": "BKW-7989",
       "sort": 4,
-      "weightGrams": 0
+      "weightGrams": 0,
+      "videos": []
     },
     {
       "id": 5,
