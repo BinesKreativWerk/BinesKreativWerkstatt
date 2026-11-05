@@ -384,11 +384,12 @@
       "description": "es gibt extrem vieles was man 3D drucken kann \n\nerstellen selber ,immer wieder was neues \n\nfragt einfach mal an , was ihr möchtet .....entscheiden dann ob es machbar ist \n\nkleiner Tip -NekoPaws3D-  erstellt super schöne Resin Figuren ,mit viel Liebe (hier verlinkt auf der Startseite)",
       "visible": true,
       "customizable": false,
-      "featured": false,
+      "featured": true,
       "stock": 0,
       "sku": "BKW-5045",
       "sort": 9,
-      "weightGrams": 0
+      "weightGrams": 0,
+      "videos": []
     },
     {
       "id": 10,
