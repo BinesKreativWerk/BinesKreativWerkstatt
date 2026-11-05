@@ -112,7 +112,7 @@
       "description": "Deko Stifte  - Wunschfarbe der Perlen - Wunschfarbe der Stiftgrundfarbe - Wunschanhänger (Charms) - Preis  ab 7.80 \n\nStifthalter gegen Aufpreis (ab 1 €) , Auswählbar per Anfrage \n\nauch gibt es Schlüsselanhänger , mit diesen u.anderen Grössen von Perlen usw  ab 4,50€ ",
       "visible": true,
       "customizable": false,
-      "featured": true,
+      "featured": false,
       "stock": 18,
       "sku": "BKW-8510",
       "sort": 3,
@@ -122,7 +122,7 @@
     {
       "id": 4,
       "name": "Glitzer Becher ,ThermoBecher & Tassen , Magnete, Kugelschreiber,Anhänger",
-      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
+      "category": "UV DTF Aufkleber zum aussuchen für die Herstellung eurer Wünsche",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/img-20260928-wa0084-4-1790967605025-1.jpg",
@@ -270,7 +270,7 @@
     {
       "id": 7,
       "name": "T-shirts , Taschen usw Uv DTF Bügelbilder , Sublimiation ",
-      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
+      "category": "Sublimation",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-15-06-38-7-1791378540586-1.jpeg",
@@ -299,7 +299,8 @@
       "stock": 0,
       "sku": "BKW-7307",
       "sort": 7,
-      "weightGrams": 0
+      "weightGrams": 0,
+      "videos": []
     },
     {
       "id": 8,
@@ -561,6 +562,13 @@
       "name": "Strasssteine",
       "label": "mit Strasssteinchen neu gestalten",
       "sort": 15,
+      "active": true
+    },
+    {
+      "id": "sublimation",
+      "name": "Sublimation",
+      "label": "Sublimation",
+      "sort": 16,
       "active": true
     }
   ],
