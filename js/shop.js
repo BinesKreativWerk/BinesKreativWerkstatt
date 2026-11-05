@@ -449,7 +449,7 @@ function renderCategoryButtons() {
     if (name === "FSK 18") {
       return '<button type="button" onclick="requestFskAccess()">🔞 FSK 18</button>';
     }
-    return `<button type="button" onclick="filterProducts(${JSON.stringify(name)})">${escapeHtml(label)}</button>`;
+    return `<button type="button" onclick="filterProducts(${JSON.stringify(name)}, ${JSON.stringify(category.id || "")})">${escapeHtml(label)}</button>`;
   }).join("");
 }
 
@@ -474,16 +474,48 @@ function renderProducts(list) {
     </article>`).join("");
 }
 
-function filterProducts(category) {
+function normalizeCategoryText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\\u0300-\\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function productMatchesCategory(product, categoryName, categoryId) {
+  const productCategory = String(product.category || "");
+  if (productCategory === categoryName) return true;
+
+  const productSlug = normalizeCategoryText(productCategory);
+  const categorySlug = normalizeCategoryText(categoryId);
+  if (categorySlug && productSlug === categorySlug) return true;
+
+  // Die Kategorie „3D Druck“ ist im Shop als Sammelkategorie angelegt.
+  if (categorySlug === "3d-druck") {
+    return productCategory.toLowerCase().includes("3d druck");
+  }
+  // Bei der Sublimations-Kategorie sollen auch zugehörige UV-DTF-Produkte erscheinen.
+  if (categorySlug === "sticker") {
+    return productCategory.toLowerCase().includes("sublim")
+      || productCategory.toLowerCase().includes("uv dtf");
+  }
+  return false;
+}
+
+function filterProducts(category, categoryId = "") {
   currentCategory = category;
   if (category === "FSK 18" && !isFskConfirmed()) {
     requestFskAccess();
     return;
   }
   document.getElementById("age-warning")?.classList.add("hidden");
+
   const list = category === "Alle"
     ? products.filter(product => product.category !== "FSK 18")
-    : products.filter(product => product.category === category);
+    : products.filter(product => product.category !== "FSK 18" || isFskConfirmed())
+      .filter(product => productMatchesCategory(product, category, categoryId));
+
   renderProducts(list);
   scrollToShop();
 }

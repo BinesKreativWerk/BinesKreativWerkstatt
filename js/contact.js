@@ -34,9 +34,14 @@ async function submitContactForm(event) {
   showContactStatus("", "");
 
   const params = {
+    // EmailJS-Templatevariablen: Absenderdaten explizit bereitstellen
     from_name: name,
+    sender_name: name,
+    name,
     reply_to: email,
-    phone,
+    sender_email: email,
+    email,
+    phone: phone || "Keine Telefonnummer angegeben",
     subject,
     message,
     sent_at: new Date().toLocaleString("de-DE")
