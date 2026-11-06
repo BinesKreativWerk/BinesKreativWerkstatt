@@ -419,14 +419,14 @@
       "key": "hermes",
       "label": "Hermes Versand",
       "price": 4.95,
-      "freeFrom": 80,
+      "freeFrom": 70,
       "weightTiers": []
     },
     {
       "key": "dhl",
       "label": "DHL Paket",
       "price": 5.49,
-      "freeFrom": 95,
+      "freeFrom": 85,
       "weightTiers": []
     }
   ],
