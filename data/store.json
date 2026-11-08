@@ -83,7 +83,7 @@
     {
       "id": 3,
       "name": "Deko Stifte ab 5.80€  ",
-      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
+      "category": "Perlenstifte & Zubehör",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3.jpeg",
@@ -142,11 +142,11 @@
         "assets/products/dsc09825-3-1794095473632-2.jpg",
         "assets/products/dsc09826-3-1794095480965-3.jpg"
       ],
-      "description": "Deko Stifte  - Wunschfarbe der Perlen - Wunschfarbe der Stiftgrundfarbe - Wunschanhänger (Charms) - Preis  ab 7.80 \n\nStifthalter gegen Aufpreis (ab 1 €) , Auswählbar per Anfrage \n\nauch gibt es Schlüsselanhänger , mit diesen u.anderen Grössen von Perlen usw  ab 4,50€ ",
+      "description": "Deko Stifte  - Wunschfarbe der Perlen - Wunschfarbe der Stiftgrundfarbe - Wunschanhänger (Charms) - Preis  ab 5.80 \n\nStifthalter gegen Aufpreis (ab 1 €) , Auswählbar per Anfrage \n\nauch gibt es Schlüsselanhänger , mit diesen u.anderen Grössen von Perlen usw  ab 4,50€ ",
       "visible": true,
       "customizable": false,
       "featured": true,
-      "stock": 18,
+      "stock": 28,
       "sku": "BKW-8510",
       "sort": 3,
       "weightGrams": 0,
@@ -406,7 +406,7 @@
     {
       "id": 9,
       "name": "3D Druck  aus Pla/ Petg  mit Herzen erstellt und ausgedruckt",
-      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
+      "category": "3D Druck aus Pla/ Petg",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-18-09-13-9-1791500829057-1.jpeg",
@@ -632,17 +632,17 @@
       "active": true
     },
     {
-      "id": "strasssteine",
-      "name": "Strasssteine",
-      "label": "mit Strasssteinchen neu gestalten",
+      "id": "nekopaws3d",
+      "name": "NekoPaws3D",
+      "label": "NekoPaws3D ",
       "sort": 12,
       "active": true
     },
     {
-      "id": "nekopaws3d",
-      "name": "NekoPaws3D",
-      "label": "NekoPaws3D ",
-      "sort": 13,
+      "id": "strasssteine",
+      "name": "Strasssteine",
+      "label": "mit Strasssteinchen neu gestalten",
+      "sort": 12,
       "active": true
     },
     {
