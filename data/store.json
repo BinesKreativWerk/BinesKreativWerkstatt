@@ -242,7 +242,7 @@
       "category": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
       "price": 0,
       "priceOnRequest": true,
-      "image": "assets/products/dsc09846-6-1794096475367-1.jpg",
+      "image": "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
       "images": [
         "assets/products/file-000000005eb48210b4fdf981a0c4d490-6-1790975315684-1.png",
         "assets/products/20230409-145344-6-1790975758048-1.jpg",
@@ -622,6 +622,13 @@
       "name": "Strasssteine",
       "label": "mit Strasssteinchen neu gestalten",
       "sort": 15,
+      "active": true
+    },
+    {
+      "id": "lasern-gravieren",
+      "name": "Lasern & Gravieren",
+      "label": "Lasern & Grevieren",
+      "sort": 16,
       "active": true
     }
   ],
