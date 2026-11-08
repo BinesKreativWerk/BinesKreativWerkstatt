@@ -662,6 +662,13 @@
       "label": "FSK 18",
       "sort": 16,
       "active": true
+    },
+    {
+      "id": "sublimation",
+      "name": "Sublimation",
+      "label": "Sublimation",
+      "sort": 17,
+      "active": true
     }
   ],
   "management": {
