@@ -473,6 +473,34 @@
       "sku": "BKW-8534",
       "sort": 10,
       "weightGrams": 0
+    },
+    {
+      "id": 11,
+      "name": "Lasern & Gravieren mit Herz",
+      "category": "Lasern & Gravieren",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/kategorie-11-1794098053957-1.jpeg",
+      "images": [
+        "assets/products/product-01.jpg",
+        "assets/products/kategorie-11-1794098053957-1.jpeg",
+        "assets/products/dsc09860-11-1794098100139-1.jpg",
+        "assets/products/dsc09861-11-1794098105650-2.jpg",
+        "assets/products/whatsapp-image-2026-11-08-at-01-36-01-11-1794098328955-1.jpeg",
+        "assets/products/whatsapp-image-2026-11-08-at-01-36-03-11-1794098331542-2.jpeg",
+        "assets/products/whatsapp-image-2026-11-08-at-01-36-04-11-1794098333766-3.jpeg"
+      ],
+      "description": "da gibt es so einges an Ideen die man verwirklichen kann , fragt einfach, teilt mir Eure Wünsche mit und wir stellen etwas schönes her ",
+      "visible": true,
+      "customizable": true,
+      "featured": true,
+      "stock": 0,
+      "sku": "BKW-1467",
+      "sort": 11,
+      "weightGrams": 0,
+      "videos": [
+        "assets/products/whatsapp-video-2026-11-08-at-01-36-03-11-1794098336471-4.mp4"
+      ]
     }
   ],
   "shippingMethods": [
