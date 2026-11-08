@@ -264,10 +264,11 @@
       "visible": true,
       "customizable": true,
       "featured": false,
-      "stock": 0,
+      "stock": 10,
       "sku": "BKW-8534",
       "sort": 10,
-      "weightGrams": 0
+      "weightGrams": 0,
+      "videos": []
     },
     {
       "id": 11,
