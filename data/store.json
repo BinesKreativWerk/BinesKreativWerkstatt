@@ -572,7 +572,7 @@
       "id": "epoxidharz",
       "name": "Epoxidharz Acryl 3D Druck",
       "label": "Epoxidharz",
-      "sort": 4,
+      "sort": 3,
       "active": true
     },
     {
@@ -625,9 +625,23 @@
       "active": true
     },
     {
+      "id": "lasern-gravieren",
+      "name": "Lasern & Gravieren",
+      "label": "Lasern & Grevieren",
+      "sort": 11,
+      "active": true
+    },
+    {
       "id": "nekopaws3d",
       "name": "NekoPaws3D",
       "label": "NekoPaws3D ",
+      "sort": 12,
+      "active": true
+    },
+    {
+      "id": "strasssteine",
+      "name": "Strasssteine",
+      "label": "mit Strasssteinchen neu gestalten",
       "sort": 12,
       "active": true
     },
@@ -643,20 +657,6 @@
       "name": "FSK 18",
       "label": "FSK 18",
       "sort": 14,
-      "active": true
-    },
-    {
-      "id": "strasssteine",
-      "name": "Strasssteine",
-      "label": "mit Strasssteinchen neu gestalten",
-      "sort": 15,
-      "active": true
-    },
-    {
-      "id": "lasern-gravieren",
-      "name": "Lasern & Gravieren",
-      "label": "Lasern & Grevieren",
-      "sort": 16,
       "active": true
     }
   ],
