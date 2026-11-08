@@ -565,14 +565,14 @@
       "id": "3d-druck",
       "name": "3D Druck & Acryl  & Makramee  Schlüsselanhänger ab 3,99€",
       "label": "3D Druck",
-      "sort": 2,
+      "sort": 3,
       "active": true
     },
     {
-      "id": "epoxidharz",
-      "name": "Epoxidharz Acryl 3D Druck",
-      "label": "Epoxidharz",
-      "sort": 3,
+      "id": "3d-druck-aus-pla-petg",
+      "name": "3D Druck  aus Pla/ Petg",
+      "label": "3D Druck",
+      "sort": 4,
       "active": true
     },
     {
@@ -604,9 +604,16 @@
       "active": true
     },
     {
-      "id": "3d-druck-aus-pla-petg",
-      "name": "3D Druck  aus Pla/ Petg",
-      "label": "3D Druck",
+      "id": "lasern-gravieren",
+      "name": "Lasern & Gravieren",
+      "label": "Lasern & Grevieren",
+      "sort": 8,
+      "active": true
+    },
+    {
+      "id": "epoxidharz",
+      "name": "Epoxidharz Acryl 3D Druck",
+      "label": "Epoxidharz",
       "sort": 9,
       "active": true
     },
@@ -621,13 +628,6 @@
       "id": "fertige-sofort-erh-ltliche-sachen-je-1x-vorhanden",
       "name": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
       "label": "Fertige sofort erhältliche Sachen ( je 1x ) vorhanden",
-      "sort": 11,
-      "active": true
-    },
-    {
-      "id": "lasern-gravieren",
-      "name": "Lasern & Gravieren",
-      "label": "Lasern & Grevieren",
       "sort": 11,
       "active": true
     },
