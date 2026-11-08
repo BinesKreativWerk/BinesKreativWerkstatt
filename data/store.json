@@ -632,17 +632,17 @@
       "active": true
     },
     {
-      "id": "nekopaws3d",
-      "name": "NekoPaws3D",
-      "label": "NekoPaws3D ",
-      "sort": 12,
-      "active": true
-    },
-    {
       "id": "strasssteine",
       "name": "Strasssteine",
       "label": "mit Strasssteinchen neu gestalten",
       "sort": 12,
+      "active": true
+    },
+    {
+      "id": "nekopaws3d",
+      "name": "NekoPaws3D",
+      "label": "NekoPaws3D ",
+      "sort": 13,
       "active": true
     },
     {
