@@ -8,31 +8,6 @@
   },
   "products": [
     {
-      "id": 2,
-      "name": "Lesezeichen  ",
-      "category": "Epoxidharz Acryl 3D Druck",
-      "price": 0,
-      "priceOnRequest": true,
-      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3-2.jpeg",
-      "images": [
-        "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3-2.jpeg",
-        "assets/products/20261004-160221-2-1791122904061-1.jpg",
-        "assets/products/20261004-160307-2-1791122908589-2.jpg",
-        "assets/products/20261004-160345-2-1791122912002-3.jpg",
-        "assets/products/20261004-160437-2-1791122915415-4.jpg",
-        "assets/products/dsc09696-2-1791211089706-1.jpg",
-        "assets/products/dsc09697-2-1791211109001-2.jpg"
-      ],
-      "description": "Verschiede Lesezeichen - Personalisiert - Wunschmotiv - Lesezeichen Hintergrund aussuchen aus: 3D-Druck, Acryl, mit oder ohne Epoxidharz - Preisspanne: ab. 2,50€ -4,50€\n\nMagnete sublimert ab 3€ oder Sticker \n\nFertige die zu sehen sind jetzt 1- 2 mal vorhanden ",
-      "visible": true,
-      "customizable": false,
-      "featured": false,
-      "stock": 22,
-      "sku": "BKW-6341",
-      "sort": 2,
-      "weightGrams": 0
-    },
-    {
       "id": 3,
       "name": "Deko Stifte ab 5.80€  ",
       "category": "Perlenstifte & Zubehör",
@@ -499,6 +474,32 @@
       "featured": false,
       "stock": 42,
       "sku": "BKW-7629-K",
+      "sort": 12,
+      "weightGrams": 0,
+      "videos": []
+    },
+    {
+      "id": 13,
+      "name": "Lesezeichen  ",
+      "category": "Epoxidharz Acryl 3D Druck",
+      "price": 0,
+      "priceOnRequest": true,
+      "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3-2.jpeg",
+      "images": [
+        "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3-2.jpeg",
+        "assets/products/20261004-160221-2-1791122904061-1.jpg",
+        "assets/products/20261004-160307-2-1791122908589-2.jpg",
+        "assets/products/20261004-160345-2-1791122912002-3.jpg",
+        "assets/products/20261004-160437-2-1791122915415-4.jpg",
+        "assets/products/dsc09696-2-1791211089706-1.jpg",
+        "assets/products/dsc09697-2-1791211109001-2.jpg"
+      ],
+      "description": "Verschiede Lesezeichen - Personalisiert - Wunschmotiv - Lesezeichen Hintergrund aussuchen aus: 3D-Druck, Acryl, mit oder ohne Epoxidharz - Preisspanne: ab. 2,50€ -4,50€\n\nMagnete sublimert ab 3€ oder Sticker \n\nFertige die zu sehen sind jetzt 1- 2 mal vorhanden ",
+      "visible": true,
+      "customizable": false,
+      "featured": false,
+      "stock": 30,
+      "sku": "BKW-6341-K",
       "sort": 12,
       "weightGrams": 0,
       "videos": []
