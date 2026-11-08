@@ -201,7 +201,7 @@
     {
       "id": 9,
       "name": "3D Druck  aus Pla/ Petg  mit Herzen erstellt und ausgedruckt",
-      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
+      "category": "3D Druck aus Pla/ Petg",
       "price": 0,
       "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-18-09-13-9-1791500829057-1.jpeg",
@@ -240,7 +240,7 @@
       ],
       "description": "es gibt extrem vieles was man 3D drucken kann \n\nerstellen selber ,immer wieder was neues \n\nfragt einfach mal an , was ihr möchtet .....entscheiden dann ob es machbar ist \n\nkleiner Tip -NekoPaws3D-  erstellt super schöne Resin Figuren ,mit viel Liebe (hier verlinkt auf der Startseite)",
       "visible": true,
-      "customizable": false,
+      "customizable": true,
       "featured": true,
       "stock": 94,
       "sku": "BKW-5045",
