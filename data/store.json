@@ -10,9 +10,9 @@
     {
       "id": 3,
       "name": "Deko Stifte ab 5.80€  ",
-      "category": "Perlenstifte & Zubehör",
+      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
       "price": 0,
-      "priceOnRequest": true,
+      "priceOnRequest": false,
       "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3.jpeg",
       "images": [
         "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3.jpeg",
@@ -67,7 +67,8 @@
         "assets/products/dsc09823-3-1794095435152-10.jpg",
         "assets/products/dsc09824-3-1794095466261-1.jpg",
         "assets/products/dsc09825-3-1794095473632-2.jpg",
-        "assets/products/dsc09826-3-1794095480965-3.jpg"
+        "assets/products/dsc09826-3-1794095480965-3.jpg",
+        "assets/products/whatsapp-image-2026-11-12-at-09-20-59-3-1794474033281-1.jpeg"
       ],
       "description": "Deko Stifte  - Wunschfarbe der Perlen - Wunschfarbe der Stiftgrundfarbe - Wunschanhänger (Charms) - Preis  ab 5.80 \n\nStifthalter gegen Aufpreis (ab 1 €) , Auswählbar per Anfrage \n\nauch gibt es Schlüsselanhänger , mit diesen u.anderen Grössen von Perlen usw  ab 4,50€ ",
       "visible": true,
