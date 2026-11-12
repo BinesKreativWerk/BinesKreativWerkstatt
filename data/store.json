@@ -217,9 +217,9 @@
     {
       "id": 9,
       "name": "3D Druck  aus Pla/ Petg  mit Herzen erstellt und ausgedruckt",
-      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
+      "category": "3D Druck aus Pla/ Petg",
       "price": 0,
-      "priceOnRequest": true,
+      "priceOnRequest": false,
       "image": "assets/products/whatsapp-image-2026-10-07-at-18-09-13-9-1791500829057-1.jpeg",
       "images": [
         "assets/products/3d-herzanhaenger-9-1791500045172-1.jpeg",
