@@ -12,7 +12,7 @@
       "name": "Deko Stifte ab 5.80€  ",
       "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
       "price": 0,
-      "priceOnRequest": false,
+      "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3.jpeg",
       "images": [
         "assets/products/whatsapp-image-2026-10-01-at-11-30-31-3.jpeg",
@@ -219,9 +219,9 @@
     {
       "id": 9,
       "name": "3D Druck  aus Pla/ Petg  mit Herzen erstellt und ausgedruckt",
-      "category": "3D Druck aus Pla/ Petg",
+      "category": "ThermoBecher & Tassen usw alles was sich Sublimieren lässt zb Magnete) ab 10€",
       "price": 0,
-      "priceOnRequest": false,
+      "priceOnRequest": true,
       "image": "assets/products/whatsapp-image-2026-10-07-at-18-09-13-9-1791500829057-1.jpeg",
       "images": [
         "assets/products/3d-herzanhaenger-9-1791500045172-1.jpeg",
