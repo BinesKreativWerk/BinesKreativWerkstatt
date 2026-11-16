@@ -300,7 +300,7 @@
       "category": "Lasern & Gravieren",
       "price": 0,
       "priceOnRequest": true,
-      "image": "assets/products/2-11-1794859130102-1.jpeg",
+      "image": "assets/products/kategorie-11-1794098053957-1.jpeg",
       "images": [
         "assets/products/product-01.jpg",
         "assets/products/kategorie-11-1794098053957-1.jpeg",
@@ -320,11 +320,11 @@
         "assets/products/4-11-1794859134966-3.jpeg",
         "assets/products/5-11-1794859137612-4.jpeg"
       ],
-      "description": "da gibt es so einges an Ideen die man verwirklichen kann , fragt einfach, teilt mir Eure Wünsche mit und wir stellen etwas schönes her \nBeispiele kann man auch erwerben",
+      "description": "da gibt es so einges an Ideen die man verwirklichen kann , fragt einfach, teilt mir Eure Wünsche mit und wir stellen etwas schönes her \nBeispiele kann man auch erwerben\n\nin den Säckchen befinden sich selbst gelaserte u.gravierte , 9 verschiedene Weihnachtsaufhänger (Tiere)",
       "visible": true,
       "customizable": true,
-      "featured": true,
-      "stock": 47,
+      "featured": false,
+      "stock": 62,
       "sku": "BKW-1467",
       "sort": 11,
       "weightGrams": 0,
